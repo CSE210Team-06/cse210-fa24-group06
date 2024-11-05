@@ -1,0 +1,11 @@
+Your project should be carefully considered before starting given that we have about 5 weeks of total available time and far less given the other commitments we have in life and school.  The Shape Up book from the folks behind Basecamp provides a very useful way of thinking about shaping your work to fit the constraints that you face. First make sure you have read the book which is freely available online.  Your whole team should at least skim it.  The main effort here is that you should clearly aim to articulate risks, rabbit holes, and have a clear definition of what you are going to do. 
+
+Keep an eye out in the upcoming lectures in which the Professor will showcase a few examples of pitches and design decks to take inspiration from.
+
+You should then take your thoughts and form a pitch document that you will present to your TA for approval.  The document should have a statement of purpose, a section on user personas, topics of risks and rabbit holes as well as a visual representation of what you are doing in the form of fat-marker sketches and wireframes. The pitch may take the form of a slide deck (PDF) of about 8 slides or a document (PDF file) of no more than 8 pages.
+
+Create a new repo in your GitHub organization called cse210-fa24-group<group-no>. This will be the main repo for your project and all documents and code henceforth should be in it. The pitch documents should be placed in your repo in /specs/pitch. 
+
+Additionally, add any other documentation that you think is appropriate to convey what you want to do and that we can verify you have done some appropriate amount of thinking before starting the project. (examples - project roadmap, system diagrams, design docs etc). 
+
+Once you have completed your pitch, schedule some time to present the plan to your TA for review on or before 6th of November. The TA will communicate with you regarding the specifics of this..
