@@ -10,6 +10,7 @@ app = FastAPI(
 # Register routers
 app.include_router(example.router)
 
+
 # Basic health check endpoint
 @app.get("/health", tags=["Health"])
 def health_check():
