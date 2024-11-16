@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import example
+from .routers import example
 
 app = FastAPI(
     title="FastAPI Boilerplate",
