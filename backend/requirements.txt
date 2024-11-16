@@ -3,3 +3,4 @@ uvicorn
 pre-commit
 flake8
 black
+pdoc
