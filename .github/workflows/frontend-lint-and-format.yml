@@ -3,10 +3,13 @@ name: Lint and Code Style Check
 on:
   push:
     branches:
-      - main
-      - 'dev/**'
+      - 'frontend/*'
+      - 'dev/frontend'
+    paths:
+      - 'frontend/**'
   pull_request:
-
+    paths:
+      - 'frontend/**'
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -22,7 +25,7 @@ jobs:
         with:
           node-version: '18'
 
-      # Install dependencies from the foo directory
+      # Install dependencies from the frontend directory
       - name: Install dependencies
         working-directory: frontend
         run: npm install
