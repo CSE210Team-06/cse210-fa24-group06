@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import example
+from .routers import example
 
 app = FastAPI(
     title="FastAPI Boilerplate",
@@ -10,7 +10,8 @@ app = FastAPI(
 # Register routers
 app.include_router(example.router)
 
-# Basic health check endpoint
+
+# Basic health check
 @app.get("/health", tags=["Health"])
 def health_check():
     return {"status": "ok"}
