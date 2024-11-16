@@ -47,7 +47,7 @@ jobs:
         git checkout
         git add docs/
         git commit -m "feat(docs): updated api documentation via github actions bot"
-        git push orign HEAD
+        git push origin HEAD
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
