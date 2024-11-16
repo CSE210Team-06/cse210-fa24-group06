@@ -44,9 +44,10 @@ jobs:
         cd backend
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git checkout
         git add docs/
         git commit -m "feat(docs): updated api documentation via github actions bot"
-        git push
+        git push orign HEAD
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
