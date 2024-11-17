@@ -13,9 +13,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2ozd33vJA19NoqT2ffk4DgJAoY7" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -24,7 +24,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "CI/CD-Submission",
     "last_opened_file_path": "/Users/nishantamitrajadhyaksha/CSE_210/cse210-fa24-group06",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -51,6 +51,7 @@
       <option name="presentableId" value="Default" />
       <updated>1731876135681</updated>
       <workItem from="1731876136726" duration="797000" />
+      <workItem from="1731876943189" duration="294000" />
     </task>
     <servers />
   </component>
