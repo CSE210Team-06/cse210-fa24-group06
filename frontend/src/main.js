@@ -1,6 +1,12 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
 
+/**
+ * Creates the main application window.
+ * Configures its dimensions and preload script, and loads the HTML file.
+ *
+ * @returns {void}
+ */
 function createWindow() {
   const win = new BrowserWindow({
     width: 800,
@@ -10,7 +16,7 @@ function createWindow() {
     },
   });
 
-  win.loadFile("index.html");
+  win.loadFile("./src/index.html");
 }
 
 app.whenReady().then(createWindow);

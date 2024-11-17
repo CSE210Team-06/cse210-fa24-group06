@@ -3,7 +3,7 @@ name: Lint and Code Style Check
 on:
   push:
     branches:
-      - 'frontend/*'
+      - 'frontend/**'
       - 'dev/frontend'
     paths:
       - 'frontend/**'
