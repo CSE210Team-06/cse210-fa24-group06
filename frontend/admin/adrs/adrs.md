@@ -2,14 +2,14 @@
 # These are optional metadata elements. Feel free to remove any of them.
 status: "accepted"
 date: { 2024/11/16 }
-decision-makers: { list everyone involved in the decision }
+decision-makers: { ethan, Stephen, sushaanth, ulam, vedant, sahil }
 consulted:
   {
-    list everyone whose opinions are sought (typically subject-matter experts); and with whom there is a two-way communication,
+   ethan, Stephen, sushaanth, ulam, vedant, sahil
   }
 informed:
   {
-    list everyone who is kept up-to-date on progress; and with whom there is a one-way communication,
+    gagan, vincent, nishant
   }
 ---
 
