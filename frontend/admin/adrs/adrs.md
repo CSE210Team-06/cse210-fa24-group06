@@ -2,10 +2,10 @@
 # These are optional metadata elements. Feel free to remove any of them.
 status: "accepted"
 date: { 2024/11/16 }
-decision-makers: { Ethan, Stephen, Sushaanth, Ulam, Vedant, Sahil }
+decision-makers: { Ethan, Stephen, Sushaanth, U Lam, Vedant, Sahil }
 consulted:
   {
-   Ethan, Stephen, Sushaanth, Ulam, Vedant, Sahil
+   Ethan, Stephen, Sushaanth, U Lam, Vedant, Sahil
   }
 informed:
   {
