@@ -10,7 +10,6 @@ This document provides an update on the current status of the pipeline, detailin
 
 - **Code Formatting:** The frontend code is formatted using **Prettier**, ensuring consistent code style across all components.
 - **Code Linting:** **ESLint** is used for linting the frontend code to maintain high code quality and detect potential issues early.
-- **Documentation Generation:** **JSdocs** is used to generate documentation for frontend components, helping developers understand the codebase and API usage.
 
 ### Backend
 
@@ -22,6 +21,7 @@ This document provides an update on the current status of the pipeline, detailin
 
 ### Frontend
 
+- **Documentation Generation:** **JSdocs** is used to generate documentation for frontend components, helping developers understand the codebase and API usage. While we have integrated a pipeline that utilizes JSDocs successfully, we cannot consider this finished because our workflows are currently not authorized to update our repo directly, so the dev would have to run the npm command manually to add new documentation to the repo.
 - **Unit Tests for Features and Components:** We are in the process of writing unit tests for individual features and components to ensure robustness and prevent regressions.
 - **Automated Building and Packaging:** Plans are underway to set up an automated build system, streamlining the deployment pipeline.
 - **Executable Installer Creation:** The goal is to generate an installer that can package the app and allow users to easily install and run it on their systems.
