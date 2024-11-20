@@ -1,10 +1,13 @@
 from fastapi import FastAPI
 from routers import example
+
 from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from models import User, SessionLocal
 from utils import hash_password, verify_password
 from auth import create_access_token, verify_token
+
+
 
 app = FastAPI(
     title="FastAPI Boilerplate",
@@ -15,6 +18,7 @@ app = FastAPI(
 # Register routers
 app.include_router(example.router)
 
+
 def get_db():
     db = SessionLocal()
     try:
@@ -22,10 +26,13 @@ def get_db():
     finally:
         db.close()
 
+
+
 # Basic health check endpoint
 @app.get("/health", tags=["Health"])
 def health_check():
     return {"status": "ok"}
+
 
 
 
