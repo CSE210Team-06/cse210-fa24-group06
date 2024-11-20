@@ -1,0 +1,14 @@
+{
+    "journals": [
+        {
+            "id": 1,
+            "title": "My first journal",
+            "content": "This is my first journal entry!"
+        },
+        {
+            "id": 2,
+            "title": "Second day thoughts",
+            "content": "Today was a productive day!"
+        }
+    ]
+}

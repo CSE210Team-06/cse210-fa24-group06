@@ -5,15 +5,18 @@
   "scripts": {
     "start": "electron .",
     "lint": "npx eslint **/*.{js,ts}",
-    "prettier": "npx prettier --check **/*.{js,ts,json,css,html}"
+    "prettier": "npx prettier --check **/*.{js,ts,json,css,html}",
+    "dev-server": "json-server --watch ./mock-db/db.json --port 5000"
   },
   "dependencies": {
+    "easymde": "^2.18.0",
     "electron": "^26.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
     "eslint": "^9.15.0",
     "globals": "^15.12.0",
+    "json-server": "^1.0.0-beta.3",
     "prettier": "^3.3.3"
   }
 }
