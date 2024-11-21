@@ -59,13 +59,29 @@
         align-items: center;
         justify-content: center;
       }
+
+      .modal[open]::backdrop {
+        backdrop-filter: blur(5px);
+      }
+
+      .modal {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .modal button {
+        margin-top: 15px;
+      }
     </style>
     <link rel="stylesheet" href="./styles/style.css" />
   </head>
   <body>
     <header class="header">
       <h1 class="header__title">CodeChronicle</h1>
-      <button class="signin__button">Sign In</button>
+      <button class="signin__button" id="openSigninModal">Sign In</button>
     </header>
     <div class="search-bar">
       <input
@@ -91,5 +107,28 @@
         </li>
       </ul>
     </section>
+
+    <dialog class="modal" id="signin-modal">
+      <h2>Sign In</h2>
+      <button id="closeModal">Close</button>
+      <script src="https://accounts.google.com/gsi/client" async></script>
+      <div
+        id="g_id_onload"
+        data-client_id="YOUR_GOOGLE_CLIENT_ID"
+        data-login_uri="https://your.domain/your_login_endpoint"
+        data-auto_prompt="false"
+      ></div>
+      <div
+        class="g_id_signin"
+        data-type="standard"
+        data-size="large"
+        data-theme="outline"
+        data-text="sign_in_with"
+        data-shape="rectangular"
+        data-logo_alignment="left"
+      ></div>
+      <button>Or Sign Up</button>
+    </dialog>
+    <script src="./index.js"></script>
   </body>
 </html>
