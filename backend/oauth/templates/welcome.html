@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='CSS/style.css') }}" />
+  </head>
+  <body>
+    <div style="text-align: center; margin-top: 20%;">
+      <h4>Welcome, {{ user['given_name'] }}</h4>
+      <a href="/logout" class="google-btn" style="text-decoration: none; font-size: 18px;">
+        <span>Logout</span>
+      </a>
+    </div>
+  </body>
+</html>
