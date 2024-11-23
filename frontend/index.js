@@ -11,4 +11,3 @@ closeSigninModalButton.addEventListener("click", () => {
   signinModal.close();
   document.body.style.overflow = ""; // Re-enable scrolling
 });
-
