@@ -1,2 +1,3 @@
 // Renderer JavaScript
-console.log("Renderer process is loaded");
+import { MyCustomElement } from "./simplegreeting.js";
+customElements.define("simple-greeting", MyCustomElement);

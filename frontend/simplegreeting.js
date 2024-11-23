@@ -1,5 +1,5 @@
 // Create a class for the element
-class MyCustomElement extends HTMLElement {
+export class MyCustomElement extends HTMLElement {
   static observedAttributes = ["color", "size"];
 
   constructor() {
@@ -33,5 +33,3 @@ class MyCustomElement extends HTMLElement {
   //   console.log(`Attribute ${name} has changed.`);
   // }
 }
-
-customElements.define("simple-greeting", MyCustomElement);
