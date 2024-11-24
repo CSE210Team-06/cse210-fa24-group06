@@ -42,6 +42,25 @@ class UserBase(BaseModel):
     class Config:
         orm_mode = True
 
+class UserCreate(UserBase):
+    password: str  # Password is required only during signup
+
+class UserInDB(UserBase):
+    user_id: int
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        orm_mode = True
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+    class Config:
+        # Ensures the input is compatible with SQLAlchemy models (ORM)
+        orm_mode = True
+
 class EntryBase(BaseModel):
     entry_id: Optional[int] = None # PK
     journal_id: int # FK references Journal.journal_id
@@ -62,11 +81,6 @@ class JournalCreate(BaseModel):
 class GroupCreate(BaseModel):
     group_name: str
     group_desc: Optional[str]  # Optional description
-
-class UserCreate(BaseModel):
-    first_name: str
-    last_name: str
-    email: EmailStr
 
 class EntryCreate(BaseModel):
     journal_id: int

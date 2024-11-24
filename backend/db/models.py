@@ -4,8 +4,7 @@ Stores SQLAlchemy models for database schema
 from sqlalchemy import Column, Integer, String, ForeignKey, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import declarative_base, sessionmaker
-
-from datetime import datetime
+from datetime import datetime,timezone
 
 Base = declarative_base()
 
@@ -15,8 +14,8 @@ class Journal(Base):
     journal_id = Column(Integer, primary_key=True, index=True) # PK
     group_id = Column(Integer, index=True, nullable=True)  # FK references Group.group_id
     journal_title = Column(String, nullable=False)
-    created_at = Column(String, default=datetime.now(datetime.timezone.utc)) # Set as String here, but will be datetime in schemas. This is okay.
-    updated_at = Column(String, default=datetime.now(datetime.timezone.utc), onupdate=datetime.now(datetime.timezone.utc))
+    created_at = Column(String, default=datetime.now(timezone.utc)) # Set as String here, but will be datetime in schemas. This is okay.
+    updated_at = Column(String, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
 class Group(Base):
     __tablename__ = 'group'
@@ -34,6 +33,7 @@ class User(Base):
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     email = Column(String, nullable=False, unique=True)
+    password = Column(String, nullable=False)
 
 class Entry(Base):
     __tablename__ = 'entry'
