@@ -4,12 +4,15 @@ from db import models, crud, schemas
 from utils import hash_password, verify_password
 from auth import create_access_token, verify_token
 from db.database import SessionLocal
+from routers import update_apis
 
 app = FastAPI(
     title="FastAPI Boilerplate",
     description="A simple FastAPI boilerplate with routing setup",
     version="1.0.0",
 )
+
+app.include_router(update_apis.router, prefix="/update", tags=["Update"])
 
 
 # Dependency to get the DB session
