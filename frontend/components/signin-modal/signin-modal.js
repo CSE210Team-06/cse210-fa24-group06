@@ -2,8 +2,10 @@
 export class SigninModal extends HTMLElement {
   constructor() {
     super(); // Call the superclass constructor
-    this.attachShadow({ mode: "open" }); // Attach a shadow DOM
-    this.shadowRoot.innerHTML = `
+  }
+
+  connectedCallback() {
+    this.innerHTML = `
         <style>
           .modal[open]::backdrop {
             backdrop-filter: blur(5px);
@@ -40,7 +42,6 @@ export class SigninModal extends HTMLElement {
                 <h2>Sign In</h2>
                 <button class="close-button" id="closeModal">&#10006;</button>
             </header>
-            <script src="https://accounts.google.com/gsi/client" async></script>
             <div
                 id="g_id_onload"
                 data-client_id="YOUR_CLIENT_ID"
@@ -60,11 +61,8 @@ export class SigninModal extends HTMLElement {
             <button>Create account</button>
         </dialog>
       `;
-  }
-
-  connectedCallback() {
-    const dialog = this.shadowRoot.querySelector("dialog");
-    const closeButton = this.shadowRoot.getElementById("closeModal");
+    const dialog = this.querySelector("dialog");
+    const closeButton = this.querySelector("#closeModal");
 
     // Close modal on button click
     closeButton.addEventListener("click", () => {
