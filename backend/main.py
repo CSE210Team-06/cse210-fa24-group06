@@ -1,9 +1,13 @@
+from fastapi import FastAPI
+from routers import example
+
 from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from db import models, crud, schemas
+from models import User, SessionLocal
 from utils import hash_password, verify_password
 from auth import create_access_token, verify_token
-from db.database import SessionLocal
+
+
 
 app = FastAPI(
     title="FastAPI Boilerplate",
@@ -11,8 +15,10 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# Register routers
+app.include_router(example.router)
 
-# Dependency to get the DB session
+
 def get_db():
     db = SessionLocal()
     try:
@@ -21,51 +27,35 @@ def get_db():
         db.close()
 
 
+
 # Basic health check endpoint
 @app.get("/health", tags=["Health"])
 def health_check():
     return {"status": "ok"}
 
 
-# User registration endpoint
-@app.post("/signup")
-def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    # Check if user already exists
-    existing_user = db.query(models.User).filter(models.User.email == user.email).first()
-    if existing_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
 
-    # Hash the password before saving
-    hashed_password = hash_password(user.password)
-    new_user = models.User(
-        first_name=user.first_name,
-        last_name=user.last_name,
-        email=user.email,
-        password=hashed_password,
-    )
 
-    db.add(new_user)
+@app.post("/register")
+def register(username: str, password: str, db: Session = Depends(get_db)):
+    hashed_pwd = hash_password(password)
+    user = User(username=username, hashed_password=hashed_pwd)
+    db.add(user)
     db.commit()
-    db.refresh(new_user)
+    db.refresh(user)
+    return {"message": "User created successfully"}
 
-    return new_user
-
-
-# User login endpoint
 @app.post("/login")
-def login(user: schemas.LoginRequest, db: Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(models.User.email == user.email).first()
-
-    # If user doesn't exist or password is incorrect
-    if not db_user or not verify_password(user.password, db_user.password):
-        raise HTTPException(status_code=401, detail="Invalid credentials")
-
-    # Create an access token and return it
-    access_token = create_access_token(data={"sub": db_user.email})
+def login(username: str, password: str, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.username == username).first()
+    if not user or not verify_password(password, user.hashed_password):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+    access_token = create_access_token(data={"sub": user.username})
     return {"access_token": access_token, "token_type": "bearer"}
 
+@app.get("/secure-endpoint")
+def secure_endpoint(token: str = Depends(verify_token)):
+    if not token:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+    return {"message": "You are authenticated!"}
 
-# Protect routes with token authentication
-@app.get("/protected")
-def protected_route(user_email: str = Depends(verify_token)):
-    return {"message": "You have access to this protected route", "user": user_email}
