@@ -51,9 +51,9 @@ export class SigninModal extends HTMLElement {
                 <h2>Sign In</h2>
                 <button class="close-button" id="closeModal">&#10006;</button>
             </header>
-            <form class="form" id="signin-form">
-              <label for="username">Username</label>
-              <input type="text" id="signin-username" name="username" required /> 
+            <form action="http://127.0.0.1:8000/login" method="POST" class="form" id="signin-form">
+              <label for="email">Email</label>
+              <input type="email" id="signin-email" name="email" required /> 
               <label for="password">Password</label>
               <input type="password" id="signin-password" name="password" required />
               <button type="submit">Sign In</button>
@@ -74,5 +74,37 @@ export class SigninModal extends HTMLElement {
       dialog.showModal();
       document.body.style.overflow = "hidden"; // Disable scrolling
     });
+
+    document
+      .getElementById("signin-form")
+      .addEventListener("submit", async function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Create the dictionary from form inputs
+        const formData = {
+          email: document.getElementById("signin-email").value,
+          password: document.getElementById("signin-password").value,
+        };
+
+        // Send the data to the endpoint
+        try {
+          const response = await fetch(this.action, {
+            method: this.method,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          });
+
+          // Handle the response
+          if (response.ok) {
+            console.log("Signup successful:", await response.json());
+          } else {
+            console.error("Signup failed:", response.statusText);
+          }
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      });
   }
 }
