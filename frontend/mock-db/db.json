@@ -1,0 +1,29 @@
+{
+  "journals": [
+    {
+      "id": "1",
+      "title": "My first journal",
+      "content": "This is my first journal entry!"
+    },
+    {
+      "id": "2",
+      "title": "Second day thoughts",
+      "content": "Today was a productive day!"
+    },
+    {
+      "id": "eefb",
+      "title": "hello world",
+      "content": "hello world entry"
+    },
+    {
+      "id": "140",
+      "title": "testing",
+      "content": "**testing entry**\n\n## hello heading"
+    },
+    {
+      "id": "722",
+      "title": "random journal",
+      "content": "***random journal entry***"
+    }
+  ]
+}
