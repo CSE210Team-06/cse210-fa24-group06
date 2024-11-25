@@ -36,29 +36,28 @@ export class SigninModal extends HTMLElement {
             height: 30px;
             border-radius: 50%;
         }
+
+        .form {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .form > * {
+          margin-bottom: 10px;
+        }
         </style>
         <dialog class="modal" id="signin-modal">
             <header class="modal__header">
                 <h2>Sign In</h2>
                 <button class="close-button" id="closeModal">&#10006;</button>
             </header>
-            <div
-                id="g_id_onload"
-                data-client_id="YOUR_CLIENT_ID"
-                data-context="signin"
-                data-callback="handleCredentialResponse"
-                data-auto_select="true"
-            ></div>
-            <div
-                class="g_id_signin"
-                data-type="standard"
-                data-size="large"
-                data-theme="outline"
-                data-text="sign_in_with"
-                data-shape="rectangular"
-                data-logo_alignment="left"
-            ></div>
-            <button>Create account</button>
+            <form class="form" id="signin-form">
+              <label for="username">Username</label>
+              <input type="text" id="signin-username" name="username" required /> 
+              <label for="password">Password</label>
+              <input type="password" id="signin-password" name="password" required />
+              <button type="submit">Sign In</button>
+            </form>
         </dialog>
       `;
     const dialog = this.querySelector("dialog");

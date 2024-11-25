@@ -20,7 +20,7 @@
         width: 100%;
         flex-direction: row;
       }
-      .signin__button {
+      .header__button {
         height: 60%;
       }
       .search-bar {
@@ -64,7 +64,10 @@
   <body>
     <header class="header">
       <h1 class="header__title">CodeChronicle</h1>
-      <button class="signin__button" id="openSigninModal">Sign In</button>
+      <div class="header__button__group">
+        <button class="header__button" id="openSigninModal">Sign In</button>
+        <button class="header__button" id="openSignupModal">Register</button>  
+      </div>
     </header>
     <div class="search-bar">
       <input
@@ -91,6 +94,7 @@
       </ul>
     </section>
     <signin-modal id="signin-modal"></signin-modal>
+    <signup-modal id="signup-modal"></signin-modal>
     <script src="./index.js"></script>
     <script type="module" src="./renderer.js"></script>
   </body>
