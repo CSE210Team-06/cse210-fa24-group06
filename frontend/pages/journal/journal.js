@@ -9,7 +9,7 @@ const easyMDE = new EasyMDE({
 
 async function fetchJournal(journalId) {
 	try {
-		const response = await fetch("http://localhost:5000/journals");
+		const response = await fetch("http://localhost:3000/journals");
 		const data = await response.json();
 		console.log(data);
 
@@ -43,22 +43,46 @@ if (journalId) {
 
 		console.log("Journal:", journal);
 
-		document.getElementById("journal-title").value =
-			`Journal ${journalId}: ${journal.title}`;
-		easyMDE.value(`${journal.content}.`);
+		document.getElementById("journal-title").value = `${journal.title}`;
+		easyMDE.value(`${journal.content}`);
 	}
 	loadJournal();
+}
+
+async function saveJournal(journalTitle, journalEntry) {
+	// const journalTitle = document.getElementById("journal-title").value;
+	// const journalEntry = easyMDE.value();
+	// console.log("Journal saved:", journalTitle, journalEntry);
+
+	let journalId = Math.floor(Math.random() * 1000).toString();
+
+	const response = await fetch("http://localhost:3000/journals", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			id: journalId,
+			title: journalTitle,
+			content: journalEntry,
+		}),
+	});
+
+	console.log(response);
 }
 
 const saveJournalBtn = document.getElementById("save-journal-btn");
 saveJournalBtn.addEventListener("click", () => {
 	const journalTitle = document.getElementById("journal-title").value;
 	const journalEntry = easyMDE.value();
-	console.log("Journal saved:", journalTitle, journalEntry);
+
+	saveJournal(journalTitle, journalEntry);
+
+	// console.log("Journal saved:", journalTitle, journalEntry);
 });
 
 document
 	.getElementById("back-to-home-btn")
 	.addEventListener("click", function () {
-		window.location.href = "../index.html"; // Replace with your home page URL
+		window.location.href = "../../index.html"; // Replace with your home page URL
 	});
