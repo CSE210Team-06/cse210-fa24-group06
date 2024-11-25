@@ -1,5 +1,4 @@
 # Sprint 2 Review
-**Date:** 24 Nov 2024
 **Document:** 112424-sprint-2-review.md
 
 ### **Attendees:**
