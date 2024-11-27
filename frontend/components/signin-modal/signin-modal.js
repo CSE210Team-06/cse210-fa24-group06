@@ -45,6 +45,12 @@ export class SigninModal extends HTMLElement {
         .form > * {
           margin-bottom: 10px;
         }
+
+        .form_error {
+          display: none;
+          color: red;
+          font-size: 16px;
+        }
         </style>
         <dialog class="modal" id="signin-modal">
             <header class="modal__header">
@@ -57,14 +63,20 @@ export class SigninModal extends HTMLElement {
               <label for="password">Password</label>
               <input type="password" id="signin-password" name="password" required />
               <button type="submit">Sign In</button>
+              <p class="form_error"></p>
             </form>
         </dialog>
       `;
     const dialog = this.querySelector("dialog");
     const closeButton = this.querySelector("#closeModal");
+    const formError = this.querySelector(".form_error");
+    const signinForm = document.getElementById("signin-form");
 
     // Close modal on button click
     closeButton.addEventListener("click", () => {
+      formError.innerHTML = "";
+      formError.style.display = "hidden";
+      signinForm.reset();
       dialog.close();
       document.body.style.overflow = "";
     });
@@ -75,36 +87,37 @@ export class SigninModal extends HTMLElement {
       document.body.style.overflow = "hidden"; // Disable scrolling
     });
 
-    document
-      .getElementById("signin-form")
-      .addEventListener("submit", async function (event) {
-        event.preventDefault(); // Prevent the default form submission
+    signinForm.addEventListener("submit", async function (event) {
+      event.preventDefault(); // Prevent the default form submission
 
-        // Create the dictionary from form inputs
-        const formData = {
-          email: document.getElementById("signin-email").value,
-          password: document.getElementById("signin-password").value,
-        };
+      // Create the dictionary from form inputs
+      const formData = {
+        email: document.getElementById("signin-email").value,
+        password: document.getElementById("signin-password").value,
+      };
 
-        // Send the data to the endpoint
-        try {
-          const response = await fetch(this.action, {
-            method: this.method,
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formData),
+      // Send the data to the endpoint
+      try {
+        const response = await fetch(this.action, {
+          method: this.method,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        // Handle the response
+        if (response.ok) {
+          console.log("Signup successful:", await response.json());
+        } else {
+          return response.json().then((errorData) => {
+            formError.style.display = "block";
+            formError.innerHTML = `${errorData.detail}`;
           });
-
-          // Handle the response
-          if (response.ok) {
-            console.log("Signup successful:", await response.json());
-          } else {
-            console.error("Signup failed:", response.statusText);
-          }
-        } catch (error) {
-          console.error("Error:", error);
         }
-      });
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    });
   }
 }
