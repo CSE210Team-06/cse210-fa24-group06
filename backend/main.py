@@ -6,7 +6,7 @@ from db import models, crud, schemas
 from utils import hash_password, verify_password
 from auth import create_access_token, verify_token
 from db.database import SessionLocal
-from routers import update_apis, search
+from routers import update_apis, search, read
 
 app = FastAPI(
     title="FastAPI Boilerplate",
@@ -16,6 +16,7 @@ app = FastAPI(
 
 app.include_router(update_apis.router, prefix="/update", tags=["Update"])
 app.include_router(search.router, prefix="/search", tags=["Search"])
+app.include_router(read.router, prefix="/read", tags=["Read"])
 
 
 # Dependency to get the DB session
