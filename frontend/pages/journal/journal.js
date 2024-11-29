@@ -86,5 +86,5 @@ saveJournalBtn.addEventListener("click", () => {
 document
 	.getElementById("back-to-home-btn")
 	.addEventListener("click", function () {
-		window.location.href = "../../index.html"; // Replace with your home page URL
+		window.location.href = "../home/home.html"; // Replace with your home page URL
 	});

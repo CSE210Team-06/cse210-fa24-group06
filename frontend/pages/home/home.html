@@ -60,19 +60,46 @@
 				justify-content: center;
 			}
 		</style>
-		<link rel="stylesheet" href="./styles/styles.css" />
+		<link rel="stylesheet" href="../../styles/styles.css" />
 	</head>
 	<body>
 		<header class="header">
 			<h1 class="header__title">CodeChronicle</h1>
-			<div class="header__button__group">
-				<button class="header__button" id="openSigninModal">Sign In</button>
-				<button class="header__button" id="openSignupModal">Register</button>
-			</div>
 		</header>
-		<signin-modal id="signin-modal"></signin-modal>
-		<signup-modal id="signup-modal"></signup-modal>
-		<script src="./index.js"></script>
-		<script type="module" src="./renderer.js"></script>
+		<div class="search-bar">
+			<input
+				class="search-bar__input"
+				type="text"
+				placeholder="Search journals..."
+			/>
+			<button class="search-bar__button">Search</button>
+		</div>
+		<div>
+			<button id="create-journal-btn" class="navigate-button">
+				Create New Journal
+			</button>
+			<input type="text" id="journal-id" placeholder="Journal ID" />
+			<button id="edit-journal-btn" class="navigate-button">
+				Edit Existing Journal
+			</button>
+		</div>
+		<section class="recent-journals" aria-labelledby="recent-journals-heading">
+			<h2 id="recent-journals-heading" class="recent-journals__title">
+				Recent Journals
+			</h2>
+			<ul class="recent-journals__list">
+				<li class="recent-journals__item">
+					<span class="recent-journal"> JavaScript Insights </span>
+				</li>
+				<li class="recent-journals__item">
+					<span class="recent-journal"> CSS Tricks Unveiled </span>
+				</li>
+				<li class="recent-journals__item">
+					<span class="recent-journals"> Modern Web Development </span>
+				</li>
+			</ul>
+		</section>
+		<script src="./home.js"></script>
+		<!-- <script type="module" src="./renderer.js"></script> -->
 	</body>
 </html>
