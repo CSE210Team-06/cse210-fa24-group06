@@ -45,26 +45,38 @@ export class SigninModal extends HTMLElement {
         .form > * {
           margin-bottom: 10px;
         }
+
+        .form_error {
+          display: none;
+          color: red;
+          font-size: 16px;
+        }
         </style>
         <dialog class="modal" id="signin-modal">
             <header class="modal__header">
                 <h2>Sign In</h2>
                 <button class="close-button" id="closeModal">&#10006;</button>
             </header>
-            <form class="form" id="signin-form">
-              <label for="username">Username</label>
-              <input type="text" id="signin-username" name="username" required /> 
+            <form action="http://127.0.0.1:8000/login" method="POST" class="form" id="signin-form">
+              <label for="email">Email</label>
+              <input type="email" id="signin-email" name="email" required /> 
               <label for="password">Password</label>
               <input type="password" id="signin-password" name="password" required />
               <button type="submit">Sign In</button>
+              <p class="form_error"></p>
             </form>
         </dialog>
       `;
     const dialog = this.querySelector("dialog");
     const closeButton = this.querySelector("#closeModal");
+    const formError = this.querySelector(".form_error");
+    const signinForm = document.getElementById("signin-form");
 
     // Close modal on button click
     closeButton.addEventListener("click", () => {
+      formError.innerHTML = "";
+      formError.style.display = "hidden";
+      signinForm.reset();
       dialog.close();
       document.body.style.overflow = "";
     });
@@ -73,6 +85,39 @@ export class SigninModal extends HTMLElement {
     this.addEventListener("open", () => {
       dialog.showModal();
       document.body.style.overflow = "hidden"; // Disable scrolling
+    });
+
+    signinForm.addEventListener("submit", async function (event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      // Create the dictionary from form inputs
+      const formData = {
+        email: document.getElementById("signin-email").value,
+        password: document.getElementById("signin-password").value,
+      };
+
+      // Send the data to the endpoint
+      try {
+        const response = await fetch(this.action, {
+          method: this.method,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        // Handle the response
+        if (response.ok) {
+          console.log("Signup successful:", await response.json());
+        } else {
+          return response.json().then((errorData) => {
+            formError.style.display = "block";
+            formError.innerHTML = `${errorData.detail}`;
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
     });
   }
 }
