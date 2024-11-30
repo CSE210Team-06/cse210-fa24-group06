@@ -10,49 +10,51 @@
         margin: 20px;
         flex-direction: column;
       }
-	  .header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 10px 20px;
-	  }
-	  .header__button__group {
-		display: flex;
-		gap: 10px;
-		flex-shrink: 0;
-	  }
-	  .header__title {
-		font-size: 2rem;
-		color: dodgerblue;
-		flex-grow: 1;
-		text-align: center;
-	  }
-	  .header__button--signin {
-		background-color: dodgerblue;
-		color: white;
-		border: 2px solid dodgerblue;
-		border-radius: 4.5px; 
-		padding: 6px 10px;
-		font-size: 0.9rem; 
-		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-		transition: background-color 0.3s, border-color 0.3s;
-	  }
-	  .header__button--signin:hover {
-		background-color: rgb(1, 88, 174);
-		color: white;
-		border-color: rgb(1, 88, 174);
-	  }
-	  .header__button--signup {
-		color: dodgerblue;
-		text-decoration: underline;
-		font-size: 0.9rem;
-		background: transparent;
-		border: none;
-		cursor: pointer;
-	  }
-	  .header__button--signup:hover {
-		  color: rgb(1, 88, 174);
-	  }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+      }
+      .header__button__group {
+        display: flex;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+      .header__title {
+        font-size: 2rem;
+        color: dodgerblue;
+        flex-grow: 1;
+        text-align: center;
+      }
+      .header__button--signin {
+        background-color: dodgerblue;
+        color: white;
+        border: 2px solid dodgerblue;
+        border-radius: 4.5px;
+        padding: 6px 10px;
+        font-size: 0.9rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition:
+          background-color 0.3s,
+          border-color 0.3s;
+      }
+      .header__button--signin:hover {
+        background-color: rgb(1, 88, 174);
+        color: white;
+        border-color: rgb(1, 88, 174);
+      }
+      .header__button--signup {
+        color: dodgerblue;
+        text-decoration: underline;
+        font-size: 0.9rem;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+      }
+      .header__button--signup:hover {
+        color: rgb(1, 88, 174);
+      }
       .search-bar {
         display: flex;
         justify-content: center;
@@ -92,14 +94,24 @@
     <link rel="stylesheet" href="./styles/style.css" />
   </head>
   <body>
-	<header class="header">
-		<h1 class="header__title">CodeChronicle</h1>
-		<div class="header__button__group">
-		  <button class="header__button header__button--signup" id="openSignupModal">Sign Up</button>
-		  <button class="header__button header__button--signin" id="openSigninModal">Login</button>
-		</div>
-		<div id="user_profile"></div>
-	</header>
+    <header class="header">
+      <h1 class="header__title">CodeChronicle</h1>
+      <div class="header__button__group">
+        <button
+          class="header__button header__button--signup"
+          id="openSignupModal"
+        >
+          Sign Up
+        </button>
+        <button
+          class="header__button header__button--signin"
+          id="openSigninModal"
+        >
+          Login
+        </button>
+      </div>
+      <div id="user_profile"></div>
+    </header>
     <div class="search-bar">
       <input
         class="search-bar__input"
@@ -108,15 +120,15 @@
       />
       <button class="search-bar__button">Search</button>
     </div>
-	<div>
-		<button id="create-journal-btn" class="navigate-button">
-			Create New Journal
-		</button>
-		<input type="text" id="journal-id" placeholder="Journal ID" />
-		<button id="edit-journal-btn" class="navigate-button">
-			Edit Existing Journal
-		</button>
-	</div>
+    <div>
+      <button id="create-journal-btn" class="navigate-button">
+        Create New Journal
+      </button>
+      <input type="text" id="journal-id" placeholder="Journal ID" />
+      <button id="edit-journal-btn" class="navigate-button">
+        Edit Existing Journal
+      </button>
+    </div>
     <section class="recent-journals" aria-labelledby="recent-journals-heading">
       <h2 id="recent-journals-heading" class="recent-journals__title">
         Recent Journals
@@ -135,10 +147,10 @@
     </section>
     <signin-modal id="signin-modal"></signin-modal>
     <signup-modal id="signup-modal"></signup-modal>
-	<user-profile id="user-profile"></user-profile>
+    <user-profile id="user-profile"></user-profile>
     <script src="./index.js"></script>
     <script type="module" src="./renderer.js"></script>
-	<script src="./jounal/journal.js"></script>
-	<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+    <script src="./jounal/journal.js"></script>
+    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
   </body>
 </html>
