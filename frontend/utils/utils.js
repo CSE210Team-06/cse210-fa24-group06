@@ -16,3 +16,7 @@ export function deleteFromLocalStorage(key) {
 	sessionStorage.removeItem(key);
 	console.log(`Deleted from local storage -> ${key}`);
 }
+
+export function getFromLocalStorage(key) {
+	return localStorage.getItem(key);
+  }
