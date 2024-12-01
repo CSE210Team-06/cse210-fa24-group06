@@ -4,6 +4,9 @@ from sqlalchemy.orm import Session
 from db import models
 from auth import verify_token
 from db.database import SessionLocal
+from datetime import datetime
+
+
 
 router = APIRouter()
 
@@ -78,6 +81,44 @@ def search_entry_in_journal(auth_token: str, journal_id: int, search_text: str, 
 
     if not results:
         return {"status": "success", "message": "No matching entries found in the journal"}
+
+    return {"status": "success", "matches": results}
+
+from sqlalchemy import cast, Date
+
+@router.get("/search_journal_by_date")
+def search_journal_by_date(auth_token: str, search_date: str, db: Session = Depends(get_db)):
+    """
+    Search for journals created on a specific date owned by the user.
+    """
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # Validate the search date format
+    try:
+        target_date = datetime.strptime(search_date, "%Y-%m-%d").date()
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD.")
+
+    # Query journals owned by the user created on the specific date
+    db_journals = db.query(models.Journal).filter(
+        models.Journal.user.has(email=user_email),
+        cast(models.Journal.created_at, Date) == target_date
+    ).all()
+
+    if not db_journals:
+        return {"status": "success", "message": "No journals found for the specified date"}
+
+    # Collect relevant details for matching journals
+    results = [
+        {
+            "journal_id": journal.journal_id,
+            "journal_title": journal.journal_title,
+            "created_at": journal.created_at,
+            "updated_at": journal.updated_at
+        }
+        for journal in db_journals
+    ]
 
     return {"status": "success", "matches": results}
 
