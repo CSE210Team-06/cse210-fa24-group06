@@ -3,21 +3,27 @@ name: Documentation Generation
 on:
   push:
     branches:
-      - "frontend/**"
-      - "dev/frontend"
-    paths:
-      - "frontend/**"
-  pull_request:
-    paths:
-      - "frontend/**"
+      - "frontend/feat/docs"
 jobs:
-  lint:
+  build:
     runs-on: ubuntu-latest
+    env: # Define environment variables at the job level
+      USERNAME: github-actions[bot]
+      REPO_KEY: ${{ secrets.MY_PAT }}
 
     steps:
       # Checkout code
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          path: package
+
+      - name: Checkout docs repository
+        uses: actions/checkout@v3
+        with:
+          repository: CSE210Team-06/cse210-fa24-group06-docs
+          token: ${{secrets.MY_PAT}}
+          path: documentation
 
       # Set up Node.js
       - name: Set up Node.js
@@ -27,21 +33,23 @@ jobs:
 
       # Install dependencies from the frontend directory
       - name: Install dependencies
-        working-directory: frontend
-        run: npm install
+        run: |
+          cd package/frontend
+          npm install
 
       # Generate JSDoc
       - name: Generate JSDoc
-        working-directory: frontend
-        run: npm run docs
+        run: |
+          cd package/frontend
+          npm run docs
 
-    #   # Commit and push documentation
-    #   - name: Commit and Push Docs
-    #     env:
-    #       GITHUB_TOKEN: ${{ secrets.MY_PAT }}
-    #     run: |
-    #       git config --global user.name "github-actions[bot]"
-    #       git config --global user.email "github-actions[bot]@users.noreply.github.com"
-    #       git add .
-    #       git commit -m "Update JSDoc documentation"
-    #       git push https://x-access-token:${GITHUB_TOKEN}@github.com/CSE210Team-06/cse210-fa24-group06.git
+      # Commit and push documentation
+      - name: Commit and Push Docs
+        run: |
+          cp -RT package/frontend/docs/ documentation/
+          cd documentation
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Update JSDoc documentation"
+          git push https://$USERNAME:$REPO_KEY@github.com/CSE210Team-06/cse210-fa24-group06-docs.git
