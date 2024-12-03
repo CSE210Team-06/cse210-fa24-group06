@@ -6,7 +6,7 @@ from db import models, crud, schemas
 from utils import hash_password, verify_password
 from auth import create_access_token, verify_token
 from db.database import SessionLocal
-from routers import update_apis, search, read, create_apis, delete_apis, get_user
+from routers import update_apis, search, read, create_apis, delete_apis, rag_search, get_user
 
 app = FastAPI(
     title="FastAPI Boilerplate",
@@ -22,7 +22,11 @@ app.include_router(create_apis.router, prefix="/create", tags=["Create"])
 
 app.include_router(delete_apis.router, prefix="/delete", tags=["Delete"])
 
+
+
 app.include_router(get_user.router, prefix="/get_user", tags=["User"])
+
+app.include_router(rag_search.router, prefix="/rag_search", tags=["RAG Search"])
 
 
 
