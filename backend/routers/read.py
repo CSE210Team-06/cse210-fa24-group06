@@ -60,3 +60,23 @@ def read_journal(auth_token: str, journal_id: int, db: Session = Depends(get_db)
     result = [{"entry_id": entry.entry_id, "entry_text": entry.entry_text} for entry in entries]
 
     return {"status": "success", "entries": result}
+
+@router.get("/read_group")
+def read_group(auth_token: str, group_id: int, db: Session = Depends(get_db)):
+    """
+    Retrieve all journals associated with a group via group_id.
+    """
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # Query the database for all journals with a specific group id
+    db_journals = db.query(models.Journal).filter(models.Journal.group_id == group_id).all()
+    if not db_journals:
+        raise HTTPException(status_code=404, detail="Group is empty or does not exist")
+
+    if db_journals[0].group.user.email != user_email:
+        raise HTTPException(status_code=403, detail="Not authorized to access this group")
+    
+    # Return the list of journal ids
+    result = [{"journal_id": journal.journal_id} for journal in db_journals]
+    return {"status": "success", "journals": result}
