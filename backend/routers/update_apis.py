@@ -127,12 +127,36 @@ def update_group_name(auth_token: str, group_id: int, group_name: str, db: Sessi
     if not db_group:
         raise HTTPException(status_code=404, detail="Group not found")
     
-    # Retrieve the first journal to check if the user is the owner of the journal
-    db_journal = db.query(models.Journal).filter(models.Journal.group_id == group_id).first()
-    if not db_journal:
-        raise HTTPException(status_code=404, detail="Journal not found")
+    # Check if user is the owner of the group 
+    if db_group.user.email != user_email:
+        raise HTTPException(status_code=403, detail="Not authorized to modify this group")
+    
+    # Update the group name
+    db_group.group_name = group_name
+    db.commit()
+    db.refresh(db_group)
 
+    return {"status": "success", "updated_group_name": db_group.group_name}
 
 
 @router.put("/update_group_desc")
 def update_group_desc(auth_token: str, group_id: int, group_desc: str, db: Session = Depends(get_db)):
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # Find the group by group_id
+    db_group = db.query(models.Group).filter(models.Group.group_id == group_id).first()
+    if not db_group:
+        raise HTTPException(status_code=404, detail="Group not found")
+    
+    # Check if user is the owner of the group
+    if db_group.user.email != user_email:
+        raise HTTPException(status_code=403, detail="Not authorized to modify this group")
+    
+    # Update the group description
+    db_group.group_desc = group_desc
+    db.commit()
+    db.refresh(db_group)
+
+    return {"status": "success", "updated_group_desc": db_group.group_desc}
+    
