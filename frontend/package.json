@@ -6,6 +6,7 @@
     "start": "electron .",
     "lint": "npx eslint **/*.{js,ts}",
     "prettier": "npx prettier --check **/*.{js,ts,json,css,html}",
+    "prettier-write": "npx prettier --write **/*.{js,ts,json,css,html}",
     "dev-server": "json-server --watch ./mock-db/db.json --port 5000"
   },
   "dependencies": {
