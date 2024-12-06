@@ -3,7 +3,10 @@ name: Documentation Generation
 on:
   push:
     branches:
-      - "frontend/feat/docs"
+      - "dev/frontend"
+  pull_request:
+    branches:
+      - "dev/frontend"
 jobs:
   build:
     runs-on: ubuntu-latest
