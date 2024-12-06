@@ -21,8 +21,11 @@ def create_journal(auth_token:str, journal_title: str, db: Session = Depends(get
     # Verify the token and get the email
     user_email = verify_token(auth_token)
    
+    # via the email, retrieve the user_id
+    db_user_id = db.query(models.User).filter(models.User.email == user_email).first()
+
     # Create a new journal with no entries
-    new_journal = models.Journal(journal_title=journal_title, created_at=func.now(), updated_at=func.now(), user_email=user_email) # TODO: see if user_email is the correct field
+    new_journal = models.Journal(journal_title=journal_title, created_at=func.now(), updated_at=func.now(), user_id = db_user_id)
 
 
     # Insert the journal into the database
@@ -31,11 +34,10 @@ def create_journal(auth_token:str, journal_title: str, db: Session = Depends(get
     db.refresh(new_journal)
 
 
-    # TODO: determine if try-catch blocks are good ideas
-   
     return {"status": "success", "journal_id": new_journal.journal_id,
             "journal_title": new_journal.journal_title,
-            "created_at": new_journal.created_at, "updated_at": new_journal.updated_at}
+            "created_at": new_journal.created_at, "updated_at": new_journal.updated_at,
+            "user_id": new_journal.user_id}
 
 
 @router.post("/create_group")
@@ -45,10 +47,11 @@ def create_group(auth_token: str, group_name: str, group_desc: str = None, db: S
     # Verify the token and get the email
     user_email = verify_token(auth_token) # TODO: determine if user_email will also be used in group creation
 
+    # via the email, retrieve the user_id
+    db_user_id = db.query(models.User).filter(models.User.email == user_email).first()
 
     # Create a new group
-    new_group = models.Group(group_name=group_name, group_desc=group_desc, created_at=func.now(), updated_at=func.now())
-
+    new_group = models.Group(group_name=group_name, group_desc=group_desc, created_at=func.now(), updated_at=func.now(), user_id = db_user_id)
 
     # Insert the group into the database
     db.add(new_group)
@@ -60,7 +63,8 @@ def create_group(auth_token: str, group_name: str, group_desc: str = None, db: S
             "group_name": new_group.group_name,
             "group_desc": new_group.group_desc,
             "created_at": new_group.created_at,
-            "updated_at": new_group.updated_at}
+            "updated_at": new_group.updated_at, 
+            "user_id": new_group.user_id}
 
 
 @router.post("/create_entry")
