@@ -73,7 +73,15 @@ class Entry(Base):
     )
 
 
-# because DB handles this
+# Tag Model
+class Tag(Base):
+    __tablename__ = 'tag'
+
+    tag_id = Column(Integer, primary_key=True, index=True)  # PK
+    tag_name = Column(String, nullable=False, unique=True)
+
+    # Relationship to Journal (Many-to-Many)
+    entries = relationship("Jounal", secondary="journals_and_tags", back_populates="tags")
 
 # Create the DB
 DATABASE_URL = "sqlite:///./journaler.db"
