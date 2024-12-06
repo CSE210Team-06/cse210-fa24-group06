@@ -29,6 +29,7 @@ class GroupBase(BaseModel):
     group_desc: Optional[str] = None
     created_at: Optional[datetime] = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: Optional[datetime] = Field(default_factory=lambda: datetime.now(timezone.utc))
+    user_id: int # FK references User.user_id
 
     class Config:
         orm_mode = True
@@ -81,6 +82,7 @@ class JournalCreate(BaseModel):
 class GroupCreate(BaseModel):
     group_name: str
     group_desc: Optional[str]  # Optional description
+    user_id: int # FK references User.user_id 
 
 class EntryCreate(BaseModel):
     journal_id: int

@@ -217,3 +217,23 @@ def update_journal(auth_token: str, journal_id: int, journal_title: str, db: Ses
     db.refresh(db_journal)
 
     return {"status": "success", "updated_journal_title": db_journal.journal_title}
+
+@router.put("/update_group_name")
+def update_group_name(auth_token: str, group_id: int, group_name: str, db: Session = Depends(get_db)):
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # Find the group by group_id
+    db_group = db.query(models.Group).filter(models.Group.group_id == group_id).first()
+    if not db_group:
+        raise HTTPException(status_code=404, detail="Group not found")
+    
+    # Retrieve the first journal to check if the user is the owner of the journal
+    db_journal = db.query(models.Journal).filter(models.Journal.group_id == group_id).first()
+    if not db_journal:
+        raise HTTPException(status_code=404, detail="Journal not found")
+
+
+
+@router.put("/update_group_desc")
+def update_group_desc(auth_token: str, group_id: int, group_desc: str, db: Session = Depends(get_db)):
