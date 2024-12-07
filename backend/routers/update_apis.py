@@ -103,7 +103,7 @@ def update_journal(auth_token: str, journal_id: int, journal_title: str, db: Ses
 
     return {"status": "success", "updated_journal_title": db_journal.journal_title}
 
-@router.put("/update_tag_name")
+@router.patch("/update_tag_name")
 def update_tag_name(auth_token: str, tag_id: int, new_name: str, db: Session = Depends(get_db)):
     '''
     Updates the name of a tag with the given tag_id.
@@ -124,7 +124,7 @@ def update_tag_name(auth_token: str, tag_id: int, new_name: str, db: Session = D
 
     return {"status": "success", "updated_tag_name": db_tag.tag_name}
 
-@router.put("/add_tag_to_journal")
+@router.patch("/add_tag_to_journal")
 def add_tag_to_journal(auth_token: str, journal_id: int, tag_id: int, db: Session = Depends(get_db)):
     '''
     Adds a tag to a journal by creating a new entry in the journals_and_tags table.
@@ -139,7 +139,7 @@ def add_tag_to_journal(auth_token: str, journal_id: int, tag_id: int, db: Sessio
     # Return status 
     return {"status": "success", "message": "Tag added to journal successfully"}
 
-@router.put("/delete_tag_from_journal")
+@router.patch("/delete_tag_from_journal")
 def delete_tag_from_journal(auth_token: str, journal_id: int, tag_id: int, db: Session = Depends(get_db)):
     '''
     Deletes a tag from a journal by deleting the entry in the journals_and_tags table.
