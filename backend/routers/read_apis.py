@@ -60,3 +60,82 @@ def read_journal(auth_token: str, journal_id: int, db: Session = Depends(get_db)
     result = [{"entry_id": entry.entry_id, "entry_text": entry.entry_text} for entry in entries]
 
     return {"status": "success", "entries": result}
+
+@router.get("/get_journals_by_tags")
+def read_journal_by_tags(auth_token: str, tag_id: str, db: Session = Depends(get_db)):
+    """
+    Retrieve all entries for a specific journal by tag_id.
+    NOTE: This method retrieves just the journal ids; to retrieve the entries, use the /read_journal endpoint for each journal_id.
+    """
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # Check if tag exists
+    db_tag = db.query(models.Tag).filter(models.Tag.tag_id == tag_id).first()
+    if not db_tag:
+        raise HTTPException(status_code=404, detail="Tag not found")
+
+    # Find all journals with the tag
+    journals = db.query(models.journals_and_tags).filter(models.journals_and_tags.c.tag_id == tag_id).all()
+    if not journals:
+        return {"status": "success", "message": "No journals found for this tag"}
+    
+    result = [{"journal_id": journal.journal_id} for journal in journals]
+    return {"status": "success", "journals": result}
+
+@router.get("/get_tags_by_journal")
+def get_tags_by_journal(auth_token: str, journal_id: str, db: Session = Depends(get_db)):
+    """
+    Retrieves all tags for a specific journal by journal_id
+    """
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # Check if journal exists, and if we have permission to read it
+    db_journal = db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    if not db_journal:
+        raise HTTPException(status_code=404, detail="Journal not found")
+    
+    if db_journal.user.email != user_email:
+        raise HTTPException(status_code=403, detail="Not authorized to access this journal")
+    
+    # Find all tags for the journal
+    tags = db.query(models.journals_and_tags).filter(models.journals_and_tags.c.journal_id == journal_id).all()
+    if not tags:
+        return {"status": "success", "message": "No tags found for this journal"}
+    
+    result = [{"tag_id": tag.tag_id} for tag in tags]
+    return {"status": "success", "tags": result}
+
+@router.get("/get_tag_name")
+def get_tag_name(auth_token: str, tag_id: str, db: Session = Depends(get_db)):
+    """
+    Retrieves the name of a tag by tag_id
+    """
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # Check if tag exists
+    db_tag = db.query(models.Tag).filter(models.Tag.tag_id == tag_id).first()
+    if not db_tag:
+        raise HTTPException(status_code=404, detail="Tag not found")
+    
+    return {"status": "success", "tag_name": db_tag.tag_name}
+
+@router.get("/get_all_tags")
+def get_all_tags(auth_token: str, db: Session = Depends(get_db)):
+    """
+    Retrieves all tags in the database (no duplicates)
+    """
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # Get all tags
+    tags = db.query(models.Tag).distinct().all()
+    if not tags:
+        return {"status": "success", "message": "No tags found in the database"}
+    
+    result = [{"tag_id": tag.tag_id, "tag_name": tag.tag_name} for tag in tags]
+    return {"status": "success", "tags": result}
+
+

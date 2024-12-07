@@ -105,6 +105,10 @@ def update_journal(auth_token: str, journal_id: int, journal_title: str, db: Ses
 
 @router.put("/update_tag_name")
 def update_tag_name(auth_token: str, tag_id: int, new_name: str, db: Session = Depends(get_db)):
+    '''
+    Updates the name of a tag with the given tag_id.
+    '''
+
     # Verify the token and get the email
     user_email = verify_token(auth_token)
 
@@ -122,6 +126,10 @@ def update_tag_name(auth_token: str, tag_id: int, new_name: str, db: Session = D
 
 @router.put("/add_tag_to_journal")
 def add_tag_to_journal(auth_token: str, journal_id: int, tag_id: int, db: Session = Depends(get_db)):
+    '''
+    Adds a tag to a journal by creating a new entry in the journals_and_tags table.
+    '''
+
     # Verify the token and get the email
     user_email = verify_token(auth_token)
 
@@ -133,6 +141,10 @@ def add_tag_to_journal(auth_token: str, journal_id: int, tag_id: int, db: Sessio
 
 @router.put("/delete_tag_from_journal")
 def delete_tag_from_journal(auth_token: str, journal_id: int, tag_id: int, db: Session = Depends(get_db)):
+    '''
+    Deletes a tag from a journal by deleting the entry in the journals_and_tags table.
+    '''
+
     # Verify the token and get the email
     user_email = verify_token(auth_token)
 
