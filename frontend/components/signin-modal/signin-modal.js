@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "../../constants/constants.js";
-import { saveToLocalStorage } from "../../utils/utils.js";
+import { saveToSessionStorage } from "../../utils/utils.js";
 
 // console.log(API_BASE_URL);
 
@@ -114,7 +114,7 @@ export class SigninModal extends HTMLElement {
 				// Handle the response
 				if (response.ok) {
 					console.log("Signup successful:", await response.json());
-					saveToLocalStorage("accessToken", response.json().accessToken);
+					saveToSessionStorage("accessToken", response.json().accessToken);
 					// navigate to the home page
 					window.location.href = "./pages/home/home.html";
 				} else {
