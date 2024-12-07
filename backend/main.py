@@ -2,11 +2,12 @@ from re import search
 
 from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from backend.routers import read_apis
 from db import models, crud, schemas
 from utils import hash_password, verify_password
 from auth import create_access_token, verify_token
 from db.database import SessionLocal
-from routers import update_apis, search, read, create_apis, delete_apis, rag_search, get_user
+from routers import update_apis, search, create_apis, delete_apis, rag_search, get_user
 
 app = FastAPI(
     title="FastAPI Boilerplate",
@@ -16,7 +17,7 @@ app = FastAPI(
 
 app.include_router(update_apis.router, prefix="/update", tags=["Update"])
 app.include_router(search.router, prefix="/search", tags=["Search"])
-app.include_router(read.router, prefix="/read", tags=["Read"])
+app.include_router(read_apis.router, prefix="/read", tags=["Read"])
 
 app.include_router(create_apis.router, prefix="/create", tags=["Create"])
 
