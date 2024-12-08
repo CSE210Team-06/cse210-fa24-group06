@@ -1,9 +1,24 @@
+/**
+ * A custom HTML element for a user sign-up modal dialog.
+ * Provides a form for user registration within a modal.
+ *
+ * @extends {HTMLElement}
+ */
 export class SignupModal extends HTMLElement {
+  /**
+   * Creates an instance of SignupModal.
+   * Calls the parent HTMLElement constructor.
+   */
   constructor() {
     super();
   }
 
+  /**
+   * Invoked when the custom element is appended to the DOM.
+   * Initializes the modal dialog, handles user interactions, and manages form submission.
+   */
   connectedCallback() {
+    // Injects modal HTML and styles into the custom element
     this.innerHTML = `
           <style>
             .modal[open]::backdrop {
@@ -75,7 +90,10 @@ export class SignupModal extends HTMLElement {
     const formError = this.querySelector(".form_error");
     const signupForm = document.getElementById("Signup-form");
 
-    // Close modal on button click
+    /**
+     * Closes the modal dialog and resets the form.
+     * Clears any error messages and restores scroll behavior.
+     */
     closeButton.addEventListener("click", () => {
       formError.innerHTML = "";
       formError.style.display = "hidden";
@@ -84,16 +102,25 @@ export class SignupModal extends HTMLElement {
       document.body.style.overflow = "";
     });
 
-    // Open modal programmatically
+    /**
+     * Opens the modal dialog and prevents background scrolling.
+     */
     this.addEventListener("open", () => {
       dialog.showModal();
-      document.body.style.overflow = "hidden"; // Disable scrolling
+      document.body.style.overflow = "hidden";
     });
 
+    /**
+     * Handles form submission.
+     * Sends form data to the specified server endpoint using the Fetch API.
+     * Displays success or error messages as appropriate.
+     *
+     * @param {SubmitEvent} event - The form submission event.
+     */
     signupForm.addEventListener("submit", async function (event) {
-      event.preventDefault(); // Prevent the default form submission
+      event.preventDefault();
 
-      // Create the dictionary from form inputs
+      // Collect form data from input fields
       const formData = {
         first_name: document.getElementById("signup-firstname").value,
         last_name: document.getElementById("signup-lastname").value,
@@ -101,8 +128,8 @@ export class SignupModal extends HTMLElement {
         password: document.getElementById("signup-password").value,
       };
 
-      // Send the data to the endpoint
       try {
+        // Send form data to the server
         const response = await fetch(this.action, {
           method: this.method,
           headers: {
@@ -111,13 +138,14 @@ export class SignupModal extends HTMLElement {
           body: JSON.stringify(formData),
         });
 
-        // Handle the response
         if (response.ok) {
           alert(
             "Signup successful, please log in with your username and password",
           );
+          // Trigger the close button's click event to reset the modal
           closeButton.dispatchEvent(new Event("click"));
         } else {
+          // Handle server validation errors
           return response.json().then((errorData) => {
             formError.style.display = "block";
             formError.innerHTML = `${errorData.detail}`;

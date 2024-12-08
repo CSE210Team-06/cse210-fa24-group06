@@ -1,10 +1,24 @@
-// Create a class for the element
+/**
+ * A custom HTML element for a users sign-in modal dialog.
+ * Provides form submission functionality within a modal user interface.
+ *
+ * @extends {HTMLElement}
+ */
 export class SigninModal extends HTMLElement {
+  /**
+   * Creates an instance of SigninModal by calling the parent HTMLElement constructor.
+   */
   constructor() {
-    super(); // Call the superclass constructor
+    super();
   }
 
+  /**
+   * Invoked when the custom element is appended to the DOM.
+   * Initializes the modal dialog, handles event listeners for user interactions,
+   * and manages form submission with client-side validation and server communication.
+   */
   connectedCallback() {
+    // Inject modal HTML and styles into the component
     this.innerHTML = `
         <style>
           .modal[open]::backdrop {
@@ -72,7 +86,10 @@ export class SigninModal extends HTMLElement {
     const formError = this.querySelector(".form_error");
     const signinForm = document.getElementById("signin-form");
 
-    // Close modal on button click
+    /**
+     * Closes the modal dialog and resets the form.
+     * Clears any existing error messages and restores scroll behavior.
+     */
     closeButton.addEventListener("click", () => {
       formError.innerHTML = "";
       formError.style.display = "hidden";
@@ -81,23 +98,29 @@ export class SigninModal extends HTMLElement {
       document.body.style.overflow = "";
     });
 
-    // Open modal programmatically
+    /**
+     * Opens the modal dialog and prevents background scrolling.
+     */
     this.addEventListener("open", () => {
       dialog.showModal();
-      document.body.style.overflow = "hidden"; // Disable scrolling
+      document.body.style.overflow = "hidden";
     });
 
+    /**
+     * Handles form submission.
+     * Sends form data to the specified server endpoint using the Fetch API.
+     */
     signinForm.addEventListener("submit", async function (event) {
-      event.preventDefault(); // Prevent the default form submission
+      event.preventDefault();
 
-      // Create the dictionary from form inputs
+      // Gather form data
       const formData = {
         email: document.getElementById("signin-email").value,
         password: document.getElementById("signin-password").value,
       };
 
-      // Send the data to the endpoint
       try {
+        // Send form data to the server
         const response = await fetch(this.action, {
           method: this.method,
           headers: {
@@ -106,7 +129,6 @@ export class SigninModal extends HTMLElement {
           body: JSON.stringify(formData),
         });
 
-        // Handle the response
         if (response.ok) {
           console.log("Signup successful:", await response.json());
         } else {
