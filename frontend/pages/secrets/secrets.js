@@ -54,14 +54,13 @@ function loadSecretsFromLocalStorage() {
             <td>${secret.name}</td>
             <td>${secret.description}</td>
             <td>
-                <span class="hidden-value">••••••••••</span>
+                <span class="hidden-value">${"•".repeat(decryptedValue.length)}</span>
                 <span class="actual-value" style="display:none;">${decryptedValue}</span>
             </td>
             <td>
-                <button class="toggle-visibility-button">👁</button>
-            </td>
-            <td>
-                <button class="delete-button" data-index="${index}">Delete</button>
+                <button class="toggle-visibility-button">👁️</button>
+                <button class="copy-button">📋</button>
+                <button class="delete-button" data-index="${index}">🗑️</button>
             </td>
         `;
 
@@ -85,60 +84,15 @@ function loadSecretsFromLocalStorage() {
     row.querySelector(".delete-button").addEventListener("click", function () {
       deleteSecretFromLocalStorage(index); // Use index from forEach
     });
+
+    row.querySelector(".copy-button").addEventListener("click", function () {
+      // Copy decrypted value to clipboard
+      navigator.clipboard
+        .writeText(decryptedValue)
+        .then(() => alert("Copied to clipboard!"))
+        .catch((err) => alert("Failed to copy: " + err));
+    });
   });
-
-  // secrets.forEach((secret) => {
-  // 	const decryptedValue = decryptText(secret.value);
-
-  // 	const row = secretsTableBody.insertRow();
-  // 	// row.innerHTML = `
-  // 	//     <td>${secret.name}</td>
-  // 	//     <td>${secret.description}</td>
-  // 	//     <td>
-  // 	//         <span class="hidden-value">••••••••••</span>
-  // 	//         <span class="actual-value" style="display:none;">${decryptedValue}</span>
-  // 	//     </td>
-  // 	//     <td>
-  // 	//         <button class="toggle-visibility-button">👁</button>
-  // 	//     </td>
-  // 	// `;
-
-  // 	row.innerHTML = `
-  //         <td>${secret.name}</td>
-  //         <td>${secret.description}</td>
-  //         <td>
-  //             <span class="hidden-value">••••••••••</span>
-  //             <span class="actual-value" style="display:none;">${decryptedValue}</span>
-  //         </td>
-  //         <td>
-  //             <button class="toggle-visibility-button">👁</button>
-  //         </td>
-  //         <td>
-  //             <button class="delete-button" data-index="${index}">Delete</button>
-  //         </td>
-  //     `;
-
-  // 	// Add event listener to the delete button
-  // 	row.querySelector(".delete-button").addEventListener("click", function () {
-  // 		deleteSecretFromLocalStorage(index);
-  // 	});
-
-  // 	// Add event listener to toggle the visibility of the value
-  // 	row
-  // 		.querySelector(".toggle-visibility-button")
-  // 		.addEventListener("click", function () {
-  // 			const actualValue = row.querySelector(".actual-value");
-  // 			const hiddenValue = row.querySelector(".hidden-value");
-
-  // 			if (actualValue.style.display === "none") {
-  // 				actualValue.style.display = "inline";
-  // 				hiddenValue.style.display = "none";
-  // 			} else {
-  // 				actualValue.style.display = "none";
-  // 				hiddenValue.style.display = "inline";
-  // 			}
-  // 		});
-  // });
 }
 
 // Add new secret from the form
@@ -158,6 +112,12 @@ document
 
     // Reload the secrets list
     loadSecretsFromLocalStorage();
+  });
+
+document
+  .getElementById("back-to-home-btn")
+  .addEventListener("click", function () {
+    window.location.href = "../home/home.html"; // Replace with your home page URL
   });
 
 // Load secrets when the page is loaded

@@ -113,8 +113,9 @@ export class SigninModal extends HTMLElement {
 
         // Handle the response
         if (response.ok) {
-          // console.log("Signup successful:", await response.json());
-          saveToSessionStorage("accessToken", response.json().accessToken);
+          const data = await response.json();
+          saveToSessionStorage("accessToken", data.access_token);
+          // saveToSessionStorage("accessToken", response.json().accessToken);
           // navigate to the home page
           window.location.href = "./pages/home/home.html";
         } else {
