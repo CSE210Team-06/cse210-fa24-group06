@@ -126,7 +126,8 @@ export class SignupModal extends HTMLElement {
           });
         }
       } catch (error) {
-        console.error("Error:", error);
+        // console.error("Error:", error);
+        window.alert("An error occurred. ", error);
       }
     });
   }
