@@ -1,5 +1,5 @@
 /* global EasyMDE */
-
+import { searchGoogle } from "../../utils/utils.js";
 const urlParams = new URLSearchParams(window.location.search);
 const journalId = urlParams.get("journalId");
 
@@ -29,14 +29,15 @@ async function fetchJournal(journalId) {
 			// return data.journals.find(
 			// 	(journal) => journal.id === parseInt(journalId)
 			// );
-		} else {
-			// console.log("inside else");
-			// console.log(data.journals);
-			// return data.journals;
 		}
+		// else {
+		// console.log("inside else");
+		// console.log(data.journals);
+		// return data.journals;
+		// }
 	} catch (error) {
 		// console.error("Error fetching data:", error);
-		window.alert("Error fetching data. Please try again.", error);
+		alert("Error fetching data", error);
 	}
 }
 
@@ -61,7 +62,7 @@ async function saveJournal(journalTitle, journalEntry) {
 
 	window.alert(`Saved journal with ID: ${journalId}`);
 
-	const response = await fetch("http://localhost:3000/journals", {
+	await fetch("http://localhost:3000/journals", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -73,13 +74,40 @@ async function saveJournal(journalTitle, journalEntry) {
 		}),
 	});
 
-	// const data = await response.json();
-	if (response.ok) {
-		window.alert("Journal saved successfully!");
-	}
-
 	// console.log(response);
 }
+
+easyMDE.codemirror.on("change", async function () {
+	const editor = easyMDE.codemirror;
+	const results = await searchGoogle(editor);
+
+	const resultsContainer = document.getElementById("results-container");
+	resultsContainer.innerHTML = ""; // Clear any previous results
+
+	results.forEach((result) => {
+		const card = document.createElement("div");
+		card.classList.add("result-card");
+
+		const title = document.createElement("h4");
+		title.innerText = result.title;
+
+		const description = document.createElement("p");
+		description.innerText = result.description;
+
+		const link = document.createElement("a");
+		link.href = result.url;
+		link.innerText = "Read more";
+		link.target = "_blank"; // Open in new tab
+
+		card.appendChild(title);
+		card.appendChild(description);
+		card.appendChild(link);
+
+		resultsContainer.appendChild(card);
+	});
+
+	// console.log(results);
+});
 
 const saveJournalBtn = document.getElementById("save-journal-btn");
 saveJournalBtn.addEventListener("click", () => {

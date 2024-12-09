@@ -1,5 +1,7 @@
 // import { API_BASE_URL } from "../../constants/constants.js";
 // import { loadFromSessionStorage } from "../../utils/utils.js";
+// import { API_BASE_URL } from "../../constants/constants.js";
+// import { loadFromSessionStorage } from "../../utils/utils.js";
 
 document.getElementById("create-journal-btn").addEventListener("click", () => {
 	// Navigate to a blank new journal (no parameters)
