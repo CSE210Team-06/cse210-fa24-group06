@@ -8,4 +8,6 @@
 
 4. `pip install -r requirements.txt`
 
-5. `uvicorn main:app --reload`
+5. `pre-commit install --hook-type pre-push` 
+
+6. `uvicorn main:app --reload`
