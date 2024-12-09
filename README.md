@@ -9,7 +9,10 @@ CodeChronicle aims to create a simple journal for developers, a specialized tool
 
 ## How to Install and Run the Journal
 
-## Journal Tutorial 
+1. Clone the repository `git clone https://github.com/CSE210Team-06/cse210-fa24-group06.git`
+2. Install dependencies `npm install`
+3. Start the local host `npm start`
+
 
 ## Contributing
 Contributions are welcome! Please fork the repository and create a pull request.
