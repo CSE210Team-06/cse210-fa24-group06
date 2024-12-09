@@ -59,6 +59,9 @@
         align-items: center;
         justify-content: center;
       }
+      .card__content {
+        border: 1px solid black;
+      }
     </style>
     <link rel="stylesheet" href="../../styles/styles.css" />
   </head>
@@ -89,21 +92,11 @@
     </div>
     <section class="recent-journals" aria-labelledby="recent-journals-heading">
       <h2 id="recent-journals-heading" class="recent-journals__title">
-        Recent Journals
+        Journals
       </h2>
-      <ul class="recent-journals__list">
-        <li class="recent-journals__item">
-          <span class="recent-journal"> JavaScript Insights </span>
-        </li>
-        <li class="recent-journals__item">
-          <span class="recent-journal"> CSS Tricks Unveiled </span>
-        </li>
-        <li class="recent-journals__item">
-          <span class="recent-journals"> Modern Web Development </span>
-        </li>
-      </ul>
+      <div class="searched-journals__list"></div>
     </section>
-    <script src="./home.js"></script>
+    <script type="module" src="./home.js"></script>
     <!-- <script type="module" src="./renderer.js"></script> -->
   </body>
 </html>
