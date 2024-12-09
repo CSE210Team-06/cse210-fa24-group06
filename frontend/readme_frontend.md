@@ -3,10 +3,11 @@ This is the frontend for the `CodeChronicle` tool.
 ## Frontend
 To install dependencies and view the application locally.
 
-1. `git clone https://github.com/CSE210Team-06/cse210-fa24-group06.git`
+## To install CodeChronicle and view the frontend
+1. Clone the repository `git clone https://github.com/CSE210Team-06/cse210-fa24-group06.git`
 
-2. `cd frontend`
+2. Navigate to the frontend`cd frontend`
 
-3. `npm install`
+3. Install dependencies `npm install`
 
-4. `npm start`
+4. Start the local host `npm start`
