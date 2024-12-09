@@ -15,7 +15,7 @@ This is the frontend for the `CodeChronicle` tool.
 4. Start the local host `npm start`
 
 ## Running Tests
-Testing is done with Puppeteer integrated with {headspin}[https://www.headspin.io/blog/testing-with-puppeteer-a-complete-guide]
+Testing is done with Puppeteer integrated with [headspin](https://www.headspin.io/blog/testing-with-puppeteer-a-complete-guide)
 To run the unit tests:
 1. Install pupeteer `npm install puppeteer`
 2. Follow the ~Setup~ and ~Run local server~ instructions on the [headspin repository]{https://github.com/headspinio/blog-samples/tree/main/02-testing-with-puppeteer}.
