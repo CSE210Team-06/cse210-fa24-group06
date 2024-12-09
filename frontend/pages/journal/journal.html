@@ -1,88 +1,88 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Journal Editor</title>
-		<link rel="stylesheet" href="../../styles/styles.css" />
-		<style>
-			/* Side Panel */
-			.side-panel {
-				position: fixed;
-				top: 0;
-				right: 0;
-				width: 300px;
-				height: 100%;
-				background-color: #f4f4f4;
-				box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
-				padding: 10px;
-				overflow-y: auto;
-				display: block;
-			}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Journal Editor</title>
+    <link rel="stylesheet" href="../../styles/styles.css" />
+    <style>
+      /* Side Panel */
+      .side-panel {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 300px;
+        height: 100%;
+        background-color: #f4f4f4;
+        box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        overflow-y: auto;
+        display: block;
+      }
 
-			/* Card styling */
-			.result-card {
-				background-color: white;
-				border: 1px solid #ddd;
-				padding: 15px;
-				margin-bottom: 10px;
-				border-radius: 8px;
-				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-			}
+      /* Card styling */
+      .result-card {
+        background-color: white;
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
 
-			.result-card h4 {
-				font-size: 16px;
-				margin: 0;
-			}
+      .result-card h4 {
+        font-size: 16px;
+        margin: 0;
+      }
 
-			.result-card p {
-				font-size: 14px;
-				color: #555;
-			}
+      .result-card p {
+        font-size: 14px;
+        color: #555;
+      }
 
-			.result-card a {
-				color: #007bff;
-				text-decoration: none;
-			}
+      .result-card a {
+        color: #007bff;
+        text-decoration: none;
+      }
 
-			.result-card a:hover {
-				text-decoration: underline;
-			}
-		</style>
-	</head>
-	<body>
-		<div>
-			<button id="back-to-home-btn">Back to Home</button>
-		</div>
-		<div class="editor-container">
-			<header class="editor-header">
-				<input
-					type="text"
-					id="journal-title"
-					placeholder="Enter journal title..."
-					class="title-input"
-				/>
-			</header>
-			<main class="editor-main">
-				<textarea
-					id="journal-text-area"
-					placeholder="Write your journal entry here..."
-					class="content-area"
-				></textarea>
-			</main>
-		</div>
-		<div>
-			<button id="save-journal-btn" class="navigate-btn">Save Journal</button>
-		</div>
-		<div class="side-panel" id="side-panel">
-			<h3>Search Results</h3>
-			<div id="results-container" class="results-container"></div>
-		</div>
-		<link
-			rel="stylesheet"
-			href="https://unpkg.com/easymde/dist/easymde.min.css"
-		/>
-		<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
-		<script type="module" src="./journal.js"></script>
-	</body>
+      .result-card a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <button id="back-to-home-btn">Back to Home</button>
+    </div>
+    <div class="editor-container">
+      <header class="editor-header">
+        <input
+          type="text"
+          id="journal-title"
+          placeholder="Enter journal title..."
+          class="title-input"
+        />
+      </header>
+      <main class="editor-main">
+        <textarea
+          id="journal-text-area"
+          placeholder="Write your journal entry here..."
+          class="content-area"
+        ></textarea>
+      </main>
+    </div>
+    <div>
+      <button id="save-journal-btn" class="navigate-btn">Save Journal</button>
+    </div>
+    <div class="side-panel" id="side-panel">
+      <h3>Search Results</h3>
+      <div id="results-container" class="results-container"></div>
+    </div>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/easymde/dist/easymde.min.css"
+    />
+    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+    <script type="module" src="./journal.js"></script>
+  </body>
 </html>

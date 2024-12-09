@@ -8,7 +8,14 @@ export class SignupModal extends HTMLElement {
 	connectedCallback() {
 		this.innerHTML = `
           <style>
-            .modal[open]::backdrop {
+          :root {
+            /*colors*/
+            --theme: dodgerblue;
+            --clickbutton: rgb(1, 88, 174);
+            --text: white;
+          }
+
+          .modal[open]::backdrop {
               backdrop-filter: blur(5px);
           }
   
@@ -18,6 +25,7 @@ export class SignupModal extends HTMLElement {
               border-radius: 8px;
               box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
               text-align: center;
+              border: 0.5vh solid var(--theme);
           }
   
           .modal__header {
@@ -41,6 +49,8 @@ export class SignupModal extends HTMLElement {
           .form {
             display: flex;
             flex-direction: column;
+            height: 55vh;
+		        width: 50vh;
           }
   
           .form > * {

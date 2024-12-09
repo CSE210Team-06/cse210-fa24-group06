@@ -12,7 +12,7 @@ export class SigninModal extends HTMLElement {
 	connectedCallback() {
 		this.innerHTML = `
         <style>
-          .modal[open]::backdrop {
+        .modal[open]::backdrop {
             backdrop-filter: blur(5px);
         }
 
@@ -22,6 +22,7 @@ export class SigninModal extends HTMLElement {
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             text-align: center;
+			border: 0.5vh solid var(--theme);
         }
 
         .modal__header {
@@ -30,6 +31,10 @@ export class SigninModal extends HTMLElement {
             align-items: top;
             justify-content: space-around;
         }
+
+		.modal__header-title{
+		    
+		}
 
         .modal button {
             margin-top: 15px;
@@ -45,6 +50,9 @@ export class SigninModal extends HTMLElement {
         .form {
           display: flex;
           flex-direction: column;
+		  height: 55vh;
+		  width: 50vh;
+		  padding: 0px;
         }
 
         .form > * {
@@ -59,7 +67,7 @@ export class SigninModal extends HTMLElement {
         </style>
         <dialog class="modal" id="signin-modal">
             <header class="modal__header">
-                <h2>Sign In</h2>
+                <h2 class="modal__header-title">Sign In</h2>
                 <button class="close-button" id="closeModal">&#10006;</button>
             </header>
             <form action="${API_BASE_URL}/login" method="POST" class="form" id="signin-form">
@@ -116,6 +124,7 @@ export class SigninModal extends HTMLElement {
 					const data = await response.json();
 					saveToSessionStorage("accessToken", data.access_token);
 					// saveToSessionStorage("accessToken", response.json().accessToken);
+					
 					// navigate to the home page
 					window.location.href = "./pages/home/home.html";
 				} else {
