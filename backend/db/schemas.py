@@ -4,6 +4,7 @@ Helps validate requests and responses to and from the database.
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
 from datetime import datetime, timezone
+from sqlalchemy import Table, Column, Integer, String, ForeignKey
 
 '''
 BaseModels are used to validate the request body of some requests.
@@ -69,6 +70,21 @@ class EntryBase(BaseModel):
 
     class Config:
         orm_mode = True
+    
+class TagBase(BaseModel):
+    tag_id: Optional[int] = None # PK
+    tag_name: str
+
+    class Config:
+        orm_mode = True
+
+'''
+Table to enable many-to-many relationship between Tag and Journal
+'''
+journals_and_tags = Table('journals_and_tags', 
+    Column('journal_id', Integer, ForeignKey('journal.journal_id')),
+    Column('tag_id', Integer, ForeignKey('tag.tag_id'))
+)
 
 '''
 These classes are used to create new items via API request.
@@ -85,6 +101,9 @@ class GroupCreate(BaseModel):
 class EntryCreate(BaseModel):
     journal_id: int
     entry_text: str
+
+class TagCreate(BaseModel):
+    tag_name: str
 
 '''
 These classes represent the actual data of the items.
