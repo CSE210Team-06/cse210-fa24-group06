@@ -1,9 +1,12 @@
-/* global EasyMDE */
+import {
+  API_BASE_URL,
+  READ_JOURNAL_URL,
+  CREATE_ENTRY_URL,
+  CREATE_JOURNAL_URL,
+} from "../../constants/constants.js";
 import { searchGoogle } from "../../utils/utils.js";
 const urlParams = new URLSearchParams(window.location.search);
 const journalId = urlParams.get("journalId");
-
-// console.log("Journal ID inside journal.js:", journalId);
 
 const easyMDE = new EasyMDE({
   element: document.getElementById("journal-text-area"),
@@ -11,32 +14,15 @@ const easyMDE = new EasyMDE({
 
 async function fetchJournal(journalId) {
   try {
-    const response = await fetch("http://localhost:3000/journals");
+    const response = await fetch(
+      `${API_BASE_URL}${READ_JOURNAL_URL}?auth_token=${sessionStorage.getItem("accessToken")}&journal_id=${journalId}`,
+    );
     const data = await response.json();
-    // console.log(data);
-
-    // console.log("Journal ID:", journalId);
-
-    // return data;
     if (journalId) {
-      // console.log("inside if");
-      let journal = data.find((journal) => journal.id === journalId);
+      let journal = data;
       return journal;
-
-      // console.log(
-      // 	data.journals.find((journal) => journal.id === parseInt(journalId))
-      // );
-      // return data.journals.find(
-      // 	(journal) => journal.id === parseInt(journalId)
-      // );
     }
-    // else {
-    // console.log("inside else");
-    // console.log(data.journals);
-    // return data.journals;
-    // }
   } catch (error) {
-    // console.error("Error fetching data:", error);
     alert("Error fetching data", error);
   }
 }
@@ -44,37 +30,44 @@ async function fetchJournal(journalId) {
 if (journalId) {
   async function loadJournal() {
     const journal = await fetchJournal(journalId);
-
-    // console.log("Journal:", journal);
-
-    document.getElementById("journal-title").value = `${journal.title}`;
-    easyMDE.value(`${journal.content}`);
+    document.getElementById("journal-title").value = `${journal.journal_title}`;
+    easyMDE.value(`${journal.entries[0].entry_text}`);
   }
   loadJournal();
 }
 
 async function saveJournal(journalTitle, journalEntry) {
-  // const journalTitle = document.getElementById("journal-title").value;
-  // const journalEntry = easyMDE.value();
-  // console.log("Journal saved:", journalTitle, journalEntry);
-
-  let journalId = Math.floor(Math.random() * 1000).toString();
-
-  window.alert(`Saved journal with ID: ${journalId}`);
-
-  await fetch("http://localhost:3000/journals", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  const createJournalResponse = await fetch(
+    `${API_BASE_URL}${CREATE_JOURNAL_URL}?auth_token=${sessionStorage.getItem("accessToken")}&journal_title=${journalTitle}`,
+    {
+      method: "POST",
     },
-    body: JSON.stringify({
-      id: journalId,
-      title: journalTitle,
-      content: journalEntry,
-    }),
-  });
-
-  // console.log(response);
+  );
+  if (!createJournalResponse.ok) {
+    const error = await createJournalResponse.json();
+    console.error("Error:", error);
+    alert(error);
+  } else {
+    // Parse and log the success response
+    const data = await createJournalResponse.json();
+    console.log(data);
+    const journalId = data.journal_id;
+    const createEntryResponse = await fetch(
+      `${API_BASE_URL}${CREATE_ENTRY_URL}?auth_token=${sessionStorage.getItem("accessToken")}&journal_id=${journalId}&entry_text=${journalEntry}`,
+      {
+        method: "POST",
+      },
+    );
+    if (!createEntryResponse.ok) {
+      const error = await createJournalResponse.json();
+      console.error("Error:", error);
+      alert(error);
+    } else {
+      alert(`Journal saved with id: ${journalId}`);
+      window.location.href = "../home/home.html";
+    }
+    return null;
+  }
 }
 
 easyMDE.codemirror.on("change", async function () {
