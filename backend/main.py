@@ -23,7 +23,11 @@ app.include_router(create_apis.router, prefix="/create", tags=["Create"])
 
 app.include_router(delete_apis.router, prefix="/delete", tags=["Delete"])
 
+
+
 app.include_router(get_user.router, prefix="/get_user", tags=["User"])
+
+app.include_router(rag_search.router, prefix="/rag_search", tags=["RAG Search"])
 
 
 

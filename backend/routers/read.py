@@ -15,7 +15,7 @@ def get_db():
 
 
 @router.get("/read_entries")
-def read_entries(auth_token: str, entry_id: int, db: Session = Depends(get_db)):
+def read_entries(auth_token: str, journal_id: int, page_number: int, db: Session = Depends(get_db)):
     """
     Retrieve the text of a specific journal entry by entry_id.
     """
@@ -23,7 +23,7 @@ def read_entries(auth_token: str, entry_id: int, db: Session = Depends(get_db)):
     user_email = verify_token(auth_token)
 
     # Find the entry by entry_id
-    db_entry = db.query(models.Entry).filter(models.Entry.entry_id == entry_id).first()
+    db_entry = db.query(models.Entry).filter(models.Entry.journal_id == journal_id, models.Entry.page_number == page_number).first()
     if not db_entry:
         raise HTTPException(status_code=404, detail="Entry not found")
 
