@@ -4,20 +4,20 @@
 // import { loadFromSessionStorage } from "../../utils/utils.js";
 
 document.getElementById("create-journal-btn").addEventListener("click", () => {
-	// Navigate to a blank new journal (no parameters)
-	window.location.href = "../journal/journal.html";
+  // Navigate to a blank new journal (no parameters)
+  window.location.href = "../journal/journal.html";
 });
 
 document.getElementById("edit-journal-btn").addEventListener("click", () => {
-	// Navigate to an existing journal edit page, passing a parameter (e.g., journalId)
-	const journalId = document.getElementById("journal-id").value;
-	// console.log(journalId);
-	window.location.href = `../journal/journal.html?journalId=${journalId}`;
+  // Navigate to an existing journal edit page, passing a parameter (e.g., journalId)
+  const journalId = document.getElementById("journal-id").value;
+  // console.log(journalId);
+  window.location.href = `../journal/journal.html?journalId=${journalId}`;
 });
 
 document.getElementById("secrets-btn").addEventListener("click", () => {
-	// console.log("Secrets button clicked");
-	window.location.href = "../secrets/secrets.html";
+  // console.log("Secrets button clicked");
+  window.location.href = "../secrets/secrets.html";
 });
 
 // document
