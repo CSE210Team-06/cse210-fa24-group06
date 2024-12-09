@@ -7,7 +7,7 @@ from db import models, crud, schemas
 from utils import hash_password, verify_password
 from auth import create_access_token, verify_token
 from db.database import SessionLocal
-from routers import update_apis, search, create_apis, delete_apis, rag_search, get_user
+from routers import update_apis, search, create_apis, read_apis, delete_apis, rag_search, get_user
 
 app = FastAPI(
     title="FastAPI Boilerplate",
