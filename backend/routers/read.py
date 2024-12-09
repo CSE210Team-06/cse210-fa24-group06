@@ -59,4 +59,5 @@ def read_journal(auth_token: str, journal_id: int, db: Session = Depends(get_db)
 
     result = [{"entry_id": entry.entry_id, "entry_text": entry.entry_text} for entry in entries]
 
-    return {"status": "success", "entries": result}
+    return {"status": "success", "journal_id": db_journal.journal_id, "journal_title": db_journal.journal_title,
+            "created_at": db_journal.created_at, "updated_at": db_journal.updated_at, "entries": result}
