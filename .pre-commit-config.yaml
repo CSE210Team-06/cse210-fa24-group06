@@ -1,18 +1,18 @@
-default_stages: [commit, push]
+default_stages: [pre-commit, pre-push]
 repos:
   - repo: https://github.com/psf/black
     rev: 23.1.0 # Use the latest version
     hooks:
       - id: black
         files: ^backend/ # Run only on the backend folder
-        stages: [commit, push]
+        stages: [pre-commit, pre-push]
         
   - repo: https://github.com/pycqa/flake8
     rev: 6.0.0
     hooks:
       - id: flake8
         files: ^backend/
-        stages: [commit, push]
+        stages: [pre-commit, pre-push]
 
   # Fixed version of the pdoc check
   - repo: local
@@ -21,7 +21,8 @@ repos:
         name: Check API documentation generation
         entry: pdoc
         language: python
-        files: ^backend/
-        stages: [push]
+        files: ^backend/.*\.py$ # Match only Python files in the backend folder
+        exclude: 'backend/.*\.gitignore$|backend/.*\.md$' # Exclude non-Python files
+        stages: [pre-push]
         additional_dependencies: ['pdoc']
         args: ['.']
