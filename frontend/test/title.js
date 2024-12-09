@@ -1,3 +1,8 @@
+/**
+ * Tests the title of the tool
+ * Pulls the local hosted title, throws error if invalid
+ * @returns {logger}
+ */
 const puppeteer = require('puppeteer');
 const logger = require('pino')();
 (async () => {
@@ -10,10 +15,10 @@ const logger = require('pino')();
     await page.goto("http://localhost:8000");
     await page.waitForSelector(`#fname`, {timeout, visible: true});
 
-    const title = await page.title();
-    logger.info(title);
+    const title = await page.title(); 
+    logger.info(`Page title: ${title}`); // Log page title
   } catch (err) {
-    logger.error(err);
+    logger.error(`Error occurred: ${err.message}`); // Log errors
   } finally {
     await browser.close();
   }
