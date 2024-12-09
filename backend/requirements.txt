@@ -7,3 +7,5 @@ passlib
 sentence-transformers
 faiss-cpu
 pydantic[email]
+httpx
+pytest
