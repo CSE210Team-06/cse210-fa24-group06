@@ -74,7 +74,8 @@ def read_group(auth_token: str, group_id: int, db: Session = Depends(get_db)):
     if not db_journals:
         raise HTTPException(status_code=404, detail="Group is empty or does not exist")
 
-    if db_journals[0].group.user.email != user_email:
+    # Check if the user is the owner of the group
+    if db_journals.user.email != user_email:
         raise HTTPException(status_code=403, detail="Not authorized to access this group")
     
     # Return the list of journal ids
