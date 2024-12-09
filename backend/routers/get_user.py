@@ -38,3 +38,56 @@ def get_user_details(auth_token: str, db: Session = Depends(get_db)):
         "last_name": db_user.last_name,
         "email": db_user.email
     }
+
+
+#get all journals for a user
+@router.get("/user_journals")
+
+def get_user_journals(auth_token: str, db: Session = Depends(get_db)):
+
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # Find the user
+    user = db.query(models.User).filter(models.User.email == user_email).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Find all journals for the user
+    journals = db.query(models.Journal).filter(models.Journal.user_id == user.user_id).all()
+
+    if not journals:
+        return {"status": "success", "message": "No journals found for this user"}
+
+    result = [{"journal_id": journal.journal_id, "journal_title": journal.journal_title} for journal in journals]
+
+    return {"status": "success", "journals": result}
+
+
+#get all the entries for a journal
+@router.get("/journal_entries")
+
+def get_journal_entries(auth_token: str, journal_id: int, db: Session = Depends(get_db)):
+
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # Find the journal in the database
+    db_journal = db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    if not db_journal:
+        raise HTTPException(status_code=404, detail="Journal not found")
+
+    # Check if the journal belongs to the user
+    if db_journal.user.email != user_email:
+        raise HTTPException(status_code=403, detail="Not authorized to access this journal")
+
+    # Retrieve all entries for the journal
+    entries = db.query(models.Entry).filter(models.Entry.journal_id == journal_id).all()
+
+    if not entries:
+        return {"status": "success", "message": "No entries found for this journal"}
+
+    result = [{"entry_id": entry.entry_id, "entry_text": entry.entry_text} for entry in entries]
+
+    return {"status": "success", "entries": result}
