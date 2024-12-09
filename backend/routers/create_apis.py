@@ -19,13 +19,21 @@ def get_db():
 @router.post("/create_journal")
 def create_journal(auth_token:str, journal_title: str, db: Session = Depends(get_db)):
     # Verify the token and get the email
+
+
     user_email = verify_token(auth_token)
-   
-    # via the email, retrieve the user_id
-    db_user_id = db.query(models.User).filter(models.User.email == user_email).first()
+
+    # get user id from db
+
+    user = db.query(models.User).filter(models.User.email == user_email).first()
+
+    uid = user.user_id
+
+
 
     # Create a new journal with no entries
-    new_journal = models.Journal(journal_title=journal_title, created_at=func.now(), updated_at=func.now(), user_id = db_user_id)
+    new_journal = models.Journal(journal_title=journal_title, created_at=func.now(), updated_at=func.now(),
+                                 user_id=uid) # TODO: see if user_email is the correct field
 
 
     # Insert the journal into the database
@@ -68,9 +76,12 @@ def create_group(auth_token: str, group_name: str, group_desc: str = None, db: S
 
 
 @router.post("/create_entry")
-def create_entry(auth_token: str, journal_id: int, page_num: int, entry_text: str, db: Session = Depends(get_db)):
+def create_entry(auth_token: str, journal_id: int, entry_text: str, db: Session = Depends(get_db)):
     # Verify the token and get the email
     user_email = verify_token(auth_token)
+
+    #get all entries for the journal
+
 
 
     # Find the journal in the database
@@ -83,9 +94,16 @@ def create_entry(auth_token: str, journal_id: int, page_num: int, entry_text: st
     if db_journal.user.email != user_email:
         raise HTTPException(status_code=403, detail="Not authorized to modify this journal")
 
+    entries = db.query(models.Entry).filter(models.Entry.journal_id == journal_id).all()
+
+    # get the last page number
+    last_page = 0
+    for entry in entries:
+        if entry.page_number > last_page:
+            last_page = entry.page_number
 
     # Create a new entry
-    new_entry = models.Entry(page_number=page_num, entry_text=entry_text, journal_id=journal_id) # TODO: determine if page_num should be generated instead
+    new_entry = models.Entry(page_number=last_page, entry_text=entry_text, journal_id=journal_id) # TODO: determine if page_num should be generated instead
 
 
     # Insert the entry into the database

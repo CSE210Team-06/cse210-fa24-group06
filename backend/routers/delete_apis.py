@@ -64,16 +64,16 @@ def delete_entry(auth_token: str, journal_id: int, page_num: int, db: Session = 
         raise HTTPException(status_code=403, detail="Not authorized to access this journal")
 
     # Get the entry to delete
-    entry = db.query(models.Entry).filter(models.Entry.journal_id == journal_id, models.Entry.page_num == page_num).first()
+    entry = db.query(models.Entry).filter(models.Entry.journal_id == journal_id, models.Entry.page_number == page_num).first()
     if not entry:
         raise HTTPException(status_code=404, detail="Entry not found")
 
     db.delete(entry)
 
     # Shift subsequent entries left
-    subsequent_entries = db.query(models.Entry).filter(models.Entry.journal_id == journal_id, models.Entry.page_num > page_num).all()
+    subsequent_entries = db.query(models.Entry).filter(models.Entry.journal_id == journal_id, models.Entry.page_number > page_num).all()
     for subsequent_entry in subsequent_entries:
-        subsequent_entry.page_num -= 1
+        subsequent_entry.page_number -= 1
 
     db.commit()
 

@@ -7,8 +7,6 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import datetime,timezone
 from sqlalchemy.orm import relationship
 
-
-
 Base = declarative_base()
 
 
@@ -38,9 +36,9 @@ class Group(Base):
     group_desc = Column(String, nullable=True)
     created_at = Column(String)
     updated_at = Column(String)
+    user_id = Column(Integer, ForeignKey('user.user_id'), nullable=False, index=True) # FK references User.user_id 
 
     # Relationship to User (One Group to Many Users)
-    user_id = Column(Integer, ForeignKey('user.user_id'), nullable=False, index=True) # FK references User.user_id 
     user = relationship("User", back_populates="groups", cascade="all, delete-orphan")
 
 # User Model
