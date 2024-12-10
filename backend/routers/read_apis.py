@@ -78,7 +78,7 @@ def read_journal(auth_token: str, journal_id: int, db: Session = Depends(get_db)
     ]
     print(result)
     return {"status": "success", "entries": result}
- 
+
 @router.get("/get_journals_by_tags")
 def read_journal_by_tags(auth_token: str, tag_id: int, db: Session = Depends(get_db)):
     """
@@ -148,7 +148,7 @@ def get_all_tags(auth_token: str, db: Session = Depends(get_db)):
     Retrieves all tags in the database (no duplicates)
     """
     # Verify the token and get the email
-    user_email = verify_token(auth_token)
+    #user_email = verify_token(auth_token)
 
     # Get all tags
     tags = db.query(models.Tag).distinct().all()
