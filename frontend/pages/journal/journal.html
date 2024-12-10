@@ -4,51 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Journal Editor</title>
-    <link rel="stylesheet" href="../../styles/styles.css" />
-    <style>
-      /* Side Panel */
-      .side-panel {
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 300px;
-        height: 100%;
-        background-color: #f4f4f4;
-        box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
-        padding: 10px;
-        overflow-y: auto;
-        display: block;
-      }
-
-      /* Card styling */
-      .result-card {
-        background-color: white;
-        border: 1px solid #ddd;
-        padding: 15px;
-        margin-bottom: 10px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      .result-card h4 {
-        font-size: 16px;
-        margin: 0;
-      }
-
-      .result-card p {
-        font-size: 14px;
-        color: #555;
-      }
-
-      .result-card a {
-        color: #007bff;
-        text-decoration: none;
-      }
-
-      .result-card a:hover {
-        text-decoration: underline;
-      }
-    </style>
+    <link rel="stylesheet" href="../../styles/journal.css" />
   </head>
   <body>
     <div>
@@ -84,5 +40,7 @@
     />
     <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
     <script type="module" src="./journal.js"></script>
+    <script src="../../constants/constants.js"></script>
+    <script src="../../utils/utils.js"></script>   
   </body>
 </html>

@@ -9,15 +9,16 @@
   <body>
     <header class="header">
       <h1 class="header__title">CodeChronicle</h1>
-      <div class="header__button__group">
-        <div id="user_profile"></div>
+      <div class="header__button__group" id="user-profile">
+        <div class="first-name" id="user-first-name">First Name</div>
+		<button class="header__button header__button--signin" id="Logout">Logout</button>
       </div>
     </header>
     <div class="search-bar">
       <input
         class="search-bar__input"
         type="text"
-        placeholder="Search journals..."
+        placeholder="Search journals"
       />
       <button class="search-bar__button">Search</button>
     </div>
@@ -26,7 +27,10 @@
         <h2 id="recent-journals-heading" class="recent-journals__title">
           Recent Journals
         </h2>
-        <button id="create-journal-btn" class="create-button">+ Create</button>
+		<div class="recent-journal__button__group">
+		  <button id="secrets-btn" class="api-button">Secrets</button>
+          <button id="create-journal-btn" class="create-button">+ Create</button>
+		</div>
       </div>
       <div class="edit-journals">
         <input
@@ -37,8 +41,6 @@
         />
         <button id="edit-journal-btn" class="edit-button">Edit</button>
       </div>
-      <button id="secrets-btn" class="navigate-button">Secrets</button>
-
       <ul class="recent-journals__list">
         <li class="recent-journals__item">
           <span class="recent-journal"> JavaScript Insights </span>
@@ -51,8 +53,7 @@
         </li>
       </ul>
     </section>
-
-    <user-profile id="user-profile"></user-profile>
     <script src="./home.js"></script>
+	<script src="./user-name.js"></script>
   </body>
 </html>
