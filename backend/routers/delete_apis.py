@@ -7,12 +7,14 @@ from datetime import datetime
 
 router = APIRouter()
 
+
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
+
 
 @router.delete("/delete_user")
 def delete_user(auth_token: str, db: Session = Depends(get_db)):
@@ -32,12 +34,15 @@ def delete_user(auth_token: str, db: Session = Depends(get_db)):
 
     return {"status": "success", "message": "User deleted successfully"}
 
+
 @router.patch("/delete_from_group")
 def delete_from_group(journal_id: int, db: Session = Depends(get_db)):
     """
     Removes a journal from a group and updates the updated_at field.
     """
-    journal = db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    journal = (
+        db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    )
     if not journal:
         raise HTTPException(status_code=404, detail="Journal not found")
 
@@ -47,8 +52,11 @@ def delete_from_group(journal_id: int, db: Session = Depends(get_db)):
 
     return {"status": "success", "message": "Journal removed from group successfully"}
 
+
 @router.delete("/delete_entry")
-def delete_entry(auth_token: str, journal_id: int, page_num: int, db: Session = Depends(get_db)):
+def delete_entry(
+    auth_token: str, journal_id: int, page_num: int, db: Session = Depends(get_db)
+):
     """
     Deletes an entry from a journal and shifts subsequent entries left.
     """
@@ -56,28 +64,48 @@ def delete_entry(auth_token: str, journal_id: int, page_num: int, db: Session = 
     user_email = verify_token(auth_token)
 
     # Check if the journal belongs to the user
-    journal = db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    journal = (
+        db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    )
     if not journal:
         raise HTTPException(status_code=404, detail="Journal not found")
 
     if journal.user.email != user_email:
-        raise HTTPException(status_code=403, detail="Not authorized to access this journal")
+        raise HTTPException(
+            status_code=403, detail="Not authorized to access this journal"
+        )
 
     # Get the entry to delete
-    entry = db.query(models.Entry).filter(models.Entry.journal_id == journal_id, models.Entry.page_number == page_num).first()
+    entry = (
+        db.query(models.Entry)
+        .filter(
+            models.Entry.journal_id == journal_id, models.Entry.page_number == page_num
+        )
+        .first()
+    )
     if not entry:
         raise HTTPException(status_code=404, detail="Entry not found")
 
     db.delete(entry)
 
     # Shift subsequent entries left
-    subsequent_entries = db.query(models.Entry).filter(models.Entry.journal_id == journal_id, models.Entry.page_number > page_num).all()
+    subsequent_entries = (
+        db.query(models.Entry)
+        .filter(
+            models.Entry.journal_id == journal_id, models.Entry.page_number > page_num
+        )
+        .all()
+    )
     for subsequent_entry in subsequent_entries:
         subsequent_entry.page_number -= 1
 
     db.commit()
 
-    return {"status": "success", "message": "Entry deleted and entries shifted successfully"}
+    return {
+        "status": "success",
+        "message": "Entry deleted and entries shifted successfully",
+    }
+
 
 @router.delete("/delete_journal")
 def delete_journal(auth_token: str, journal_id: int, db: Session = Depends(get_db)):
@@ -88,12 +116,16 @@ def delete_journal(auth_token: str, journal_id: int, db: Session = Depends(get_d
     user_email = verify_token(auth_token)
 
     # Check if the journal belongs to the user
-    journal = db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    journal = (
+        db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    )
     if not journal:
         raise HTTPException(status_code=404, detail="Journal not found")
 
     if journal.user.email != user_email:
-        raise HTTPException(status_code=403, detail="Not authorized to access this journal")
+        raise HTTPException(
+            status_code=403, detail="Not authorized to access this journal"
+        )
 
     # Delete all entries in the journal
     db.query(models.Entry).filter(models.Entry.journal_id == journal_id).delete()
@@ -102,7 +134,11 @@ def delete_journal(auth_token: str, journal_id: int, db: Session = Depends(get_d
     db.delete(journal)
     db.commit()
 
-    return {"status": "success", "message": "Journal and its entries deleted successfully"}
+    return {
+        "status": "success",
+        "message": "Journal and its entries deleted successfully",
+    }
+
 
 @router.delete("/delete_group")
 def delete_group(group_id: int, db: Session = Depends(get_db)):
@@ -114,7 +150,9 @@ def delete_group(group_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Group not found")
 
     # Set group_id to NULL for all journals in the group
-    journals = db.query(models.Journal).filter(models.Journal.group_id == group_id).all()
+    journals = (
+        db.query(models.Journal).filter(models.Journal.group_id == group_id).all()
+    )
     for journal in journals:
         journal.group_id = None
 
@@ -122,4 +160,7 @@ def delete_group(group_id: int, db: Session = Depends(get_db)):
     db.delete(group)
     db.commit()
 
-    return {"status": "success", "message": "Group deleted and journals unlinked successfully"}
+    return {
+        "status": "success",
+        "message": "Group deleted and journals unlinked successfully",
+    }

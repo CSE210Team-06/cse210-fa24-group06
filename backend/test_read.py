@@ -12,8 +12,7 @@ client = TestClient(app)
 def login_user():
     """Fixture to login and fetch the auth token."""
     response = client.post(
-        "/login",
-        json={"email": "user@example.com", "password": "string"}
+        "/login", json={"email": "user@example.com", "password": "string"}
     )
     assert response.status_code == 200
     response_data = response.json()
@@ -54,10 +53,15 @@ def test_read_entries_success(login_user, mock_db_session):
     mock_journal.journal_id = 1
     mock_journal.user.email = "user@example.com"
 
-    mock_db_session.query.return_value.filter.return_value.first.side_effect = [mock_entry, mock_journal]
+    mock_db_session.query.return_value.filter.return_value.first.side_effect = [
+        mock_entry,
+        mock_journal,
+    ]
 
     # Call the endpoint
-    response = client.get("/read/read_entries", params={"auth_token": auth_token, "entry_id": entry_id})
+    response = client.get(
+        "/read/read_entries", params={"auth_token": auth_token, "entry_id": entry_id}
+    )
 
     # Verify the response
     assert response.status_code == 200
@@ -76,7 +80,9 @@ def test_read_entries_not_found(login_user, mock_db_session):
     mock_db_session.query.return_value.filter.return_value.first.return_value = None
 
     # Call the endpoint
-    response = client.get("/read/read_entries", params={"auth_token": auth_token, "entry_id": entry_id})
+    response = client.get(
+        "/read/read_entries", params={"auth_token": auth_token, "entry_id": entry_id}
+    )
 
     # Verify the response
     assert response.status_code == 404
@@ -98,11 +104,18 @@ def test_read_journal_success(login_user, mock_db_session):
         MagicMock(entry_id=2, entry_text="Second entry"),
     ]
 
-    mock_db_session.query.return_value.filter.return_value.first.return_value = mock_journal
-    mock_db_session.query.return_value.filter.return_value.all.return_value = mock_entries
+    mock_db_session.query.return_value.filter.return_value.first.return_value = (
+        mock_journal
+    )
+    mock_db_session.query.return_value.filter.return_value.all.return_value = (
+        mock_entries
+    )
 
     # Call the endpoint
-    response = client.get("/read/read_journal", params={"auth_token": auth_token, "journal_id": journal_id})
+    response = client.get(
+        "/read/read_journal",
+        params={"auth_token": auth_token, "journal_id": journal_id},
+    )
 
     # Verify the response
     assert response.status_code == 200
@@ -125,10 +138,15 @@ def test_read_journal_not_authorized(login_user, mock_db_session):
     mock_journal.journal_id = journal_id
     mock_journal.user.email = "another@example.com"
 
-    mock_db_session.query.return_value.filter.return_value.first.return_value = mock_journal
+    mock_db_session.query.return_value.filter.return_value.first.return_value = (
+        mock_journal
+    )
 
     # Call the endpoint
-    response = client.get("/read/read_journal", params={"auth_token": auth_token, "journal_id": journal_id})
+    response = client.get(
+        "/read/read_journal",
+        params={"auth_token": auth_token, "journal_id": journal_id},
+    )
 
     # Verify the response
     assert response.status_code == 403
@@ -146,11 +164,16 @@ def test_read_journal_no_entries(login_user, mock_db_session):
     mock_journal.user.email = "user@example.com"
 
     # Mock empty entries
-    mock_db_session.query.return_value.filter.return_value.first.return_value = mock_journal
+    mock_db_session.query.return_value.filter.return_value.first.return_value = (
+        mock_journal
+    )
     mock_db_session.query.return_value.filter.return_value.all.return_value = []
 
     # Call the endpoint
-    response = client.get("/read/read_journal", params={"auth_token": auth_token, "journal_id": journal_id})
+    response = client.get(
+        "/read/read_journal",
+        params={"auth_token": auth_token, "journal_id": journal_id},
+    )
 
     # Verify the response
     assert response.status_code == 200

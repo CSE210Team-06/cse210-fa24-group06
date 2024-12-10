@@ -4,18 +4,20 @@ from unittest.mock import MagicMock, patch
 from backend.main import app
 from backend.db import models
 from backend.routers import create_apis
+
 client = TestClient(app)
+
 
 @pytest.fixture
 def login_user():
     """Fixture to login and fetch the auth token."""
     response = client.post(
-        "/login",
-        json={"email": "user@example.com", "password": "string"}
+        "/login", json={"email": "user@example.com", "password": "string"}
     )
     assert response.status_code == 200
     response_data = response.json()
     return response_data["access_token"]
+
 
 @pytest.fixture
 def mock_db_session():
@@ -24,6 +26,7 @@ def mock_db_session():
         db = MagicMock()
         mock_session.return_value = db
         yield db
+
 
 @pytest.fixture
 def mock_user(mock_db_session):
@@ -36,6 +39,7 @@ def mock_user(mock_db_session):
     mock_db_session.query.return_value.filter_by.return_value.first.return_value = user
     return user
 
+
 @pytest.fixture
 def mock_create_journal():
     """Fixture to mock the create_journal function."""
@@ -45,9 +49,10 @@ def mock_create_journal():
             "journal_id": 21,
             "journal_title": "1",
             "created_at": "2024-12-09 15:34:06",
-            "updated_at": "2024-12-09 15:34:06"
+            "updated_at": "2024-12-09 15:34:06",
         }
         yield mock_create
+
 
 @pytest.fixture
 def mock_journals(mock_db_session, mock_user):
@@ -59,7 +64,6 @@ def mock_journals(mock_db_session, mock_user):
     journal.updated_at = "2024-12-09 15:34:06"
 
     mock_db_session.query.return_value.filter.return_value.all.return_value = [journal]
-
 
 
 @pytest.fixture
@@ -84,10 +88,7 @@ def test_get_user_details_success(login_user):
     """Test the get_user_details endpoint."""
     auth_token = login_user
 
-    response = client.get(
-        "/get_user/user_details",
-        params={"auth_token": auth_token}
-    )
+    response = client.get("/get_user/user_details", params={"auth_token": auth_token})
 
     # Verify the response
     assert response.status_code == 200
@@ -98,6 +99,7 @@ def test_get_user_details_success(login_user):
     assert response_data["last_name"] == "string"
     assert response_data["email"] == "user@example.com"
 
+
 def test_create_and_read_journal(login_user, mock_create_journal, mock_journals):
     """Test creating a journal and then reading it."""
     auth_token = login_user
@@ -105,8 +107,7 @@ def test_create_and_read_journal(login_user, mock_create_journal, mock_journals)
 
     # Call the create_journal function
     response = create_apis.create_journal(
-        auth_token=auth_token,
-        journal_title=journal_title
+        auth_token=auth_token, journal_title=journal_title
     )
     # print(response)
     # Verify the response
@@ -115,20 +116,17 @@ def test_create_and_read_journal(login_user, mock_create_journal, mock_journals)
     assert response["journal_title"] == "1"
 
     # Read the journals for the user
-    response2 = client.get(
-        "/get_user/user_journals",
-        params={"auth_token": auth_token}
-    )
+    response2 = client.get("/get_user/user_journals", params={"auth_token": auth_token})
 
     # Extract the JSON content
     response_data = response2.json()
     # print(response_data)
 
-
     # Verify the response
     assert response_data["status"] == "success"
     assert response_data["journals"][0]["journal_id"] == response["journal_id"]
     assert response_data["journals"][0]["journal_title"] == response["journal_title"]
+
 
 def test_create_and_read_entry(login_user, mock_journals):
     """Test creating an entry and then reading it."""
@@ -142,8 +140,8 @@ def test_create_and_read_entry(login_user, mock_journals):
         params={
             "auth_token": auth_token,
             "journal_id": journal_id,
-            "entry_text": entry_text
-        }
+            "entry_text": entry_text,
+        },
     )
 
     # Verify the creation response
@@ -157,9 +155,8 @@ def test_create_and_read_entry(login_user, mock_journals):
     # Read the entries for the journal
     read_response = client.get(
         "/get_user/journal_entries",
-        params={"auth_token": auth_token, "journal_id": journal_id}
+        params={"auth_token": auth_token, "journal_id": journal_id},
     )
-
 
     # Verify the reading response
     assert read_response.status_code == 200
@@ -168,4 +165,3 @@ def test_create_and_read_entry(login_user, mock_journals):
     assert read_data["status"] == "success"
     assert len(read_data["entries"]) > 0  # Ensure the entry exists
     assert read_data["entries"][-1]["entry_text"] == entry_text
-

@@ -16,9 +16,7 @@ def get_db():
 
 
 @router.get("/read_entries")
-def read_entries(
-    auth_token: str, journal_id: int, page_number: int, db: Session = Depends(get_db)
-):
+def read_entries(auth_token: str, entry_id: int, db: Session = Depends(get_db)):
     """
     Retrieve the text of a specific journal entry by entry_id.
     """
@@ -26,14 +24,7 @@ def read_entries(
     user_email = verify_token(auth_token)
 
     # Find the entry by entry_id
-    db_entry = (
-        db.query(models.Entry)
-        .filter(
-            models.Entry.journal_id == journal_id,
-            models.Entry.page_number == page_number,
-        )
-        .first()
-    )
+    db_entry = db.query(models.Entry).filter(models.Entry.entry_id == entry_id).first()
     if not db_entry:
         raise HTTPException(status_code=404, detail="Entry not found")
 
@@ -78,8 +69,38 @@ def read_journal(auth_token: str, journal_id: int, db: Session = Depends(get_db)
         return {"status": "success", "message": "No entries found for this journal"}
 
     result = [
-        {"entry_id": entry.entry_id, "entry_text": entry.entry_text}
+        {
+            "entry_id": entry.entry_id,
+            "entry_text": entry.entry_text,
+            "journal_title": db_journal.journal_title,
+        }
         for entry in entries
     ]
-
+    print(result)
     return {"status": "success", "entries": result}
+
+
+@router.get("/read_group")
+def read_group(auth_token: str, group_id: int, db: Session = Depends(get_db)):
+    """
+    Retrieve all journals associated with a group via group_id.
+    """
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # Query the database for all journals with a specific group id
+    db_journals = (
+        db.query(models.Journal).filter(models.Journal.group_id == group_id).all()
+    )
+    if not db_journals:
+        raise HTTPException(status_code=404, detail="Group is empty or does not exist")
+
+    # Check if the user is the owner of the group
+    if db_journals.user.email != user_email:
+        raise HTTPException(
+            status_code=403, detail="Not authorized to access this group"
+        )
+
+    # Return the list of journal ids
+    result = [{"journal_id": journal.journal_id} for journal in db_journals]
+    return {"status": "success", "journals": result}
