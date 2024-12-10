@@ -2,19 +2,22 @@
 
 # CodeChronicle
 
-### cse210-fa24-group06
+## cse210-fa24-group06
 
 ## Mission Statement
+
 Software development involves a continuous flow of tasks, ideas, and technical solutions that often get scattered across multiple tools or become difficult to retrieve over time. Developers frequently need to keep track of work sessions, code snippets, and notes on project progress, but traditional journaling or task management tools are not tailored to address these specific needs. Current solutions are too complex, which introduces decision fatigue. This leaves developers overwhelmed as they need to navigate a steep learning curve and spend time configuring tools instead of focussing on their core tasks. Other simple solutions in general lack streamlined integration with developer workflows, particularly with code management, task prioritization, and knowledge retrieval. As a result, developers struggle to efficiently organize, reflect on, and recall essential information that could drive more informed decision-making and productive work habits.
 
 CodeChronicle aims to create a simple journal for developers, a specialized tool designed to meet the unique needs of software developers. CodeChronicle is an intuitive platform where developers can document their tasks, ideas, code snippets, and self-reflections. By offering features like searchable tags, secure storage for sensitive information, and context aware question answering, this journal aims to bridge the gap between comprehensive task, project and code management while maintaining the intuitiveness of a notebook.
 
 ## How to Install and Run the Journal
+
 1. Clone the repository `git clone https://github.com/CSE210Team-06/cse210-fa24-group06.git`
 2. Install dependencies `npm install`
 3. Start the local host `npm start`
 
 ## Using CodeChronicle
+
 Upon first running the tool you will encounter the landing page.
 ![home](images/home.png)
 Sign in or register.
@@ -23,14 +26,17 @@ Once you have an account, or you're signed in, you'll be directed to the journal
 ![journal](images/journal.png)
 
 ## Contributing
+
 Contributions are welcome! Please fork the repository and create a pull request.
 
 ## Contact
+
 Maintainer: Sushaanth Srinivasan
 
 Email: <s6srinivasan@ucsd.edu>
 
 ## License
+
 This project is licensed under the MIT License. 
 Copyright 2024, cse210-fa24-group06
 
