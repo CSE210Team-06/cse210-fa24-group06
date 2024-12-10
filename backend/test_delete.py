@@ -1,3 +1,5 @@
+import sys
+sys.path.append('./')
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import MagicMock, patch
@@ -6,12 +8,26 @@ from backend.db import models
 
 client = TestClient(app)
 
+# Centralized test data needs to be hardcoded
+TEST_DATA = {
+    "user": {
+        "email": "user@example.com",
+        "password": "string",
+    },
+    "journal": {
+        "journal_id": 23,
+        "page_num": 0,
+    },
+    "group": {
+        "group_id": 6,
+    },
+}
 
 @pytest.fixture
 def login_user():
     """Fixture to login and fetch the auth token."""
     response = client.post(
-        "/login", json={"email": "user@example.com", "password": "string"}
+        "/login", json={"email": TEST_DATA["user"]["email"], "password": TEST_DATA["user"]["password"]}
     )
     assert response.status_code == 200
     response_data = response.json()
@@ -30,12 +46,12 @@ def mock_db_session():
 def test_delete_entry_success(login_user, mock_db_session):
     """Test the /delete_entry endpoint."""
     auth_token = login_user
-    journal_id = 21
-    page_num = 0
+    journal_id = TEST_DATA["journal"]["journal_id"]
+    page_num = TEST_DATA["journal"]["page_num"]
 
     # Create and delete a mock journal
     mock_journal = MagicMock()
-    mock_journal.user.email = "user@example.com"
+    mock_journal.user.email = TEST_DATA["user"]["email"]
     mock_db_session.query.return_value.filter.return_value.first.side_effect = [
         mock_journal
     ]
@@ -68,11 +84,11 @@ def test_delete_entry_success(login_user, mock_db_session):
 def test_delete_journal_success(login_user, mock_db_session):
     """Test the /delete_journal endpoint."""
     auth_token = login_user
-    journal_id = 21
+    journal_id = TEST_DATA["journal"]["journal_id"]
 
     # Create and delete a mock journal
     mock_journal = MagicMock()
-    mock_journal.user.email = "user@example.com"
+    mock_journal.user.email = TEST_DATA["user"]["email"]
     mock_db_session.query.return_value.filter.return_value.first.return_value = (
         mock_journal
     )
@@ -91,7 +107,7 @@ def test_delete_journal_success(login_user, mock_db_session):
 
 def test_delete_group_success(mock_db_session):
     """Test the /delete_group endpoint."""
-    group_id = 7
+    group_id = TEST_DATA["group"]["group_id"]
 
     # Create and delete a mock group
     mock_group = MagicMock()
@@ -117,7 +133,7 @@ def test_delete_user_success(login_user, mock_db_session):
 
     # Create and delete a mock user
     mock_user = MagicMock()
-    mock_user.email = "user@example.com"
+    mock_user.email = TEST_DATA["user"]["email"]
     mock_db_session.query.return_value.filter.return_value.first.return_value = (
         mock_user
     )
