@@ -28,9 +28,15 @@ def read_entries(auth_token: str, entry_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Entry not found")
 
     # Check if the user owns the journal the entry belongs to
-    db_journal = db.query(models.Journal).filter(models.Journal.journal_id == db_entry.journal_id).first()
+    db_journal = (
+        db.query(models.Journal)
+        .filter(models.Journal.journal_id == db_entry.journal_id)
+        .first()
+    )
     if not db_journal or db_journal.user.email != user_email:
-        raise HTTPException(status_code=403, detail="Not authorized to access this entry")
+        raise HTTPException(
+            status_code=403, detail="Not authorized to access this entry"
+        )
 
     return {"status": "success", "entry_text": db_entry.entry_text}
 
@@ -44,23 +50,35 @@ def read_journal(auth_token: str, journal_id: int, db: Session = Depends(get_db)
     user_email = verify_token(auth_token)
 
     # Find the journal by journal_id and check ownership
-    db_journal = db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    db_journal = (
+        db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    )
+    
     if not db_journal:
         raise HTTPException(status_code=404, detail="Journal not found")
 
     if db_journal.user.email != user_email:
-        raise HTTPException(status_code=403, detail="Not authorized to access this journal")
+        raise HTTPException(
+            status_code=403, detail="Not authorized to access this journal"
+        )
 
     # Retrieve all entries for the journal
     entries = db.query(models.Entry).filter(models.Entry.journal_id == journal_id).all()
 
     if not entries:
         return {"status": "success", "message": "No entries found for this journal"}
-
-    result = [{"entry_id": entry.entry_id, "entry_text": entry.entry_text} for entry in entries]
-
+    
+    result = [
+        {
+            "entry_id": entry.entry_id,
+            "entry_text": entry.entry_text,
+            "journal_title": db_journal.journal_title,
+        }
+        for entry in entries
+    ]
+    print(result)
     return {"status": "success", "entries": result}
-
+ 
 @router.get("/get_journals_by_tags")
 def read_journal_by_tags(auth_token: str, tag_id: int, db: Session = Depends(get_db)):
     """
@@ -88,10 +106,11 @@ def get_tags_by_journal(auth_token: str, journal_id: int, db: Session = Depends(
     """
     Retrieves all tags for a specific journal by journal_id
     """
+    
     # Verify the token and get the email
     user_email = verify_token(auth_token)
-
-    # Check if journal exists, and if we have permission to read it
+    
+     # Check if journal exists, and if we have permission to read it
     db_journal = db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
     if not db_journal:
         raise HTTPException(status_code=404, detail="Journal not found")
@@ -138,5 +157,28 @@ def get_all_tags(auth_token: str, db: Session = Depends(get_db)):
     
     result = [{"tag_id": tag.tag_id, "tag_name": tag.tag_name} for tag in tags]
     return {"status": "success", "tags": result}
+    
+@router.get("/read_group")
+def read_group(auth_token: str, group_id: int, db: Session = Depends(get_db)):
+    """
+    Retrieve all journals associated with a group via group_id.
+    """
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+    
+    # Query the database for all journals with a specific group id
+    db_journals = (
+        db.query(models.Journal).filter(models.Journal.group_id == group_id).all()
+    )
+    if not db_journals:
+        raise HTTPException(status_code=404, detail="Group is empty or does not exist")
 
+    # Check if the user is the owner of the group
+    if db_journals.user.email != user_email:
+        raise HTTPException(
+            status_code=403, detail="Not authorized to access this group"
+        )
 
+    # Return the list of journal ids
+    result = [{"journal_id": journal.journal_id} for journal in db_journals]
+    return {"status": "success", "journals": result}

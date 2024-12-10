@@ -9,6 +9,7 @@ fake = Faker()
 # Create a database session
 session = Session(engine)
 
+
 # Generate fake data for the Group table
 def create_fake_groups(n=5):
     for _ in range(n):
@@ -16,22 +17,25 @@ def create_fake_groups(n=5):
             group_name=fake.company(),
             group_desc=fake.text(max_nb_chars=100),
             created_at=fake.date_time_this_year().isoformat(),
-            updated_at=fake.date_time_this_year().isoformat()
+            updated_at=fake.date_time_this_year().isoformat(),
         )
         session.add(group)
     session.commit()
 
     # Generate fake data for the User table
+
+
 def create_fake_users(n=10):
     for _ in range(n):
         user = User(
             first_name=fake.first_name(),
             last_name=fake.last_name(),
             email=fake.unique.email(),
-            password=fake.password(length=12)
+            password=fake.password(length=12),
         )
         session.add(user)
     session.commit()
+
 
 # Generate fake data for the Journal table
 def create_fake_journals(n=20):
@@ -43,10 +47,11 @@ def create_fake_journals(n=20):
             journal_title=fake.sentence(nb_words=6),
             created_at=fake.date_time_this_year().isoformat(),
             updated_at=fake.date_time_this_year().isoformat(),
-            user_id=random.choice(users).user_id if users else None
+            user_id=random.choice(users).user_id if users else None,
         )
         session.add(journal)
     session.commit()
+
 
 # Generate fake data for the Entry table
 def create_fake_entries(n=50):
@@ -58,12 +63,13 @@ def create_fake_entries(n=50):
                 journal_id=journal.journal_id,
                 entry_text=fake.text(max_nb_chars=200),
                 word_count=random.randint(50, 500),
-                page_number=random.randint(1, 10)
+                page_number=random.randint(1, 10),
             )
             session.add(entry)
     session.commit()
 
     # Run the functions to populate
+
 
 def populate_database():
     print("Creating fake groups...")
@@ -76,6 +82,7 @@ def populate_database():
     create_fake_entries(50)
     print("Database successfully populated with fake data!")
 
+
 if __name__ == "__main__":
     # Ensure all tables exist
     Base.metadata.create_all(bind=engine)
@@ -85,4 +92,3 @@ if __name__ == "__main__":
 
     # Close the session
     session.close()
-
