@@ -14,7 +14,7 @@ Base = declarative_base()
 '''
 Table to enable many-to-many relationship between Tag and Journal
 '''
-journals_and_tags = Table('journals_and_tags', 
+journals_and_tags = Table('journals_and_tags',
     Base.metadata,
     Column('journal_id', Integer, ForeignKey('journal.journal_id')),
     Column('tag_id', Integer, ForeignKey('tag.tag_id'))

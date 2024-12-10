@@ -128,7 +128,7 @@ def create_entry(
     db.add(new_entry)
     db.commit()
     db.refresh(new_entry)
-    
+
     return {
         "status": "success",
         "entry_id": new_entry.entry_id,
@@ -140,7 +140,7 @@ def create_entry(
 @router.post("/create_tag")
 def create_tag(auth_token: str, tag_name: str, db: Session = Depends(get_db)):
     # Verify the token and get the email
-    user_email = verify_token(auth_token)
+    #user_email = verify_token(auth_token)
 
     # Create a new tag entry
     new_tag = models.Tag(tag_name=tag_name)

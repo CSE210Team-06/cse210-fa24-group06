@@ -53,7 +53,7 @@ def read_journal(auth_token: str, journal_id: int, db: Session = Depends(get_db)
     db_journal = (
         db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
     )
-    
+
     if not db_journal:
         raise HTTPException(status_code=404, detail="Journal not found")
 
@@ -86,7 +86,7 @@ def read_journal_by_tags(auth_token: str, tag_id: int, db: Session = Depends(get
     NOTE: This method retrieves just the journal ids; to retrieve the entries, use the /read_journal endpoint for each journal_id.
     """
     # Verify the token and get the email
-    user_email = verify_token(auth_token)
+    #user_email = verify_token(auth_token)
 
     # Check if tag exists
     db_tag = db.query(models.Tag).filter(models.Tag.tag_id == tag_id).first()
@@ -110,7 +110,7 @@ def get_tags_by_journal(auth_token: str, journal_id: int, db: Session = Depends(
     # Verify the token and get the email
     user_email = verify_token(auth_token)
     
-     # Check if journal exists, and if we have permission to read it
+    # Check if journal exists, and if we have permission to read it
     db_journal = db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
     if not db_journal:
         raise HTTPException(status_code=404, detail="Journal not found")

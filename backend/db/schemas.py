@@ -89,7 +89,7 @@ class EntryBase(BaseModel):
 
     class Config:
         orm_mode = True
-    
+
 class TagBase(BaseModel):
     tag_id: Optional[int] = None # PK
     tag_name: str
@@ -121,10 +121,10 @@ class EntryCreate(BaseModel):
 class TagCreate(BaseModel):
     tag_name: str
 
-'''
+""""
 These classes represent the actual data of the items.
 Empty for now because they inherit all necessary info from the BaseModels
-'''
+"""
 
 class Journal(JournalBase):
     pass

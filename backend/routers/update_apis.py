@@ -136,7 +136,7 @@ def update_tag_name(auth_token: str, tag_id: int, new_name: str, db: Session = D
     '''
 
     # Verify the token and get the email
-    user_email = verify_token(auth_token)
+    #user_email = verify_token(auth_token)
 
     # Find the tag by tag_id
     db_tag = db.query(models.Tag).filter(models.Tag.tag_id == tag_id).first()
@@ -171,7 +171,7 @@ def add_tag_to_journal(auth_token: str, journal_id: int, tag_id: int, db: Sessio
     db.execute(new_entry)
     db.commit()
 
-    # Return status 
+    # Return status
     return {"status": "success", "message": "Tag added to journal successfully"}
 
 @router.patch("/delete_tag_from_journal")

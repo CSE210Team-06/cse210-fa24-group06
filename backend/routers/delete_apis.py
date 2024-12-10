@@ -159,7 +159,7 @@ def delete_group(group_id: int, db: Session = Depends(get_db)):
     # Delete the group
     db.delete(group)
     db.commit()
-    
+
     return {
         "status": "success",
         "message": "Group deleted and journals unlinked successfully",
