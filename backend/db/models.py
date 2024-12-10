@@ -1,15 +1,24 @@
-"""
-Stores SQLAlchemy models for database schema
-"""
 
-from sqlalchemy import Column, Integer, String, ForeignKey, create_engine, Index
+'''
+Stores SQLAlchemy models for database schema
+'''
+from sqlalchemy import Column, Integer, String, ForeignKey, create_engine, Index, Table
+
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import datetime, timezone
 from sqlalchemy.orm import relationship
 
-
 Base = declarative_base()
+
+'''
+Table to enable many-to-many relationship between Tag and Journal
+'''
+journals_and_tags = Table('journals_and_tags',
+    Base.metadata,
+    Column('journal_id', Integer, ForeignKey('journal.journal_id')),
+    Column('tag_id', Integer, ForeignKey('tag.tag_id'))
+)
 
 
 class Journal(Base):
@@ -33,6 +42,9 @@ class Journal(Base):
     # Relationship to User (Many-to-One)
     user_id = Column(Integer, ForeignKey("user.user_id"))
     user = relationship("User", back_populates="journals")
+
+    # Relationship to Tag (Many-to-Many)
+    tags = relationship("Tag", secondary=journals_and_tags, back_populates="journals")
 
 
 # Group Model
@@ -87,7 +99,15 @@ class Entry(Base):
     )
 
 
-# because DB handles this
+# Tag Model
+class Tag(Base):
+    __tablename__ = 'tag'
+
+    tag_id = Column(Integer, primary_key=True, index=True)  # PK
+    tag_name = Column(String, nullable=False, unique=True)
+
+    # Relationship to Journal (Many-to-Many)
+    journals = relationship("Journal", secondary="journals_and_tags", back_populates="tags")
 
 # Create the DB
 DATABASE_URL = "sqlite:///./journaler.db"

@@ -128,3 +128,64 @@ def update_journal(
     db.refresh(db_journal)
 
     return {"status": "success", "updated_journal_title": db_journal.journal_title}
+
+@router.patch("/update_tag_name")
+def update_tag_name(auth_token: str, tag_id: int, new_name: str, db: Session = Depends(get_db)):
+    '''
+    Updates the name of a tag with the given tag_id.
+    '''
+
+    # Verify the token and get the email
+    #user_email = verify_token(auth_token)
+
+    # Find the tag by tag_id
+    db_tag = db.query(models.Tag).filter(models.Tag.tag_id == tag_id).first()
+    if not db_tag:
+        raise HTTPException(status_code=404, detail="Tag not found")
+
+    # Update the tag name
+    db_tag.tag_name = new_name
+    db.commit()
+    db.refresh(db_tag)
+
+    return {"status": "success", "updated_tag_name": db_tag.tag_name}
+
+@router.patch("/add_tag_to_journal")
+def add_tag_to_journal(auth_token: str, journal_id: int, tag_id: int, db: Session = Depends(get_db)):
+    '''
+    Adds a tag to a journal by creating a new entry in the journals_and_tags table.
+    '''
+
+    # Verify the token and get the email
+    #user_email = verify_token(auth_token)
+
+    # Verify that the tag still exists
+    db_tag = db.query(models.Tag).filter(models.Tag.tag_id == tag_id).first()
+    if not db_tag:
+        raise HTTPException(status_code=404, detail="Tag not found")
+
+    # Create a new entry in the journals_and_tags table
+    new_entry = models.journals_and_tags.insert().values(journal_id=journal_id, tag_id=tag_id)
+
+    # Execute the query
+    db.execute(new_entry)
+    db.commit()
+
+    # Return status
+    return {"status": "success", "message": "Tag added to journal successfully"}
+
+@router.patch("/delete_tag_from_journal")
+def delete_tag_from_journal(auth_token: str, journal_id: int, tag_id: int, db: Session = Depends(get_db)):
+    '''
+    Deletes a tag from a journal by deleting the entry in the journals_and_tags table.
+    '''
+
+    # Verify the token and get the email
+    #user_email = verify_token(auth_token)
+
+    # Delete the entry in the journals_and_tags table
+    db.execute(models.journals_and_tags.delete().where(models.journals_and_tags.c.journal_id == journal_id).where(models.journals_and_tags.c.tag_id == tag_id))
+    db.commit()
+
+    # Return status
+    return {"status": "success", "message": "Tag deleted from journal successfully"}

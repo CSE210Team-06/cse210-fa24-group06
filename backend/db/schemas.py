@@ -5,6 +5,9 @@ Helps validate requests and responses to and from the database.
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
 from datetime import datetime, timezone
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
 
 """
 BaseModels are used to validate the request body of some requests.
@@ -87,6 +90,13 @@ class EntryBase(BaseModel):
     class Config:
         orm_mode = True
 
+class TagBase(BaseModel):
+    tag_id: Optional[int] = None # PK
+    tag_name: str
+
+    class Config:
+        orm_mode = True
+
 
 """
 These classes are used to create new items via API request.
@@ -108,12 +118,12 @@ class EntryCreate(BaseModel):
     journal_id: int
     entry_text: str
 
+class TagCreate(BaseModel):
+    tag_name: str
 
-"""
-These classes represent the actual data of the items.
-Empty for now because they inherit all necessary info from the BaseModels
-"""
 
+#These classes represent the actual data of the items.
+#Empty for now because they inherit all necessary info from the BaseModels
 
 class Journal(JournalBase):
     pass

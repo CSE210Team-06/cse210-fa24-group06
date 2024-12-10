@@ -164,3 +164,22 @@ def delete_group(group_id: int, db: Session = Depends(get_db)):
         "status": "success",
         "message": "Group deleted and journals unlinked successfully",
     }
+
+@router.delete("/delete_tag")
+def delete_tag(tag_id: int, db: Session = Depends(get_db)):
+    """
+    Deletes a tag and removes it from all journals.
+    """
+    tag = db.query(models.Tag).filter(models.Tag.tag_id == tag_id).first()
+    if not tag:
+        raise HTTPException(status_code=404, detail="Tag not found")
+
+    # Remove the tag from all journals
+    db.query(models.journals_and_tags).filter(models.journals_and_tags.c.tag_id == tag_id).delete()
+
+    # Delete the tag
+    db.delete(tag)
+    db.commit()
+
+    return {"status": "success", "message": "Tag deleted and removed from journals successfully"}
+
