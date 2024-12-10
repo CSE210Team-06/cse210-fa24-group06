@@ -100,8 +100,7 @@ def get_tags_by_journal(auth_token: str, journal_id: int, db: Session = Depends(
         raise HTTPException(status_code=403, detail="Not authorized to access this journal")
     
     # Find all tags for the journal
-    #tags = db.query(models.journals_and_tags).filter(models.journals_and_tags.c.journal_id == journal_id).all()
-    tags = db.query(models.journals_and_tags).all()
+    tags = db.query(models.journals_and_tags).filter(models.journals_and_tags.c.journal_id == journal_id).all()
     if not tags:
         return {"status": "success", "message": "No tags found for this journal"}
         #return db.query(models.Tag).all() #sanity check 

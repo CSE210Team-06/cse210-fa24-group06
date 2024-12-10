@@ -133,6 +133,11 @@ def add_tag_to_journal(auth_token: str, journal_id: int, tag_id: int, db: Sessio
     # Verify the token and get the email
     user_email = verify_token(auth_token)
 
+    # Verify that the tag still exists
+    db_tag = db.query(models.Tag).filter(models.Tag.tag_id == tag_id).first()
+    if not db_tag:
+        raise HTTPException(status_code=404, detail="Tag not found")
+
     # Create a new entry in the journals_and_tags table
     new_entry = models.journals_and_tags.insert().values(journal_id=journal_id, tag_id=tag_id)
 
