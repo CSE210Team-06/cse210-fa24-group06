@@ -62,7 +62,7 @@ def read_journal(auth_token: str, journal_id: int, db: Session = Depends(get_db)
     return {"status": "success", "entries": result}
 
 @router.get("/get_journals_by_tags")
-def read_journal_by_tags(auth_token: str, tag_id: str, db: Session = Depends(get_db)):
+def read_journal_by_tags(auth_token: str, tag_id: int, db: Session = Depends(get_db)):
     """
     Retrieve all entries for a specific journal by tag_id.
     NOTE: This method retrieves just the journal ids; to retrieve the entries, use the /read_journal endpoint for each journal_id.
@@ -84,7 +84,7 @@ def read_journal_by_tags(auth_token: str, tag_id: str, db: Session = Depends(get
     return {"status": "success", "journals": result}
 
 @router.get("/get_tags_by_journal")
-def get_tags_by_journal(auth_token: str, journal_id: str, db: Session = Depends(get_db)):
+def get_tags_by_journal(auth_token: str, journal_id: int, db: Session = Depends(get_db)):
     """
     Retrieves all tags for a specific journal by journal_id
     """
@@ -100,15 +100,17 @@ def get_tags_by_journal(auth_token: str, journal_id: str, db: Session = Depends(
         raise HTTPException(status_code=403, detail="Not authorized to access this journal")
     
     # Find all tags for the journal
-    tags = db.query(models.journals_and_tags).filter(models.journals_and_tags.c.journal_id == journal_id).all()
+    #tags = db.query(models.journals_and_tags).filter(models.journals_and_tags.c.journal_id == journal_id).all()
+    tags = db.query(models.journals_and_tags).all()
     if not tags:
         return {"status": "success", "message": "No tags found for this journal"}
+        #return db.query(models.Tag).all() #sanity check 
     
     result = [{"tag_id": tag.tag_id} for tag in tags]
     return {"status": "success", "tags": result}
 
 @router.get("/get_tag_name")
-def get_tag_name(auth_token: str, tag_id: str, db: Session = Depends(get_db)):
+def get_tag_name(auth_token: str, tag_id: int, db: Session = Depends(get_db)):
     """
     Retrieves the name of a tag by tag_id
     """

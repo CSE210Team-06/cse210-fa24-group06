@@ -136,6 +136,10 @@ def add_tag_to_journal(auth_token: str, journal_id: int, tag_id: int, db: Sessio
     # Create a new entry in the journals_and_tags table
     new_entry = models.journals_and_tags.insert().values(journal_id=journal_id, tag_id=tag_id)
 
+    # Execute the query
+    db.execute(new_entry)
+    db.commit()
+
     # Return status 
     return {"status": "success", "message": "Tag added to journal successfully"}
 
