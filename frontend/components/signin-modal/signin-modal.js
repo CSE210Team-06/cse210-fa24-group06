@@ -5,12 +5,12 @@ import { saveToSessionStorage } from "../../utils/utils.js";
 
 // Create a class for the element
 export class SigninModal extends HTMLElement {
-	constructor() {
-		super(); // Call the superclass constructor
-	}
+  constructor() {
+    super(); // Call the superclass constructor
+  }
 
-	connectedCallback() {
-		this.innerHTML = `
+  connectedCallback() {
+    this.innerHTML = `
         <style>
         .modal[open]::backdrop {
             backdrop-filter: blur(5px);
@@ -80,63 +80,63 @@ export class SigninModal extends HTMLElement {
             </form>
         </dialog>
       `;
-		const dialog = this.querySelector("dialog");
-		const closeButton = this.querySelector("#closeModal");
-		const formError = this.querySelector(".form_error");
-		const signinForm = document.getElementById("signin-form");
+    const dialog = this.querySelector("dialog");
+    const closeButton = this.querySelector("#closeModal");
+    const formError = this.querySelector(".form_error");
+    const signinForm = document.getElementById("signin-form");
 
-		// Close modal on button click
-		closeButton.addEventListener("click", () => {
-			formError.innerHTML = "";
-			formError.style.display = "hidden";
-			signinForm.reset();
-			dialog.close();
-			document.body.style.overflow = "";
-		});
+    // Close modal on button click
+    closeButton.addEventListener("click", () => {
+      formError.innerHTML = "";
+      formError.style.display = "hidden";
+      signinForm.reset();
+      dialog.close();
+      document.body.style.overflow = "";
+    });
 
-		// Open modal programmatically
-		this.addEventListener("open", () => {
-			dialog.showModal();
-			document.body.style.overflow = "hidden"; // Disable scrolling
-		});
+    // Open modal programmatically
+    this.addEventListener("open", () => {
+      dialog.showModal();
+      document.body.style.overflow = "hidden"; // Disable scrolling
+    });
 
-		signinForm.addEventListener("submit", async function (event) {
-			event.preventDefault(); // Prevent the default form submission
+    signinForm.addEventListener("submit", async function (event) {
+      event.preventDefault(); // Prevent the default form submission
 
-			// Create the dictionary from form inputs
-			const formData = {
-				email: document.getElementById("signin-email").value,
-				password: document.getElementById("signin-password").value,
-			};
+      // Create the dictionary from form inputs
+      const formData = {
+        email: document.getElementById("signin-email").value,
+        password: document.getElementById("signin-password").value,
+      };
 
-			// Send the data to the endpoint
-			try {
-				const response = await fetch(this.action, {
-					method: this.method,
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(formData),
-				});
+      // Send the data to the endpoint
+      try {
+        const response = await fetch(this.action, {
+          method: this.method,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
 
-				// Handle the response
-				if (response.ok) {
-					const data = await response.json();
-					saveToSessionStorage("accessToken", data.access_token);
-					// saveToSessionStorage("accessToken", response.json().accessToken);
-					
-					// navigate to the home page
-					window.location.href = "./pages/home/home.html";
-				} else {
-					return response.json().then((errorData) => {
-						formError.style.display = "block";
-						formError.innerHTML = `${errorData.detail}`;
-					});
-				}
-			} catch (error) {
-				// console.error("Error:", error);
-				window.alert("Error signing in. Please try again.", error);
-			}
-		});
-	}
+        // Handle the response
+        if (response.ok) {
+          const data = await response.json();
+          saveToSessionStorage("accessToken", data.access_token);
+          // saveToSessionStorage("accessToken", response.json().accessToken);
+
+          // navigate to the home page
+          window.location.href = "./pages/home/home.html";
+        } else {
+          return response.json().then((errorData) => {
+            formError.style.display = "block";
+            formError.innerHTML = `${errorData.detail}`;
+          });
+        }
+      } catch (error) {
+        // console.error("Error:", error);
+        window.alert("Error signing in. Please try again.", error);
+      }
+    });
+  }
 }

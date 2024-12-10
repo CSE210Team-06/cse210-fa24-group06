@@ -8,6 +8,7 @@ export default [
       globals: {
         ...globals.browser,
         ...globals.node,
+        EasyMDE: "readonly", // Declare easymde as a global variable
       },
     },
     rules: {

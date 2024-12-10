@@ -6,7 +6,8 @@ async function fetchUserProfile() {
   const userFirstNameElement = document.getElementById("user-first-name");
 
   if (!token) {
-    console.error("No access token found. Redirecting to sign-in.");
+    // console.error("No access token found. Redirecting to sign-in.");
+    window.alert("No access token found. Please sign in again.");
     window.location.href = "../../index.html";
     return;
   }
@@ -26,18 +27,17 @@ async function fetchUserProfile() {
 
     const userData = await response.json();
 
-
     userFirstNameElement.textContent = userData.first_name;
   } catch (error) {
-    console.error("Error fetching user profile:", error);
+    // console.error("Error fetching user profile:", error);
+    window.alert("Error fetching user profile. Please sign in again.", error);
+    window.location.href = "../../index.html";
     window.alert("Error loading user profile. Please sign in again.");
-    window.location.href = "../../index.html"; 
+    window.location.href = "../../index.html";
   }
 }
 
-
 window.addEventListener("DOMContentLoaded", fetchUserProfile);
-
 
 document.getElementById("Logout").addEventListener("click", () => {
   sessionStorage.removeItem("accessToken");

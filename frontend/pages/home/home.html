@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="../../styles/home.css" />
   </head>
   <body>
+    <div class="left-side-panel" id="side-panel">
+      <h3>Journals</h3>
+      <div id="journals-container" class="journals-container"></div>
+    </div>
     <header class="header">
       <h1 class="header__title">CodeChronicle</h1>
       <div class="header__button__group" id="user-profile">
@@ -21,43 +25,29 @@
         class="search-bar__input"
         type="text"
         placeholder="Search journals"
+        id="search-journals-input"
       />
-      <button class="search-bar__button">Search</button>
+      <!-- <button class="search-bar__button" id="search-journals-btn">
+				Search
+			</button> -->
+    </div>
+    <div>
+      <button id="create-journal-btn" class="navigate-button">
+        Create New Journal
+      </button>
+      <!-- <input type="text" id="journal-id" placeholder="Journal ID" />
+			<button id="edit-journal-btn" class="navigate-button">
+				Edit Existing Journal
+			</button> -->
+      <button id="secrets-btn" class="navigate-button">Secrets</button>
     </div>
     <section class="recent-journals" aria-labelledby="recent-journals-heading">
-      <div class="recent-journals-header">
-        <h2 id="recent-journals-heading" class="recent-journals__title">
-          Recent Journals
-        </h2>
-        <div class="recent-journal__button__group">
-          <button id="secrets-btn" class="api-button">Secrets</button>
-          <button id="create-journal-btn" class="create-button">
-            + Create
-          </button>
-        </div>
-      </div>
-      <div class="edit-journals">
-        <input
-          type="text"
-          id="journal-id"
-          class="journal-input"
-          placeholder="Journal ID"
-        />
-        <button id="edit-journal-btn" class="edit-button">Edit</button>
-      </div>
-      <ul class="recent-journals__list">
-        <li class="recent-journals__item">
-          <span class="recent-journal"> JavaScript Insights </span>
-        </li>
-        <li class="recent-journals__item">
-          <span class="recent-journal"> CSS Tricks Unveiled </span>
-        </li>
-        <li class="recent-journals__item">
-          <span class="recent-journal"> Modern Web Development </span>
-        </li>
-      </ul>
+      <h2 id="recent-journals-heading" class="recent-journals__title">
+        Journals
+      </h2>
+      <div class="searched-journals__list"></div>
     </section>
-    <script src="./home.js"></script>
-    <script type="module" src="./user-name.js"></script>
+    <script type="module" src="./home.js"></script>
+    <!-- <script type="module" src="./renderer.js"></script> -->
   </body>
 </html>
