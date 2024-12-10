@@ -1,23 +1,34 @@
-## Backend 
+## README 
 This README is intended for developers who wish to contribute to the backend or gain a deeper understanding of its functionality. The backend is responsible for managing journals, including their creation, retrieval, updating, and deletion through standard CRUD (Create, Read, Update, Delete) operations. Also included are methods responsible for other functionalities, such as encryption and search.
 
 The backend is built with FastAPI and uses SQLite as the database. Data validation for incoming requests is handled with Pydantic, while SQLAlchemy is used for interacting with the database through Python.
 
-## How to Start Developing
-Below are instructions on how to setup the development environment. For those who want to contribute to the project, create a branch from dev/backend.
+## Prerequisites
+* Python 3.8-3.12 
+* pip
+* A virtual environment manager (optional but recommended)
 
-1. `git clone https://github.com/CSE210Team-06/cse210-fa24-group06.git`
+## To Install CodeChronicle and View the Backend
+1. Clone the repository `git clone https://github.com/CSE210Team-06/cse210-fa24-group06.git`
 
-2. `git checkout dev/backend`
+2. Checkout the development brach`git checkout dev/backend`
 
-3. `cd backend`
+3. Navigate to the backend `cd backend`
 
-4. `pip install -r requirements.txt`
+4. Install dependencies `pip install -r requirements.txt`
 
 5. `uvicorn main:app --reload`
 
 ## Overview of 'backend' Folder
 The 'backend' folder contains all directories and scripts needed for backend functionality. The sections below explain the content in a high level. 
+
+## Running Tests
+Included inside the 'backend' folder are test files for testing the CRUD methods, along with a test database inside the 'test.db' file. These files were implemented using Pytest.
+
+To set up testing: 
+1. Install Pytest `pip install pytest`
+
+To run all files at once, navigate to the 'backend' folder in the terminal and call the command 'pytest .' To run a specific file, call 'pytest ./{TEST_FILE}'
 
 ## db
 The 'db' folder contains python scripts related to the app's database.
@@ -45,11 +56,6 @@ The 'routers' folder contains code handling CRUD method calls to the database.
 'rag_search.py' contains methods for the RAG (Retrieval Augmented Generation) model.
 
 'get_user.py' contains methods interacting with the database that have to do with users and their information.
-
-## Test Files
-
-Included inside the 'backend' folder are test files for testing the CRUD methods, along with a test database inside the 'test.db' file. These files were implemented using PyTest.
-To run all files at once, navigate to the 'backend' folder in the terminal and call the command 'pytest .' To run a specific file, call 'pytest ./{TEST_FILE}'
 
 ## journaler.db
 
