@@ -38,8 +38,9 @@ class Group(Base):
     updated_at = Column(String)
     user_id = Column(Integer, ForeignKey('user.user_id'), nullable=False, index=True) # FK references User.user_id 
 
-    # Relationship to User (One Group to Many Users)
-    user = relationship("User", back_populates="groups", cascade="all, delete-orphan")
+    # Relationship to User (Many Groups to One User)
+    user = relationship("User", back_populates="groups", cascade="all, delete-orphan", single_parent=True)
+
 
 # User Model
 class User(Base):
@@ -53,6 +54,9 @@ class User(Base):
 
     # Relationship to Journal (One-to-Many)
     journals = relationship("Journal", back_populates="user", cascade="all, delete-orphan")
+
+    # Relationship to Group (One-to-Many)
+    groups = relationship("Group", back_populates="user", cascade="all, delete-orphan")
 
 
 # Entry Model
