@@ -13,6 +13,14 @@ CodeChronicle aims to create a simple journal for developers, a specialized tool
 2. Install dependencies `npm install`
 3. Start the local host `npm start`
 
+## Using CodeChronicle
+Upon first running the tool you will encounter the landing page.
+![home](images/home.png)
+Sign in or register.
+![signin](images/signin.png)![register](images/register.png)
+Once you have an account, or you're signed in, you'll be directed to the journal's front page.
+![journal](images/journal.png)
+
 
 ## Contributing
 Contributions are welcome! Please fork the repository and create a pull request.
