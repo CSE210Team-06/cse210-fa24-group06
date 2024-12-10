@@ -1,5 +1,7 @@
 # README
+
 # CodeChronicle
+
 ### cse210-fa24-group06
 
 ## Mission Statement
@@ -8,7 +10,6 @@ Software development involves a continuous flow of tasks, ideas, and technical s
 CodeChronicle aims to create a simple journal for developers, a specialized tool designed to meet the unique needs of software developers. CodeChronicle is an intuitive platform where developers can document their tasks, ideas, code snippets, and self-reflections. By offering features like searchable tags, secure storage for sensitive information, and context aware question answering, this journal aims to bridge the gap between comprehensive task, project and code management while maintaining the intuitiveness of a notebook.
 
 ## How to Install and Run the Journal
-
 1. Clone the repository `git clone https://github.com/CSE210Team-06/cse210-fa24-group06.git`
 2. Install dependencies `npm install`
 3. Start the local host `npm start`
@@ -21,14 +22,13 @@ Sign in or register.
 Once you have an account, or you're signed in, you'll be directed to the journal's front page.
 ![journal](images/journal.png)
 
-
 ## Contributing
 Contributions are welcome! Please fork the repository and create a pull request.
 
 ## Contact
 Maintainer: Sushaanth Srinivasan
 
-Email: s6srinivasan@ucsd.edu
+Email: <s6srinivasan@ucsd.edu>
 
 ## License
 This project is licensed under the MIT License. 
@@ -39,4 +39,3 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
