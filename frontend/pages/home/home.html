@@ -59,6 +59,18 @@
         align-items: center;
         justify-content: center;
       }
+      .journal-group-select-container {
+        width: 300px;
+      }
+
+      select {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 2px solid #0073e6;
+        border-radius: 5px;
+        cursor: pointer;
+      }
     </style>
     <link rel="stylesheet" href="../../styles/styles.css" />
   </head>
@@ -91,6 +103,9 @@
       <h2 id="recent-journals-heading" class="recent-journals__title">
         Recent Journals
       </h2>
+      <div class="journal-group-select-container">
+        <select name="groups" id="journal-group-select"></select>
+      </div>
       <ul class="recent-journals__list">
         <li class="recent-journals__item">
           <span class="recent-journal"> JavaScript Insights </span>

@@ -1,0 +1,44 @@
+{
+  "groups": [
+    {
+      "id": 1,
+      "name": "Frontend Development",
+      "description": "Logs related to HTML, CSS, JavaScript, and UI design."
+    },
+    {
+      "id": 2,
+      "name": "Backend Systems",
+      "description": "Notes on server-side logic, databases, and APIs."
+    },
+    {
+      "id": 3,
+      "name": "DevOps Practices",
+      "description": "Insights into CI/CD pipelines, deployments, and monitoring."
+    },
+    {
+      "id": 4,
+      "name": "Personal Projects",
+      "description": "Journal entries for tracking progress on personal coding projects."
+    },
+    {
+      "id": 5,
+      "name": "Data Structures and Algorithms",
+      "description": "Study notes and challenges solved during practice."
+    },
+    {
+      "id": 6,
+      "name": "Learning Resources",
+      "description": "Summaries of tutorials, courses, and technical articles."
+    },
+    {
+      "id": 7,
+      "name": "Bug Fixes and Debugging",
+      "description": "Logs detailing issues encountered and their solutions."
+    },
+    {
+      "id": 8,
+      "name": "Team Projects",
+      "description": "Collaborative journal entries for group coding endeavors."
+    }
+  ]
+}
