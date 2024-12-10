@@ -1,28 +1,35 @@
-default_stages: [pre-commit, pre-push]
-repos:
-  - repo: https://github.com/psf/black
-    rev: 23.1.0 # Use the latest version
-    hooks:
-      - id: black
-        files: ^backend/ # Run only on the backend folder
-        stages: [pre-commit, pre-push]
-        
-  - repo: https://github.com/pycqa/flake8
-    rev: 6.0.0
-    hooks:
-      - id: flake8
-        files: ^backend/
-        stages: [pre-commit, pre-push]
+name: Code Quality Checks
 
-  # Fixed version of the pdoc check
-  - repo: local
-    hooks:
-      - id: pdoc-check
-        name: Check API documentation generation
-        entry: pdoc
-        language: python
-        files: ^backend/.*\.py$ # Match only Python files in the backend folder
-        exclude: 'backend/.*\.gitignore$|backend/.*\.md$' # Exclude non-Python files
-        stages: [pre-push]
-        additional_dependencies: ['pdoc']
-        args: ['.']
+on:
+  push:
+    branches: 
+      - "dev/backend"
+  pull_request:
+    branches: 
+      - "dev/backend"
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install black flake8 pdoc
+          if [ -f backend/requirements.txt ]; then pip install -r backend/requirements.txt; fi
+          
+      - name: Check Black formatting
+        run: black --check backend/
+        
+      - name: Run Flake8
+        run: flake8 backend/
+        
+      - name: Check Documentation
+        run: pdoc backend/ --check
