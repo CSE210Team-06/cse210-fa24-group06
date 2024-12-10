@@ -1,16 +1,16 @@
 :root {
-    /*colors - light mode*/
-    /* --bg-light: white;
+  /*colors - light mode*/
+  /* --bg-light: white;
     --theme-light: dodgerblue;
     --clickbutton-light: #0158ae;
     --text-light: white; */
-  
-    /*colors - dark mode*/
-    --bg-dark: #131313;
-    --theme-dark: #b46dd2;
-    --clickbutton-dark: rgb(149, 36, 198);
-    --border-dark: #e6b2fd;
-  }
+
+  /*colors - dark mode*/
+  --bg-dark: #131313;
+  --theme-dark: #b46dd2;
+  --clickbutton-dark: rgb(149, 36, 198);
+  --border-dark: #e6b2fd;
+}
 body {
   font-family: Arial, sans-serif;
   margin-left: 10%;
@@ -41,11 +41,10 @@ body {
   flex-shrink: 0;
   right: 0;
   position: absolute;
-  margin-left: 6%; 
+  margin-left: 6%;
   flex-direction: row;
 }
-.first-name{
-    
+.first-name {
 }
 .search-bar {
   display: flex;
@@ -97,33 +96,33 @@ body {
   align-items: flex-start;
   margin-top: 3%;
 }
-.recent-journal__button__group{
-    display: flex;
-    gap: 15px;
-    flex-shrink: 0;
-    margin-left: 6%; 
-    flex-direction: row;
+.recent-journal__button__group {
+  display: flex;
+  gap: 15px;
+  flex-shrink: 0;
+  margin-left: 6%;
+  flex-direction: row;
 }
-.api-button{
-    padding: 13px;
-    right: 0;
-    font-size: 1rem;
-    cursor: pointer;
-    background-color: var(--bg-dark);
-    color: var(--theme-dark);
-    border: 0.2vh solid var(--theme-dark);
-    border-radius: 30px;
-    width: 115px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+.api-button {
+  padding: 13px;
+  right: 0;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: var(--bg-dark);
+  color: var(--theme-dark);
+  border: 0.2vh solid var(--theme-dark);
+  border-radius: 30px;
+  width: 115px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 .api-button:active {
-    background-color: var(--theme-dark);
-    color: var(--text-dark);
-  }
+  background-color: var(--theme-dark);
+  color: var(--text-dark);
+}
 .recent-journals-header {
   display: flex;
   justify-content: space-between;
@@ -147,7 +146,7 @@ body {
   flex: 1;
   color: var(--bg-dark);
   font-weight: bold;
-  font-size:3vh;
+  font-size: 3vh;
   background-color: var(--theme-dark);
   border: 0.2vh solid var(--theme-dark);
   border-radius: 10px;
