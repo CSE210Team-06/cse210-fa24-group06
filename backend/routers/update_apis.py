@@ -154,6 +154,7 @@ def delete_tag_from_journal(auth_token: str, journal_id: int, tag_id: int, db: S
 
     # Delete the entry in the journals_and_tags table
     db.execute(models.journals_and_tags.delete().where(models.journals_and_tags.c.journal_id == journal_id).where(models.journals_and_tags.c.tag_id == tag_id))
+    db.commit()
 
     # Return status 
     return {"status": "success", "message": "Tag deleted from journal successfully"}
