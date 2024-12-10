@@ -1,6 +1,6 @@
 # README
 
-# CodeChronicle
+## CodeChronicle
 
 ## cse210-fa24-group06
 
