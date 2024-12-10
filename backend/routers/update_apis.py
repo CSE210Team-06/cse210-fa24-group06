@@ -157,7 +157,7 @@ def add_tag_to_journal(auth_token: str, journal_id: int, tag_id: int, db: Sessio
     '''
 
     # Verify the token and get the email
-    user_email = verify_token(auth_token)
+    #user_email = verify_token(auth_token)
 
     # Verify that the tag still exists
     db_tag = db.query(models.Tag).filter(models.Tag.tag_id == tag_id).first()
@@ -187,5 +187,5 @@ def delete_tag_from_journal(auth_token: str, journal_id: int, tag_id: int, db: S
     db.execute(models.journals_and_tags.delete().where(models.journals_and_tags.c.journal_id == journal_id).where(models.journals_and_tags.c.tag_id == tag_id))
     db.commit()
 
-    # Return status 
+    # Return status
     return {"status": "success", "message": "Tag deleted from journal successfully"}

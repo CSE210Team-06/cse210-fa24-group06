@@ -67,7 +67,7 @@ def read_journal(auth_token: str, journal_id: int, db: Session = Depends(get_db)
 
     if not entries:
         return {"status": "success", "message": "No entries found for this journal"}
-    
+
     result = [
         {
             "entry_id": entry.entry_id,
@@ -122,7 +122,7 @@ def get_tags_by_journal(auth_token: str, journal_id: int, db: Session = Depends(
     tags = db.query(models.journals_and_tags).filter(models.journals_and_tags.c.journal_id == journal_id).all()
     if not tags:
         return {"status": "success", "message": "No tags found for this journal"}
-        #return db.query(models.Tag).all() #sanity check 
+        #return db.query(models.Tag).all() #sanity check
     
     result = [{"tag_id": tag.tag_id} for tag in tags]
     return {"status": "success", "tags": result}
@@ -133,7 +133,7 @@ def get_tag_name(auth_token: str, tag_id: int, db: Session = Depends(get_db)):
     Retrieves the name of a tag by tag_id
     """
     # Verify the token and get the email
-    user_email = verify_token(auth_token)
+    #user_email = verify_token(auth_token)
 
     # Check if tag exists
     db_tag = db.query(models.Tag).filter(models.Tag.tag_id == tag_id).first()
