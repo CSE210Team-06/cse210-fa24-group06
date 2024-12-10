@@ -3,11 +3,68 @@ import { searchGoogle } from "../../utils/utils.js";
 const urlParams = new URLSearchParams(window.location.search);
 const journalId = urlParams.get("journalId");
 
+// DOM Elements
+const addGroupBtn = document.getElementById("add-group-btn");
+const dropdown = document.getElementById("group-select-dropdown");
+const selectedGroupsContainer = document.getElementById(
+  "selected-groups-container",
+);
+const saveJournalBtn = document.getElementById("save-journal-btn");
+
+// Set to keep track of selected group IDs
+const selectedGroupIds = new Set();
+
 // console.log("Journal ID inside journal.js:", journalId);
 
 const easyMDE = new EasyMDE({
   element: document.getElementById("journal-text-area"),
 });
+
+/**
+ * Populates the dropdown menu with group data.
+ *
+ * @param {Object} data - The data object containing groups.
+ * @param {Array} data.groups - An array of group objects.
+ * @param {string} data.groups[].id - The unique identifier for the group.
+ * @param {string} data.groups[].name - The name of the group.
+ */
+function populateDropdown(data) {
+  data.groups.forEach((group) => {
+    const option = document.createElement("option");
+    option.value = group.id;
+    option.textContent = group.name;
+    dropdown.appendChild(option);
+  });
+}
+
+/**
+ * Adds a chip for the selected group.
+ *
+ * @param {string} groupId - The ID of the selected group.
+ * @param {string} groupName - The name of the selected group.
+ */
+function addGroupChip(groupId, groupName) {
+  // Create chip container
+  const chip = document.createElement("div");
+  chip.className = "chip group-chip";
+  chip.dataset.groupId = groupId;
+  chip.textContent = groupName;
+
+  // Create "X" button to remove chip
+  const removeButton = document.createElement("button");
+  removeButton.textContent = "X";
+  removeButton.className = "remove-chip-btn";
+  removeButton.addEventListener("click", () => {
+    chip.remove();
+    selectedGroupIds.delete(groupId);
+  });
+
+  // Append remove button to chip
+  chip.appendChild(removeButton);
+
+  // Add chip to container
+  selectedGroupsContainer.appendChild(chip);
+}
 
 async function fetchJournal(journalId) {
   try {
@@ -41,18 +98,6 @@ async function fetchJournal(journalId) {
   }
 }
 
-if (journalId) {
-  async function loadJournal() {
-    const journal = await fetchJournal(journalId);
-
-    // console.log("Journal:", journal);
-
-    document.getElementById("journal-title").value = `${journal.title}`;
-    easyMDE.value(`${journal.content}`);
-  }
-  loadJournal();
-}
-
 async function saveJournal(journalTitle, journalEntry) {
   // const journalTitle = document.getElementById("journal-title").value;
   // const journalEntry = easyMDE.value();
@@ -75,6 +120,18 @@ async function saveJournal(journalTitle, journalEntry) {
   });
 
   // console.log(response);
+}
+
+if (journalId) {
+  async function loadJournal() {
+    const journal = await fetchJournal(journalId);
+
+    // console.log("Journal:", journal);
+
+    document.getElementById("journal-title").value = `${journal.title}`;
+    easyMDE.value(`${journal.content}`);
+  }
+  loadJournal();
 }
 
 easyMDE.codemirror.on("change", async function () {
@@ -109,7 +166,6 @@ easyMDE.codemirror.on("change", async function () {
   // console.log(results);
 });
 
-const saveJournalBtn = document.getElementById("save-journal-btn");
 saveJournalBtn.addEventListener("click", () => {
   const journalTitle = document.getElementById("journal-title").value;
   const journalEntry = easyMDE.value();
@@ -123,4 +179,41 @@ document
   .getElementById("back-to-home-btn")
   .addEventListener("click", function () {
     window.location.href = "../home/home.html"; // Replace with your home page URL
+  });
+
+// Event Listener for Plus Button
+addGroupBtn.addEventListener("click", () => {
+  dropdown.style.display =
+    dropdown.style.display === "none" ? "inline" : "none";
+});
+
+// Event Listener for Dropdown Selection
+dropdown.addEventListener("change", () => {
+  const selectedOption = dropdown.options[dropdown.selectedIndex];
+  const groupId = selectedOption.value;
+  if (!selectedGroupIds.has(groupId)) {
+    const groupName = selectedOption.textContent;
+
+    // Add chip for the selected group
+    addGroupChip(groupId, groupName);
+    selectedGroupIds.add(groupId);
+  }
+  // Reset dropdown
+  dropdown.value = "";
+  dropdown.style.display = "none";
+});
+
+// Fetch groups and populate the dropdown
+fetch("../../mock-db/groups.json")
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then((data) => {
+    populateDropdown(data);
+  })
+  .catch((error) => {
+    console.error("Error loading JSON data:", error);
   });

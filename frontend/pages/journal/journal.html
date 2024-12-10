@@ -48,6 +48,35 @@
       .result-card a:hover {
         text-decoration: underline;
       }
+
+      #selected-groups-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 14px;
+      }
+
+      .group-chip {
+        color: #fff;
+        background-color: #00a000;
+      }
+
+      .remove-chip-btn {
+        margin-left: 10px;
+        background: none;
+        border: none;
+        color: red;
+        cursor: pointer;
+        font-weight: bold;
+      }
     </style>
   </head>
   <body>
@@ -62,6 +91,18 @@
           placeholder="Enter journal title..."
           class="title-input"
         />
+        <div class="journal-attributes">
+          <!-- Plus Button -->
+          <button class="chip" id="add-group-btn">+ Group</button>
+
+          <!-- Dropdown for selecting groups -->
+          <select id="group-select-dropdown" style="display: none">
+            <option value="" disabled selected>Select a group</option>
+          </select>
+
+          <!-- Container for chips -->
+          <div id="selected-groups-container"></div>
+        </div>
       </header>
       <main class="editor-main">
         <textarea
