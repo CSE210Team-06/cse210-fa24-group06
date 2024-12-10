@@ -95,10 +95,13 @@
           <!-- Plus Button -->
           <button class="chip" id="add-group-btn">+ Group</button>
 
-          <!-- Dropdown for selecting groups -->
-          <select id="group-select-dropdown" style="display: none">
-            <option value="" disabled selected>Select a group</option>
-          </select>
+          <div id="add-group-options" style="display: none">
+            <button class="chip" id="add-new-group-btn">Add Group</button>
+            <!-- Dropdown for selecting groups -->
+            <select id="group-select-dropdown">
+              <option value="" disabled selected>Select a group</option>
+            </select>
+          </div>
 
           <!-- Container for chips -->
           <div id="selected-groups-container"></div>
@@ -123,6 +126,26 @@
       rel="stylesheet"
       href="https://unpkg.com/easymde/dist/easymde.min.css"
     />
+
+    <dialog class="modal" id="add-group-modal">
+      <header class="modal__header">
+        <h2>Create Group</h2>
+        <button class="close-button" id="closeModal">&#10006;</button>
+      </header>
+      <form method="POST" class="form" id="add-group-form">
+        <label for="groupName">Group Name:</label>
+        <input
+          type="text"
+          id="groupName"
+          name="groupName"
+          minlength="3"
+          required
+        />
+        <button type="submit">Add</button>
+        <p class="form_error"></p>
+      </form>
+    </dialog>
+
     <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
     <script type="module" src="./journal.js"></script>
   </body>

@@ -1,11 +1,15 @@
 /* global EasyMDE */
 import { searchGoogle } from "../../utils/utils.js";
+import { API_BASE_URL, CREATE_GROUP_URL } from "../../constants/constants.js";
 const urlParams = new URLSearchParams(window.location.search);
 const journalId = urlParams.get("journalId");
 
 // DOM Elements
 const addGroupBtn = document.getElementById("add-group-btn");
+const addGroupOptions = document.getElementById("add-group-options");
 const dropdown = document.getElementById("group-select-dropdown");
+const addNewGroupBtn = document.getElementById("add-new-group-btn");
+const addGroupModal = document.getElementById("add-group-modal");
 const selectedGroupsContainer = document.getElementById(
   "selected-groups-container",
 );
@@ -183,8 +187,64 @@ document
 
 // Event Listener for Plus Button
 addGroupBtn.addEventListener("click", () => {
-  dropdown.style.display =
-    dropdown.style.display === "none" ? "inline" : "none";
+  addGroupOptions.style.display =
+    addGroupOptions.style.display === "none" ? "inline" : "none";
+});
+
+addNewGroupBtn.addEventListener("click", () => {
+  addGroupModal.dispatchEvent(new Event("open"));
+});
+
+addGroupModal.addEventListener("open", () => {
+  addGroupModal.showModal();
+  document.body.style.overflow = "hidden"; // Disable scrolling
+});
+
+const closeButton = document.querySelector("#closeModal");
+const formError = document.querySelector(".modal .form_error");
+const addGroupForm = document.getElementById("add-group-form");
+
+// Close modal on button click
+closeButton.addEventListener("click", () => {
+  formError.innerHTML = "";
+  formError.style.display = "hidden";
+  addGroupForm.reset();
+  addGroupModal.close();
+  document.body.style.overflow = "";
+});
+
+addGroupForm.addEventListener("submit", async function (event) {
+  event.preventDefault(); // Prevent the default form submission
+
+  // Create the dictionary from form inputs
+  const formData = {
+    auth_token: sessionStorage.getItem("accessToken"),
+    group_name: document.getElementById("groupName").value,
+  };
+
+  // Send the data to the endpoint
+  const response = await fetch(
+    `${API_BASE_URL}${CREATE_GROUP_URL}?auth_token=${formData.auth_token}&group_name=${formData.group_name}`,
+    {
+      method: this.method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  // Handle the response
+  if (response.ok) {
+    const data = await response.json();
+    console.log(data);
+    getGroups();
+    closeButton.dispatchEvent(new Event("click"));
+  } else {
+    return response.json().then((errorData) => {
+      formError.style.display = "block";
+      formError.innerHTML = `${errorData.detail}`;
+    });
+  }
 });
 
 // Event Listener for Dropdown Selection
@@ -200,20 +260,24 @@ dropdown.addEventListener("change", () => {
   }
   // Reset dropdown
   dropdown.value = "";
-  dropdown.style.display = "none";
+  addGroupOptions.style.display = "none";
 });
 
-// Fetch groups and populate the dropdown
-fetch("../../mock-db/groups.json")
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-  })
-  .then((data) => {
-    populateDropdown(data);
-  })
-  .catch((error) => {
-    console.error("Error loading JSON data:", error);
-  });
+async function getGroups() {
+  // Fetch groups and populate the dropdown
+  fetch("../../mock-db/groups.json")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      populateDropdown(data);
+    })
+    .catch((error) => {
+      console.error("Error loading JSON data:", error);
+    });
+}
+
+getGroups();
