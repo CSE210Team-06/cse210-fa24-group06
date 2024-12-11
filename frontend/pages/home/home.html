@@ -77,12 +77,24 @@
         display: block;
       }
     </style>
+    <link rel="stylesheet" href="./home.css" />
     <link rel="stylesheet" href="../../styles/styles.css" />
   </head>
   <body>
     <div class="left-side-panel" id="side-panel">
       <h3>Journals</h3>
       <div id="journals-container" class="journals-container"></div>
+    </div>
+    <div class="right-side-panel" id="right-side-panel">
+      <div class="chat-container">
+        <div class="chat-header">Chat with AI Prof. Powell</div>
+        <div class="chat-body" id="chatBody"></div>
+        <div class="chat-footer">
+          <input type="text" id="chatInput" placeholder="Type a message..." />
+          <button id="sendButton">Send</button>
+          <button id="clearButton">Clear</button>
+        </div>
+      </div>
     </div>
     <header class="header">
       <h1 class="header__title">CodeChronicle</h1>
@@ -107,6 +119,9 @@
 				Edit Existing Journal
 			</button> -->
       <button id="secrets-btn" class="navigate-button">Secrets</button>
+      <button id="ai-chat-btn" class="navigate-button">
+        Chat with AI Prof
+      </button>
     </div>
     <section class="recent-journals" aria-labelledby="recent-journals-heading">
       <h2 id="recent-journals-heading" class="recent-journals__title">
@@ -114,6 +129,7 @@
       </h2>
       <div class="searched-journals__list"></div>
     </section>
+
     <script type="module" src="./home.js"></script>
     <!-- <script type="module" src="./renderer.js"></script> -->
   </body>
