@@ -98,6 +98,47 @@ def update_entry(
 
     return {"status": "success", "updated_entry_text": db_entry.entry_text}
 
+@router.put("/update_user_code")
+def update_code(
+    auth_token: str,
+    page_num: int,
+    journal_id: int,
+    code_text: str,
+    db: Session = Depends(get_db),
+):
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # Find the journal code by journal_id and page_num (or some other criteria)
+    db_code = (
+        db.query(models.CodeSnippet)
+        .filter(
+            models.CodeSnippet.journal_id == journal_id, models.CodeSnippet.page_number == page_num
+        )
+        .first()
+    )
+    if not db_code:
+        raise HTTPException(status_code=404, detail="Code not found")
+
+    # Find the journal to check if the user owns it
+    db_journal = (
+        db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    )
+    if not db_journal:
+        raise HTTPException(status_code=404, detail="Journal not found")
+
+    # Check if the user is the owner of the journal
+    if db_journal.user.email != user_email:
+        raise HTTPException(
+            status_code=403, detail="Not authorized to modify this journal"
+        )
+
+    # Update the entry text
+    db_code.code_text = code_text
+    db.commit()
+    db.refresh(db_code)
+
+    return {"status": "success", "updated_code_text": db_code.code_text}
 
 @router.put("/update_journal")
 def update_journal(

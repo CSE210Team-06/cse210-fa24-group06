@@ -50,6 +50,41 @@ def read_entries(
 
     return {"status": "success", "entry_text": db_entry.entry_text}
 
+@router.get("/read_codes")
+def read_codes(
+    auth_token: str, journal_id: int, page_number: int, db: Session = Depends(get_db)
+):
+    """
+    Retrieve the text of a specific journal code by code_id.
+    """
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # Find the code by code_id
+    db_code = (
+        db.query(models.CodeSnippet)
+        .filter(
+            models.CodeSnippet.journal_id == journal_id,
+            models.CodeSnippet.page_number == page_number,
+        )
+        .first()
+    )
+    if not db_code:
+        raise HTTPException(status_code=404, detail="Code not found")
+
+    # Check if the user owns the journal the code belongs to
+    db_journal = (
+        db.query(models.Journal)
+        .filter(models.Journal.journal_id == db_code.journal_id)
+        .first()
+    )
+    if not db_journal or db_journal.user.email != user_email:
+        raise HTTPException(
+            status_code=403, detail="Not authorized to access this code"
+        )
+
+    return {"status": "success", "code_text": db_code.code_text}
+
 
 @router.get("/read_journal")
 def read_journal(auth_token: str, journal_id: int, db: Session = Depends(get_db)):

@@ -49,6 +49,23 @@ class GroupBase(BaseModel):
         orm_mode = True
 
 
+class CodeBase(BaseModel):
+    code_id: Optional[int] # PK
+    journal_id: Optional[int]  = None
+    code_text: str
+    language: str
+    created_at: Optional[datetime] = Field(
+        default_factory=lambda: datetime.now(timezone.utc)
+    )  # using a factory prevents all instances from having the same time
+    updated_at: Optional[datetime] = Field(
+        default_factory=lambda: datetime.now(timezone.utc)
+    )
+
+
+    class Config:
+        orm_mode = True
+
+
 class UserBase(BaseModel):
     user_id: Optional[int] = None
     first_name: str
@@ -113,6 +130,10 @@ class GroupCreate(BaseModel):
     group_name: str
     group_desc: Optional[str]  # Optional description
 
+class CodeCreate(BaseModel):
+    journal_id: int
+    code_text: str
+    Language: str
 
 class EntryCreate(BaseModel):
     journal_id: int
@@ -136,6 +157,8 @@ class Group(GroupBase):
 class User(UserBase):
     pass
 
+class Code(CodeBase):
+    pass
 
 class Entry(EntryBase):
     pass
