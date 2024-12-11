@@ -1,6 +1,6 @@
 from faker import Faker
 from sqlalchemy.orm import Session
-from db.models import Base, engine, Journal, Group, User, Entry  # Import your models
+from .db.models import Base, engine, Journal, Group, User, Entry  # Import your models
 import random
 
 # Initialize Faker

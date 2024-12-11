@@ -1,12 +1,15 @@
 import sys
-sys.path.append('./')
+
+sys.path.append("./")
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import MagicMock, patch
 from backend.main import app
-from backend.db import models
+
+# from backend.db import models
 
 client = TestClient(app)
+
 
 # Fixture for logging in the user and obtaining the auth token
 @pytest.fixture
@@ -19,6 +22,7 @@ def login_user():
     response_data = response.json()
     return response_data["access_token"]
 
+
 # Fixture to mock the database session
 @pytest.fixture
 def mock_db_session():
@@ -27,6 +31,7 @@ def mock_db_session():
         db = MagicMock()
         mock_session.return_value = db
         yield db
+
 
 # Fixture to mock a user in the database
 @pytest.fixture
@@ -39,6 +44,7 @@ def mock_user(mock_db_session):
     user.last_name = "string"
     mock_db_session.query.return_value.filter_by.return_value.first.return_value = user
     return user
+
 
 # Test for updating the user's first name
 def test_update_user_first_name(login_user, mock_db_session, mock_user):
@@ -130,4 +136,3 @@ def test_update_journal(login_user, mock_db_session, mock_user):
     response_data = response.json()
     assert response_data["status"] == "success"
     assert response_data["updated_journal_title"] == new_journal_title
-

@@ -1,12 +1,12 @@
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
-from fastapi import Depends, HTTPException, status
+from fastapi import HTTPException, status
 
 
 # Secret key used to encode and decode JWT tokens (change this in a real app)
 SECRET_KEY = "8cc25c5f7b2f7b8ad178d3a2ef5c3f01359adcf6e7d264b7c3e4f846c41e9f70"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 
 def create_access_token(

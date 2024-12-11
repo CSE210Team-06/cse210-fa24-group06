@@ -1,10 +1,12 @@
 import sys
-sys.path.append('./')
+
+sys.path.append("./")
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import MagicMock, patch
 from backend.main import app
-from backend.db import models
+
+# from backend.db import models
 
 client = TestClient(app)
 
@@ -23,11 +25,16 @@ TEST_DATA = {
     },
 }
 
+
 @pytest.fixture
 def login_user():
     """Fixture to login and fetch the auth token."""
     response = client.post(
-        "/login", json={"email": TEST_DATA["user"]["email"], "password": TEST_DATA["user"]["password"]}
+        "/login",
+        json={
+            "email": TEST_DATA["user"]["email"],
+            "password": TEST_DATA["user"]["password"],
+        },
     )
     assert response.status_code == 200
     response_data = response.json()

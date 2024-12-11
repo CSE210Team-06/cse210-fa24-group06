@@ -1,10 +1,11 @@
-from fastapi import HTTPException, Depends, status, APIRouter
+from fastapi import HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import func
-from db import models, schemas
-from auth import verify_token
-from db.database import SessionLocal
-from datetime import datetime, timedelta, timezone
+from backend.db import models
+from backend.auth import verify_token
+from backend.db.database import SessionLocal
+
+# from datetime import datetime, timedelta, timezone
 
 router = APIRouter()
 
@@ -62,9 +63,9 @@ def create_group(
 ):
 
     # Verify the token and get the email
-    user_email = verify_token(
-        auth_token
-    )  # TODO: determine if user_email will also be used in group creation
+    # user_email = verify_token(
+    #     auth_token
+    # )  # TODO: determine if user_email will also be used in group creation
 
     # Create a new group
     new_group = models.Group(
@@ -137,10 +138,11 @@ def create_entry(
         "journal_id": new_entry.journal_id,
     }
 
+
 @router.post("/create_tag")
 def create_tag(auth_token: str, tag_name: str, db: Session = Depends(get_db)):
     # Verify the token and get the email
-    #user_email = verify_token(auth_token)
+    # user_email = verify_token(auth_token)
 
     # Create a new tag entry
     new_tag = models.Tag(tag_name=tag_name)

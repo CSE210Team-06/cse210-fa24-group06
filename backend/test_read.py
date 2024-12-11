@@ -1,11 +1,13 @@
 import sys
-sys.path.append('./')
+
+sys.path.append("./")
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import MagicMock, patch
 from backend.main import app  # Import your FastAPI app
-from backend.db import models
-from backend.routers import create_apis
+
+# from backend.db import models
+# from backend.routers import create_apis
 
 client = TestClient(app)
 
@@ -63,7 +65,12 @@ def test_read_entries_success(login_user, mock_db_session):
 
     # Call the endpoint
     response = client.get(
-        "/read/read_entries", params={"auth_token": auth_token, "journal_id": mock_journal.journal_id, "page_number": mock_entry.page_number}
+        "/read/read_entries",
+        params={
+            "auth_token": auth_token,
+            "journal_id": mock_journal.journal_id,
+            "page_number": mock_entry.page_number,
+        },
     )
 
     # Verify the response
@@ -141,7 +148,7 @@ def test_read_journal_not_authorized(login_user, mock_db_session):
 def test_read_journal_no_entries(login_user, mock_db_session):
     """Test the /read_journal endpoint when no entries are found."""
     auth_token = login_user
-    journal_id = 25 
+    journal_id = 25
 
     # Mock database journal
     mock_journal = MagicMock()
