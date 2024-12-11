@@ -240,3 +240,9 @@ document.getElementById("delete-journal-btn").addEventListener("click", () => {
     deleteJournal(journalId);
   }
 });
+
+// document.getElementById('search-toggle-btn').addEventListener('click', () => {
+//   const sidePanel = document.getElementById('side-panel');
+//   sidePanel.classList.toggle('hidden');
+//   sidePanel.classList.toggle('visible');
+// });

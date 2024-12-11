@@ -8,45 +8,95 @@ export class SignupModal extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
           <style>
-            .modal[open]::backdrop {
+          :root {
+            --theme-dark: #b46dd2;
+            --clickbutton-dark: rgb(149, 36, 198);
+            --border-dark: #e6b2fd;
+          }
+          .modal[open]::backdrop {
               backdrop-filter: blur(5px);
           }
   
           .modal {
-              background: #fff;
-              padding: 20px;
+              background: var(--bg-dark);
               border-radius: 8px;
               box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
               text-align: center;
+              border: 0.5vh solid var(--theme-dark);
+              padding: 60px; 
+              padding-bottom:  0;
+              max-width: 500px;
+              width: 100%;
+              height: 70vh;
           }
-  
           .modal__header {
               display: flex;
-              flex-direction: row;
-              align-items: top;
-              justify-content: space-around;
-          }
-  
-          .modal button {
-              margin-top: 15px;
+              justify-content: space-between;
+              align-items: center;
+              position: relative;
           }
   
           .close-button {
-              /* float: right;*/
-              width: 30px;
-              height: 30px;
-              border-radius: 50%;
+            border: none;
+            right: 0;
+            background-color: transparent;
+            color: var(--theme-dark); 
+            font-size: 50px; 
+            cursor: pointer; 
+            display: flex;
+            position: absolute;
+            margin-left: 6%;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
           }
-  
           .form {
+            width: 100%;
             display: flex;
             flex-direction: column;
+            gap: 5px;
           }
-  
+  		    .header_2{
+            font-size: 4vh;
+            color: var(--theme-dark);
+            flex-grow: 1;
+            text-align: left;
+            padding:0;
+		      }
           .form > * {
             margin-bottom: 10px;
           }
-
+          .form label{
+            padding: 0;
+            color: var(--theme-dark);
+            text-align: left;
+          }
+          .form input {
+            background-color: var(--bg-dark);
+            color: white;
+            border: 0.2vh solid var(--theme-dark);
+            border-radius: 6px;
+            padding: 10px;
+            width: 98%;
+            font-size:large;
+          }
+          .form input:focus {
+            outline: none;
+            border: 0.2vh solid var(--theme-dark);
+          }
+          .form button{
+            background-color: var(--clickbutton-dark);
+            color: white;
+            border: 0.2vh solid var(--clickbutton-dark);
+            border-radius: 5px;
+            padding: 11.5px 22px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            align-self: center;
+            width: auto;
+            margin-bottom: 20px;
+          }
           .form_error {
             display: none;
             color: red;
@@ -55,7 +105,7 @@ export class SignupModal extends HTMLElement {
           </style>
           <dialog class="modal" id="Signup-modal">
               <header class="modal__header">
-                  <h2>Register New User</h2>
+                  <h2 class="header_2">Register New User</h2>
                   <button class="close-button" id="closeModal">&#10006;</button>
               </header>
               <form action="${API_BASE_URL}/signup" method="POST" class="form" id="Signup-form">

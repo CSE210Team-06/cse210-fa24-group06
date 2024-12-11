@@ -4,133 +4,70 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CodeChronicle</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        flex-direction: column;
-      }
-      .header {
-        text-align: center;
-        margin-bottom: 20px;
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-        border: 1px black solid;
-        width: 100%;
-        flex-direction: row;
-      }
-      .header__button {
-        height: 60%;
-      }
-      .search-bar {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
-      }
-      .search-bar__input {
-        width: 300px;
-        padding: 10px;
-        font-size: 16px;
-      }
-      .search-bar__button {
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-      }
-      .recent-journals {
-        margin-top: 20px;
-        width: 90%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-      .recent-journals__list {
-        list-style: none;
-        padding: 0;
-        width: 30%;
-        text-align: center;
-      }
-      .recent-journals__item {
-        border: 1px solid black;
-        height: 100px;
-        margin: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .card__content {
-        border: 1px solid black;
-      }
-
-      /* Side Panel */
-      .left-side-panel {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 300px;
-        height: 100%;
-        background-color: #f4f4f4;
-        box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
-        padding: 10px;
-        overflow-y: auto;
-        display: block;
-      }
-    </style>
     <link rel="stylesheet" href="./home.css" />
-    <link rel="stylesheet" href="../../styles/styles.css" />
+    <!-- <link rel="stylesheet" href="../../styles/styles.css" /> -->
   </head>
   <body>
-    <div class="left-side-panel" id="side-panel">
-      <h3>Journals</h3>
-      <div id="journals-container" class="journals-container"></div>
-    </div>
-    <div class="right-side-panel" id="right-side-panel">
-      <div class="chat-container">
-        <div class="chat-header">Chat with AI Prof. Powell</div>
-        <div class="chat-body" id="chatBody"></div>
-        <div class="chat-footer">
-          <input type="text" id="chatInput" placeholder="Type a message..." />
-          <button id="sendButton">Send</button>
-          <button id="clearButton">Clear</button>
-        </div>
-      </div>
-    </div>
     <header class="header">
-      <h1 class="header__title">CodeChronicle</h1>
+      <!-- <h1 class="header__title">&lt;{CodeChronicle}&gt;</h1> -->
+      <h1 class="header__title">(code) => {chronicle;}</h1>
+      <div class="header__button__group" id="user-profile">
+        <div class="first-name" id="user-first-name"></div>
+        <button class="logout-btn" id="Logout">Logout</button>
+      </div>
     </header>
     <div class="search-bar">
       <input
-        id="search-journals-input"
         class="search-bar__input"
         type="text"
-        placeholder="Search journals..."
+        placeholder="Search journals"
+        id="search-journals-input"
       />
-      <!-- <button class="search-bar__button" id="search-journals-btn">
-				Search
-			</button> -->
+      <div>
+        <button id="ai-chat-btn" class="ai-chat-button">
+          Chat with AI Prof
+        </button>
+      </div>
     </div>
-    <div>
-      <button id="create-journal-btn" class="navigate-button">
-        Create New Journal
-      </button>
-      <!-- <input type="text" id="journal-id" placeholder="Journal ID" />
-			<button id="edit-journal-btn" class="navigate-button">
-				Edit Existing Journal
-			</button> -->
-      <button id="secrets-btn" class="navigate-button">Secrets</button>
-      <button id="ai-chat-btn" class="navigate-button">
-        Chat with AI Prof
-      </button>
-    </div>
+    <div class="searched-journals__list"></div>
     <section class="recent-journals" aria-labelledby="recent-journals-heading">
-      <h2 id="recent-journals-heading" class="recent-journals__title">
-        Journals
-      </h2>
-      <div class="searched-journals__list"></div>
+      <div class="recent-journals-header">
+        <h2 id="recent-journals-heading" class="journals__title">Journals</h2>
+        <div class="recent-journal__button__group">
+          <button id="secrets-btn" class="secret-button">Secret</button>
+          <button id="create-journal-btn" class="create-button">
+            + Create
+          </button>
+        </div>
+      </div>
+      <div id="journals-container" class="journals-container"></div>
     </section>
 
+    <!-- <div>
+      <button id="ai-chat-btn" class="ai-chat-btm-button">
+        Chat with AI Prof
+      </button>
+    </div>  -->
+
+    <div class="right-side-panel" id="right-side-panel">
+      <div class="chat-container">
+        <div class="chat-btn-grp">
+          <div class="chat-header">Chat with AI Prof. Powell</div>
+          <button id="close-button" class="close-button">&#10006;</button>
+        </div>
+        <div class="chat-body" id="chatBody"></div>
+        <div class="chat-footer">
+          <input type="text" id="chatInput" placeholder="Type a message..." />
+          <div class="button-grp">
+            <button id="sendButton">Send</button>
+            <button id="clearButton">Clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script type="module" src="./home.js"></script>
+    <script type="module" src="user-name.js"></script>
     <!-- <script type="module" src="./renderer.js"></script> -->
   </body>
 </html>

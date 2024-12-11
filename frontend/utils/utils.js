@@ -90,3 +90,16 @@ export async function searchGoogle(editor) {
     return [];
   }
 }
+
+/**
+ * Retrieves a value from session storage without logging.
+ *
+ * @param {string} key - The key of the stored value to retrieve.
+ * @returns {string|null} - The value associated with the key, or null if the key does not exist.
+ *
+ * This function provides a minimal way to fetch values from session storage
+ * using `sessionStorage.getItem`, without logging any information to the console.
+ */
+export function getFromSessionStorage(key) {
+  return sessionStorage.getItem(key);
+}
