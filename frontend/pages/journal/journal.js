@@ -54,6 +54,16 @@ if (journalId) {
     document.getElementById("journal-title").value =
       `${journal.entries[0].journal_title}`;
     easyMDE.value(`${journal.entries[0].entry_text}`);
+
+
+    if (journal.entries[0].code_language) {
+      document.getElementById("code-language-dropdown").value = 
+        journal.entries[0].code_language;
+    }
+    if (journal.entries[0].code_content) {
+      document.getElementById("code-text-area").value = 
+        journal.entries[0].code_content;
+    }
   }
   loadJournal();
 }
@@ -137,9 +147,9 @@ async function createJournal(journalTitle, journalEntry) {
   }
 }
 
-async function saveJournal(journalTitle, journalEntry) {
+async function saveJournal(journalTitle, journalEntry, codeLanguage, codeContent) {
   if (!journalId) {
-    createJournal(journalTitle, journalEntry);
+    createJournal(journalTitle, journalEntry, codeLanguage, codeContent);
   } else {
     let queryParams = new URLSearchParams({
       journal_id: journalId,
@@ -161,6 +171,8 @@ async function saveJournal(journalTitle, journalEntry) {
       page_num: 0,
       auth_token: loadFromSessionStorage("accessToken"),
       entry_text: journalEntry,
+      language: codeLanguage || '',
+      code_text: codeContent || '',
     });
 
     const updateEntriesResponse = await fetch(
@@ -221,8 +233,14 @@ const saveJournalBtn = document.getElementById("save-journal-btn");
 saveJournalBtn.addEventListener("click", () => {
   const journalTitle = document.getElementById("journal-title").value;
   const journalEntry = easyMDE.value();
+  const codeLanguage = document.getElementById("code-language-dropdown").value;
+  const codeContent = document.getElementById("code-text-area").value;
 
-  saveJournal(journalTitle, journalEntry);
+  // Only save code if a language is selected and code is not empty
+  const finalCodeLanguage = codeLanguage !== "" ? codeLanguage : null;
+  const finalCodeContent = codeContent.trim() !== "" ? codeContent : null;
+
+  saveJournal(journalTitle, journalEntry, finalCodeLanguage, finalCodeContent);
 
   // console.log("Journal saved:", journalTitle, journalEntry);
 });
