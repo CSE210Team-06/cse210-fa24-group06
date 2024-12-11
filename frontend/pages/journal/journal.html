@@ -4,37 +4,34 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Journal Editor</title>
-    <link rel="stylesheet" href="../../styles/journal.css" />
+    <link rel="stylesheet" href="./journal.css" />
   </head>
   <body>
+    <header class="header">
+      <button class="home" id="back-to-home-btn">Home</button>
+      <div class="editor-container">
+        <div class="editor-header">
+          <input
+            type="text"
+            id="journal-title"
+            placeholder="Enter Journal Title"
+            class="title-input"
+          />
+        </div>
+      </div>
+      <button id="save-journal-btn" class="save-btn">Save</button>
+    </header>
+    <main class="editor-main">
+      <textarea
+        id="journal-text-area"
+        placeholder="Write Your Journal Entry Here"
+        class="content-area"
+      ></textarea>
+    </main>
     <div>
-      <button id="back-to-home-btn">Back to Home</button>
+      <button id="delete-journal-btn" class="delete-btn">Delete</button>
     </div>
-    <div class="editor-container">
-      <header class="editor-header">
-        <input
-          type="text"
-          id="journal-title"
-          placeholder="Enter journal title..."
-          class="title-input"
-        />
-      </header>
-      <main class="editor-main">
-        <textarea
-          id="journal-text-area"
-          placeholder="Write your journal entry here..."
-          class="content-area"
-        ></textarea>
-      </main>
-    </div>
-    <div>
-      <button id="delete-journal-btn" class="navigate-btn">
-        Delete Journal
-      </button>
-    </div>
-    <div>
-      <button id="save-journal-btn" class="navigate-btn">Save Journal</button>
-    </div>
+
     <div class="side-panel" id="side-panel">
       <h3>Search Results</h3>
       <div id="results-container" class="results-container"></div>

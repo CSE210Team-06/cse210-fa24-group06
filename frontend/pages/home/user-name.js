@@ -11,16 +11,19 @@ async function fetchUserProfile() {
     window.location.href = "../../index.html";
     return;
   }
-
+  
   try {
-    const response = await fetch(`${API_BASE_URL}/get_user/user_details`, {
+      const queryParams = new URLSearchParams({
+        auth_token: loadFromSessionStorage("accessToken"),
+      });
+
+      const response = await fetch(`${API_BASE_URL}/get_user/user_details?${queryParams.toString()}`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });
-
+   
     if (!response.ok) {
       throw new Error("Failed to fetch user profile. Please sign in again.");
     }

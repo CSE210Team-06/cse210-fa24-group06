@@ -60,6 +60,7 @@ body {
   height: 7vh;
   width: 40vh;
   font-size: 3.5vh;
+  font-weight: bold;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }

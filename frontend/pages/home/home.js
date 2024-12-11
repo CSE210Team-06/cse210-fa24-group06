@@ -228,8 +228,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       card.innerHTML = `
           <a href="../journal/journal.html?journalId=${item.journal_id}" class="card__link">
             <div class="card__content">
-              <h3 class="card__title">${item.journal_title}</h3>
-              <p class="card__description">${item.entry_text.substring(0, 40)}</p>
+              <h3 class="card__title">${item.journal_title}</h3>            
             </div>
           </a>
         `;
