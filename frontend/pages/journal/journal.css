@@ -122,8 +122,8 @@ body {
 }
 /* Card styling */
 .result-card {
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: #1c1c1c;
+  /* border: 1px solid #ddd; */
   padding: 15px;
   margin-bottom: 10px;
   border-radius: 8px;
@@ -133,20 +133,25 @@ body {
 
 .result-card h4 {
   font-size: 16px;
-  color: var(--bg-dark);
+  color: var(--border-dark);
   margin: 0;
 }
 
 .result-card p {
   font-size: 14px;
-  color: #555;
+  color: white;
 }
 
 .result-card a {
-  color: var(--theme-dark);
+  color: var(--border-dark);
   text-decoration: none;
 }
 
 .result-card a:hover {
   text-decoration: underline;
 }
+
+.EasyMDEContainer, .CodeMirror{
+  color: var(--bg-dark);
+}
+

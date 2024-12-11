@@ -11,6 +11,9 @@ const easyMDE = new EasyMDE({
   element: document.getElementById("journal-text-area"),
 });
 
+document.querySelector('.EasyMDEContainer .CodeMirror').style.backgroundColor = '#000000';
+document.querySelector('.EasyMDEContainer .CodeMirror').style.Color = '#000000';
+
 async function fetchJournal(journalId) {
   let journal;
 

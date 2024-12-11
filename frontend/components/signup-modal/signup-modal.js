@@ -30,6 +30,7 @@ export class SignupModal extends HTMLElement {
               flex-direction: row;
               align-items: top;
               justify-content: left;
+              padding: 30px;
           }
   
           .modal button {
@@ -81,7 +82,7 @@ export class SignupModal extends HTMLElement {
             border: 0.2vh solid var(--clickbutton-dark);
             border-radius: 5px;
             padding: 11.5px 22px;
-            font-size: 1.8vh;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
           }
