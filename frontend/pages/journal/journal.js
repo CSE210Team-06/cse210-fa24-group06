@@ -1,14 +1,18 @@
 import { searchGoogle } from "../../utils/utils.js";
-import { API_BASE_URL, CREATE_TAG_URL } from "../../constants/constants.js";
+import {
+  API_BASE_URL,
+  CREATE_TAG_URL,
+  GET_ALL_TAGS_URL,
+} from "../../constants/constants.js";
 const urlParams = new URLSearchParams(window.location.search);
 const journalId = urlParams.get("journalId");
 
 // DOM Elements
-const addtagBtn = document.getElementById("add-tag-btn");
-const addtagOptions = document.getElementById("add-tag-options");
+const addTagBtn = document.getElementById("add-tag-btn");
+const addTagOptions = document.getElementById("add-tag-options");
 const dropdown = document.getElementById("tag-select-dropdown");
 const addNewtagBtn = document.getElementById("add-new-tag-btn");
-const addtagModal = document.getElementById("add-tag-modal");
+const addTagModal = document.getElementById("add-tag-modal");
 const selectedtagsContainer = document.getElementById(
   "selected-tags-container",
 );
@@ -28,12 +32,13 @@ const easyMDE = new EasyMDE({
  * @param {Array} data.tags - An array of tag objects.
  * @param {string} data.tags[].id - The unique identifier for the tag.
  * @param {string} data.tags[].name - The name of the tag.
+ * @param {Set<number>} tagSet - The set of tag IDs to keep track of selected tags.
  */
 function populateDropdown(data) {
   data.tags.forEach((tag) => {
     const option = document.createElement("option");
-    option.value = tag.id;
-    option.textContent = tag.name;
+    option.value = tag.tag_id;
+    option.textContent = tag.tag_name;
     dropdown.appendChild(option);
   });
 }
@@ -44,7 +49,8 @@ function populateDropdown(data) {
  * @param {string} tagId - The ID of the selected tag.
  * @param {string} tagName - The name of the selected tag.
  */
-function addtagChip(tagId, tagName) {
+function addTagChip(tagId, tagName, tagSet) {
+  tagSet.add(tagId);
   // Create chip container
   const chip = document.createElement("div");
   chip.className = "chip tag-chip";
@@ -174,34 +180,34 @@ document
   });
 
 // Event Listener for Plus Button
-addtagBtn.addEventListener("click", () => {
-  addtagOptions.style.display =
-    addtagOptions.style.display === "none" ? "inline" : "none";
+addTagBtn.addEventListener("click", () => {
+  addTagOptions.style.display =
+    addTagOptions.style.display === "none" ? "inline" : "none";
 });
 
 addNewtagBtn.addEventListener("click", () => {
-  addtagModal.dispatchEvent(new Event("open"));
+  addTagModal.dispatchEvent(new Event("open"));
 });
 
-addtagModal.addEventListener("open", () => {
-  addtagModal.showModal();
+addTagModal.addEventListener("open", () => {
+  addTagModal.showModal();
   document.body.style.overflow = "hidden"; // Disable scrolling
 });
 
 const closeButton = document.querySelector("#closeModal");
 const formError = document.querySelector(".modal .form_error");
-const addtagForm = document.getElementById("add-tag-form");
+const addTagForm = document.getElementById("add-tag-form");
 
 // Close modal on button click
 closeButton.addEventListener("click", () => {
   formError.innerHTML = "";
   formError.style.display = "hidden";
-  addtagForm.reset();
-  addtagModal.close();
+  addTagForm.reset();
+  addTagModal.close();
   document.body.style.overflow = "";
 });
 
-addtagForm.addEventListener("submit", async function (event) {
+addTagForm.addEventListener("submit", async function (event) {
   event.preventDefault(); // Prevent the default form submission
 
   // Create the dictionary from form inputs
@@ -223,8 +229,6 @@ addtagForm.addEventListener("submit", async function (event) {
 
   // Handle the response
   if (response.ok) {
-    const data = await response.json();
-    console.log(data);
     getTags();
     closeButton.dispatchEvent(new Event("click"));
   } else {
@@ -243,12 +247,11 @@ dropdown.addEventListener("change", () => {
     const tagName = selectedOption.textContent;
 
     // Add chip for the selected tag
-    addtagChip(tagId, tagName);
-    selectedtagIds.add(tagId);
+    addTagChip(tagId, tagName, selectedtagIds);
   }
   // Reset dropdown
   dropdown.value = "";
-  addtagOptions.style.display = "none";
+  addTagOptions.style.display = "none";
 });
 
 /**
@@ -260,7 +263,9 @@ dropdown.addEventListener("change", () => {
  */
 async function getTags() {
   // Fetch tags and populate the dropdown
-  fetch("../../mock-db/tags.json")
+  fetch(
+    `${API_BASE_URL}${GET_ALL_TAGS_URL}?auth_token=${sessionStorage.getItem("accessToken")}`,
+  )
     .then((response) => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

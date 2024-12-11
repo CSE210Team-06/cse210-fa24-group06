@@ -1,3 +1,6 @@
+import { API_BASE_URL } from "../../constants/constants.js";
+import { GET_ALL_TAGS_URL } from "../../constants/constants.js";
+
 /**
  * Event listener for "Create Journal" button.
  * Navigates to a blank new journal page.
@@ -38,8 +41,8 @@ const dropdown = document.getElementById("tag-select");
 function populateDropdown(data) {
   data.tags.forEach((tag, index) => {
     const option = document.createElement("option");
-    option.value = tag.id;
-    option.textContent = tag.name;
+    option.value = tag.tag_id;
+    option.textContent = tag.tag_name;
     dropdown.appendChild(option);
 
     // Select the first tag by default
@@ -52,7 +55,9 @@ function populateDropdown(data) {
 /**
  * Fetches tag data from a mock database and populates the dropdown menu.
  */
-fetch("../../mock-db/tags.json")
+fetch(
+  `${API_BASE_URL}${GET_ALL_TAGS_URL}?auth_token=${sessionStorage.getItem("accessToken")}`,
+)
   .then((response) => {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
