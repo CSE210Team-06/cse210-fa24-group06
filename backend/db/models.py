@@ -9,6 +9,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import datetime, timezone
 from sqlalchemy.orm import relationship
 
+
 Base = declarative_base()
 
 """
@@ -46,6 +47,29 @@ class Journal(Base):
 
     # Relationship to Tag (Many-to-Many)
     tags = relationship("Tag", secondary=journals_and_tags, back_populates="journals")
+
+    codes = relationship(
+        "CodeSnippet", back_populates="journal", cascade="all, delete-orphan"
+    )
+
+
+# code Model
+class CodeSnippet(Base):
+    __tablename__ = "code"
+
+    code_id = Column(Integer, primary_key=True, index=True)
+    journal_id = Column(Integer, ForeignKey("journal.journal_id"), nullable=False)
+    code_text = Column(String, nullable=False)
+    language = Column(String, nullable=False)
+    page_number = Column(Integer, nullable=False, default=0)
+    created_at = Column(String, default=datetime.now(timezone.utc))
+    updated_at = Column(
+        String, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc)
+    )
+    journal = relationship("Journal", back_populates="codes")
+
+    # Ensures that the codes for a journal are ordered
+    __table_args__ = (Index("ix_code_journal_page", "journal_id", "page_number"),)
 
 
 # Group Model

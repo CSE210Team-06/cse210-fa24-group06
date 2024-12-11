@@ -98,6 +98,91 @@ def search_entry_in_journal(
     return {"status": "success", "matches": results}
 
 
+@router.get("/search_code")
+def search_code(auth_token: str, search_code: str, db: Session = Depends(get_db)):
+    """
+    Search for a text in all codes of all journals owned by the user.
+    """
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # Get all journals owned by the user
+    db_journals = (
+        db.query(models.Journal).filter(models.Journal.user.has(email=user_email)).all()
+    )
+    if not db_journals:
+        raise HTTPException(status_code=404, detail="No journals found for the user")
+
+    results = []
+
+    # Search for the code in all entries of the user's journals
+    for journal in db_journals:
+        codes = (
+            db.query(models.CodeSnippet)
+            .filter(models.CodeSnippet.journal_id == journal.journal_id)
+            .all()
+        )
+        for code in codes:
+            start_idx = code.code_text.find(search_code)
+            if start_idx != -1:
+                results.append(
+                    {
+                        "journal_id": journal.journal_id,
+                        "code_id": code.code_id,
+                        "char_index": start_idx,
+                    }
+                )
+
+    if not results:
+        return {"status": "success", "message": "No matching codes found"}
+
+    return {"status": "success", "matches": results}
+
+
+@router.get("/search_code_in_journal")
+def search_code_in_journal(
+    auth_token: str, journal_id: int, search_code: str, db: Session = Depends(get_db)
+):
+    """
+    Search for a text in entries of a specific journal owned by the user.
+    """
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # Get the journal by ID and check ownership
+    db_journal = (
+        db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    )
+    if not db_journal:
+        raise HTTPException(status_code=404, detail="Journal not found")
+
+    if db_journal.user.email != user_email:
+        raise HTTPException(
+            status_code=403, detail="Not authorized to access this journal"
+        )
+
+    results = []
+
+    # Search for the text in codes of the specified journal
+    codes = (
+        db.query(models.CodeSnippet)
+        .filter(models.CodeSnippet.journal_id == journal_id)
+        .all()
+    )
+    for code in codes:
+        start_idx = code.code_text.find(search_code)
+        if start_idx != -1:
+            results.append({"code_id": code.code_id, "char_index": start_idx})
+
+    if not results:
+        return {
+            "status": "success",
+            "message": "No matching codes found in the journal",
+        }
+
+    return {"status": "success", "matches": results}
+
+
 from sqlalchemy import cast, Date
 
 

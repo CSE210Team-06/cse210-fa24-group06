@@ -53,6 +53,62 @@ def delete_from_group(journal_id: int, db: Session = Depends(get_db)):
     return {"status": "success", "message": "Journal removed from group successfully"}
 
 
+@router.delete("/delete_codes")
+def delete_codes(
+    auth_token: str, journal_id: int, page_num: int, db: Session = Depends(get_db)
+):
+    """
+    Deletes code from a journal and shifts subsequent code snippets to left.
+    """
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # Check if the journal belongs to the user
+    journal = (
+        db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    )
+    if not journal:
+        raise HTTPException(status_code=404, detail="Journal not found")
+
+    if journal.user.email != user_email:
+        raise HTTPException(
+            status_code=403, detail="Not authorized to access this journal"
+        )
+
+    # Get the code to delete
+    code = (
+        db.query(models.CodeSnippet)
+        .filter(
+            models.CodeSnippet.journal_id == journal_id,
+            models.CodeSnippet.page_number == page_num,
+        )
+        .first()
+    )
+    if not code:
+        raise HTTPException(status_code=404, detail="Code not found")
+
+    db.delete(code)
+
+    # Shift subsequent codes left
+    subsequent_codes = (
+        db.query(models.CodeSnippet)
+        .filter(
+            models.CodeSnippet.journal_id == journal_id,
+            models.CodeSnippet.page_number > page_num,
+        )
+        .all()
+    )
+    for subsequent_code in subsequent_codes:
+        subsequent_code.code_id -= 1
+
+    db.commit()
+
+    return {
+        "status": "success",
+        "message": "Code deleted and entries shifted successfully",
+    }
+
+
 @router.delete("/delete_entry")
 def delete_entry(
     auth_token: str, journal_id: int, page_num: int, db: Session = Depends(get_db)

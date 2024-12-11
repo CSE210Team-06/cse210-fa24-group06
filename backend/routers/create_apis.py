@@ -90,6 +90,108 @@ def create_group(
     }
 
 
+@router.post("/create_codes")
+def create_codes(
+    auth_token: str,
+    journal_id: int,
+    code_text: str,
+    language: str,
+    db: Session = Depends(get_db),
+):
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # Find the journal in the database
+    db_journal = (
+        db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    )
+    if not db_journal:
+        raise HTTPException(status_code=404, detail="Journal not found")
+
+    # Check if the user is the owner of the journal
+    if db_journal.user.email != user_email:
+        raise HTTPException(
+            status_code=403, detail="Not authorized to modify this journal"
+        )
+
+    # Create a new entry
+    new_codes = models.CodeSnippet(
+        code_text=code_text,
+        language=language,
+        journal_id=journal_id,
+        created_at=func.now(),
+        updated_at=func.now(),
+    )
+
+    # Insert the entry into the database
+    db.add(new_codes)
+    db.commit()
+    db.refresh(new_codes)
+
+    return {
+        "status": "success",
+        "code_id": new_codes.code_id,
+        "code_text": new_codes.code_text,
+        "Language": new_codes.language,
+        "journal_id": new_codes.journal_id,
+        "created_at": new_codes.created_at,
+        "updated_at": new_codes.updated_at,
+    }
+
+
+@router.post("/create_code")
+def create_code(
+    auth_token: str, journal_id: int, code_text: str, db: Session = Depends(get_db)
+):
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # get all codes for the journal
+
+    # Find the journal in the database
+    db_journal = (
+        db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    )
+    if not db_journal:
+        raise HTTPException(status_code=404, detail="Journal not found")
+
+    # Check if the user is the owner of the journal
+    if db_journal.user.email != user_email:
+        raise HTTPException(
+            status_code=403, detail="Not authorized to modify this journal"
+        )
+
+    # codes = (
+    #     db.query(models.CodeSnippet)
+    #     .filter(models.CodeSnippet.journal_id == journal_id)
+    #     .all()
+    # )
+
+    # get the last page number
+    last_page = 0
+    # for code in codes:
+    #     if code.page_number > last_page:
+    #         last_page = code.page_number
+
+    # Create a new code
+    new_code = models.CodeSnippet(
+        page_number=last_page, code_text=code_text, journal_id=journal_id
+    )  # TODO: determine if page_num should be generated instead
+
+    # Insert the code into the database
+    db.add(new_code)
+    db.commit()
+    db.refresh(new_code)
+
+    return {
+        "status": "success",
+        "code_id": new_code.code_id,
+        "page_number": new_code.page_number,
+        "code_text": new_code.code_text,
+        "journal_id": new_code.journal_id,
+    }
+
+
 @router.post("/create_entry")
 def create_entry(
     auth_token: str, journal_id: int, entry_text: str, db: Session = Depends(get_db)

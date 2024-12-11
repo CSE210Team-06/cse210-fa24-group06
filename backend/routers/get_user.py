@@ -69,6 +69,41 @@ def get_user_journals(auth_token: str, db: Session = Depends(get_db)):
     return {"status": "success", "journals": result}
 
 
+# get all the codes for a journal
+@router.get("/journal_codes")
+def get_journal_codes(auth_token: str, journal_id: int, db: Session = Depends(get_db)):
+
+    # Verify the token and get the email
+    user_email = verify_token(auth_token)
+
+    # Find the journal in the database
+    db_journal = (
+        db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    )
+    if not db_journal:
+        raise HTTPException(status_code=404, detail="Journal not found")
+
+    # Check if the journal belongs to the user
+    if db_journal.user.email != user_email:
+        raise HTTPException(
+            status_code=403, detail="Not authorized to access this journal"
+        )
+
+    # Retrieve all codes for the journal
+    codes = (
+        db.query(models.CodeSnippet)
+        .filter(models.CodeSnippet.journal_id == journal_id)
+        .all()
+    )
+
+    if not codes:
+        return {"status": "success", "message": "No codes found for this journal"}
+
+    result = [{"code_id": code.code_id, "entry_text": code.code_text} for code in codes]
+
+    return {"status": "success", "codes": result}
+
+
 # get all the entries for a journal
 @router.get("/journal_entries")
 def get_journal_entries(

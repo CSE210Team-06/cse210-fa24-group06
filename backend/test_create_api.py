@@ -85,6 +85,23 @@ def mock_create_entry():
         yield mock_create
 
 
+@pytest.fixture
+def mock_create_code():
+    """Fixture to mock the create_code function."""
+    with patch("backend.routers.create_apis.create_code") as mock_create:
+        mock_create.return_value = {
+            "status": "success",
+            "code_id": 1,
+            "page_number": 0,
+            "code_text": "This is a test code",
+            "language": "Python",
+            "journal_id": 1,
+            "created_at": "2024-12-10T10:00:00",
+            "updated_at": "2024-12-10T10:00:00",
+        }
+        yield mock_create
+
+
 def test_create_journal(login_user, mock_create_journal):
     """Test creating a journal."""
     auth_token = login_user
@@ -135,4 +152,23 @@ def test_create_entry(login_user, mock_create_entry):
     # assert response["entry_id"] == 1
     # assert response["page_number"] == 0
     assert response["entry_text"] == entry_text
+    assert response["journal_id"] == journal_id
+
+
+def test_create_code(login_user, mock_create_code):
+    """Test creating an code."""
+    auth_token = login_user
+    journal_id = 1
+    code_text = "This is a test code"
+
+    # Call the create_entry function
+    response = create_apis.create_code(
+        auth_token=auth_token, journal_id=journal_id, code_text=code_text
+    )
+
+    # Verify the response
+    assert response["status"] == "success"
+    # assert response["code_id"] == 1
+    # assert response["page_number"] == 0
+    assert response["code_text"] == code_text
     assert response["journal_id"] == journal_id

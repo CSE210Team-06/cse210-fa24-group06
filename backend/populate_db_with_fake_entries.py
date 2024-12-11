@@ -1,6 +1,14 @@
 from faker import Faker
 from sqlalchemy.orm import Session
-from .db.models import Base, engine, Journal, Group, User, Entry  # Import your models
+from .db.models import (
+    Base,
+    engine,
+    Journal,
+    Group,
+    User,
+    Entry,
+    CodeSnippet,
+)  # Import your models
 import random
 
 # Initialize Faker
@@ -53,6 +61,24 @@ def create_fake_journals(n=20):
     session.commit()
 
 
+def create_fake_codes(n=50):
+    journals = session.query(Journal).all()
+    languages = ["Python", "JavaScript", "Java", "C++", "C#", "Ruby", "Go", "Swift"]
+    for _ in range(n):
+        journal = random.choice(journals) if journals else None
+        if journal:
+            codeSnippet = CodeSnippet(
+                journal_id=random.choice(journals).journal_id if journals else None,
+                code_text=fake.text(max_nb_chars=200),
+                Language=random.choice(languages),
+                page_number=random.randint(1, 10),
+                created_at=fake.date_time_this_year().isoformat(),
+                updated_at=fake.date_time_this_year().isoformat(),
+            )
+            session.add(codeSnippet)
+    session.commit()
+
+
 # Generate fake data for the Entry table
 def create_fake_entries(n=50):
     journals = session.query(Journal).all()
@@ -78,6 +104,8 @@ def populate_database():
     create_fake_users(10)
     print("Creating fake journals...")
     create_fake_journals(20)
+    print("Creating fake codesnippets...")
+    create_fake_codes(5)
     print("Creating fake entries...")
     create_fake_entries(50)
     print("Database successfully populated with fake data!")
