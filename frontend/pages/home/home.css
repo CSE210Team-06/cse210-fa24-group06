@@ -65,8 +65,38 @@ body {
 }
 .search-bar {
   display: flex;
+  align-items: center;
   justify-content: center;
+  flex-direction: row;
   margin-bottom: 30px;
+  gap: 1.5vw;
+}
+.ai-chat-button{
+  width: 200px;
+  height: 50px;
+  padding: 0;
+  font-size: 1.1rem;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--clickbutton-dark);
+  color: white;
+  font-weight: bolder;
+  border: 0.2vh solid var(--clickbutton-dark);
+  cursor: pointer;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.ai-chat-button:hover {
+  background-color: var(--border-dark);
+  border: var(--border-dark);
+  color: var(--bg-dark);
+}
+.ai-chat-button:active {
+  background-color: var(--clickbutton-dark);
+  border: var(--clickbutton-dark);
+  color: var(--bg-dark);
 }
 .search-bar__input {
   background-color: var(--bg-dark);
@@ -166,30 +196,33 @@ body {
   color: inherit;
   display: flex;
   flex-direction: row;
+  margin: 10px;
 }
 .card__content {
   background-color: var(--theme-dark);
   border-radius: 10px;
   box-shadow: 0px 2px 5px rgb(103, 11, 142);
   color: var(--bg-dark);
-  width: 20vh;
-  height: 8vh;
+  width: 200px;
+  height: 80px;
   display: flex; 
   flex-direction: column; 
   align-items: center;
   justify-content: center;
   text-align: center;
+  margin: 10px;
 }
 .card__title {
-  font-size: 1.2rem;
-  margin: 0;
-  white-space: normal; 
-  overflow: hidden; 
+  overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap; 
+  display: block; 
+  text-align: center;
+  width: 70%;
 }
 .card__description {
   font-size: 1rem;
-  color: var(--clickbutton-dark);
+  color: white;
 }
 .searched-journals__list {
   display: flex;
@@ -197,4 +230,219 @@ body {
   gap: 20px;
   justify-content: flex-start;
   margin-top: 20px;
+}
+.search_card__link{
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: row;
+  margin: 10px;
+}
+.search_card__content {
+  background-color: var(--theme-dark);
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgb(103, 11, 142);
+  color: var(--bg-dark);
+  width: 200px;
+  height: 80px;
+  display: flex; 
+  flex-direction: column; 
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 10px;
+}
+.search_card__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; 
+  display: block; 
+  text-align: center;
+  width: 70%;
+  margin:10px;
+}
+.search_card__description {
+  margin:0;
+  padding:0;
+  font-size: 1rem;
+  color: white;
+}
+
+/* Chat container styles */
+.right-side-panel {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 400px;
+  height: 50%;
+  background-color: var(--bg-dark);
+  box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  overflow-y: auto;
+
+  /* display: block; */
+}
+
+.chat-container {
+  width: 400px;
+  height: 100%;
+  background-color: var(--bg-dark);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 3px solid var(--clickbutton-dark);
+}
+.chat-btn-grp{
+  background: var(--clickbutton-dark);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+.close-button {
+  border: none;
+  right: 0;
+  background-color: transparent;
+  color: white; 
+  font-size: 30px; 
+  cursor: pointer; 
+  display: flex;
+  position: absolute;
+  margin-right: 2%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+/* Header styles */
+.chat-header {
+  background: var(--clickbutton-dark);
+  color: white;
+  padding: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Chat body styles */
+.chat-body {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: var(--bg-dark);
+}
+
+/* Chat messages */
+.chat-message {
+  max-width: 80%;
+  padding: 10px 15px;
+  border-radius: 15px;
+  font-size: 14px;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.chat-message.user {
+  background: var(--theme-dark);
+  align-self: flex-end;
+  border-top-right-radius: 0;
+}
+
+.chat-message.bot {
+  background: #000000;
+  align-self: flex-start;
+  border-top-left-radius: 0;
+  border: 2px solid var(--theme-dark);
+  color: rgb(202, 202, 202);
+}
+
+/* Footer styles */
+.chat-footer {
+  display: flex;
+  padding: 10px;
+  background: var(--bg-dark);
+  border-top: 2px solid var(--clickbutton-dark);
+}
+
+.chat-footer input {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid var(--theme-dark);
+  color:white;
+  background-color: var(--bg-dark);
+  border-radius: 5px;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.chat-footer input:focus {
+  outline: none;
+  border-color: var(--border-dark);
+}
+.chat-footer button {
+  background: var(--theme-dark);
+  color: var(--bg-dark);
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.chat-footer button:hover {
+  background: var(--clickbutton-dark);
+  color:white;
+}
+
+.badge {
+  border: 1px solid var(--theme-dark);
+  background: var(--bg-dark);
+  color: var(--theme-dark);
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 50px;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.ai-chat-btm-button{
+  position: fixed;
+  bottom: 60px; 
+  right: 150px;
+  width: 200px;
+  height: 50px;
+  padding: 0;
+  font-size: 1.1rem;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--clickbutton-dark);
+  color: white;
+  font-weight: bolder;
+  border: 0.2vh solid var(--clickbutton-dark);
+  cursor: pointer;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.ai-chat-btm-button:hover {
+  background-color: var(--border-dark);
+  border: var(--border-dark);
+  color: var(--bg-dark);
+}
+.ai-chat-btm-button:active {
+  background-color: var(--clickbutton-dark);
+  border: var(--clickbutton-dark);
+  color: var(--bg-dark);
 }

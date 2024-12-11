@@ -27,8 +27,7 @@ export class SignupModal extends HTMLElement {
               padding-bottom:  0;
               max-width: 500px;
               width: 100%;
-              height:  70vh;
-              overflow: hidden; 
+              height: 70vh;
           }
           .modal__header {
               display: flex;
@@ -78,7 +77,7 @@ export class SignupModal extends HTMLElement {
             border: 0.2vh solid var(--theme-dark);
             border-radius: 6px;
             padding: 10px;
-            width: 100%;
+            width: 98%;
             font-size:large;
           }
           .form input:focus {
