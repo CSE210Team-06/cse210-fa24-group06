@@ -7,31 +7,33 @@
     <link rel="stylesheet" href="./journal.css" />
   </head>
   <body>
-    <header class="header">
-      <button class="home" id="back-to-home-btn">Home</button>
-      <div class="editor-container">
-        <div class="editor-header">
-          <input
-            type="text"
-            id="journal-title"
-            placeholder="Enter Journal Title"
-            class="title-input"
-          />
+    <div class="main-content">
+      <header class="header">
+        <button class="home" id="back-to-home-btn">Home</button>
+        <div class="editor-container">
+          <div class="editor-header">
+            <input
+              type="text"
+              id="journal-title"
+              placeholder="Enter Journal Title"
+              class="title-input"
+            />
+          </div>
         </div>
+        <button id="save-journal-btn" class="save-btn">Save</button>
+      </header>
+      <main class="editor-main">
+        <textarea
+          id="journal-text-area"
+          placeholder="Write Your Journal Entry Here"
+          class="content-area"
+        ></textarea>
+      </main>
+      <div class="save-delete-button">
+        <button id="delete-journal-btn" class="delete-btn">Delete</button>
       </div>
-      <button id="save-journal-btn" class="save-btn">Save</button>
-    </header>
-    <main class="editor-main">
-      <textarea
-        id="journal-text-area"
-        placeholder="Write Your Journal Entry Here"
-        class="content-area"
-      ></textarea>
-    </main>
-    <div>
-      <button id="delete-journal-btn" class="delete-btn">Delete</button>
     </div>
-
+    <!-- Side Panel -->
     <div class="side-panel" id="side-panel">
       <h3>Search Results</h3>
       <div id="results-container" class="results-container"></div>

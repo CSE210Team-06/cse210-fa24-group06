@@ -17,8 +17,17 @@ body {
   margin-right: 10%;
   margin-top: 2%;
   margin-bottom: 2%;
+  display: flex;
   flex-direction: column;
   background-color: var(--bg-dark);
+}
+.main-content {
+  flex: 3;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
 }
 .header{
   display: flex;
@@ -47,11 +56,12 @@ body {
   color: white;
   border: 0.2vh solid var(--theme-dark);
   border-radius: 5px;
-  padding: 11.5px 22px;
+  padding: 11.5px;
+  width: 30vw;
   font-size: 2vh;
   font-weight: bold;
-  width: 100%;
   box-sizing: border-box;
+  text-align: left;
 }
 
 .title-input:focus {
@@ -63,10 +73,9 @@ body {
   color: #909090;
 }
 .editor-main{
-  margin-right: 250px;
-  background-color: var(--border-dark);
+  margin-right: 30vh;
   border-radius: 6px;
-  margin-bottom: 4vh;
+  margin-bottom: 2vh;
 }
 .save-btn{
   background-color: var(--clickbutton-dark);
@@ -81,7 +90,7 @@ body {
 .save-btn:hover{
   background-color: var(--border-dark);
   border: 0.2vh solid var(--border-dark);
-  color: var(--clickbutton-dark)
+  color: var(--clickbutton-dark);
 }
 
 /* Side Panel */
@@ -89,13 +98,13 @@ body {
   position: fixed;
   top: 0;
   right: 0;
-  width: 300px;
+  width: 25vw;
   height: 100%;
   border-left: 0.2vh solid var(--theme-dark);
   background-color: var(--bg-dark);
   box-shadow: -2px 0 8px rgb(94, 12, 130);
   color: var(--theme-dark);
-  font-size: 30px;
+  font-size: 1.5rem;
   padding: 10px;
   overflow-y: auto;
   display: block;
@@ -151,7 +160,30 @@ body {
   text-decoration: underline;
 }
 
-.EasyMDEContainer, .CodeMirror{
-  color: var(--bg-dark);
+.EasyMDEContainer .editor-toolbar button {
+  color: #FFFFFF; 
+  border: none; 
 }
 
+.EasyMDEContainer .editor-toolbar button:hover {
+  background-color: var(--theme-dark); 
+}
+
+.EasyMDEContainer .editor-toolbar button.active {
+  background-color: var(--clickbutton-dark);
+  color: white; 
+}
+
+.EasyMDEContainer .CodeMirror {
+  border: 2px solid var(--theme-dark) !important;
+  color: white !important; 
+  background-color: var(--bg-dark) !important; 
+  caret-color: white;
+  caret-color: white !important;
+}
+
+.EasyMDEContainer .editor-toolbar {
+  border-bottom: none !important;
+  background-color: var(--bg-dark); 
+  border: 2px solid var(--theme-dark);
+}

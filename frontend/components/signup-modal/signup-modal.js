@@ -23,39 +23,46 @@ export class SignupModal extends HTMLElement {
               box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
               text-align: center;
               border: 0.5vh solid var(--theme-dark);
+              padding: 60px; 
+              padding-bottom:  0;
+              max-width: 500px;
+              width: 100%;
+              height:  70vh;
+              overflow: hidden; 
           }
-  
           .modal__header {
               display: flex;
-              flex-direction: row;
-              align-items: top;
-              justify-content: left;
-              padding: 30px;
-          }
-  
-          .modal button {
-              margin-top: 15px;
+              justify-content: space-between;
+              align-items: center;
+              position: relative;
           }
   
           .close-button {
-            width: auto; 
-            height: auto; 
             border: none;
             right: 0;
             background-color: transparent;
             color: var(--theme-dark); 
-            font-size: 30px; 
+            font-size: 50px; 
             cursor: pointer; 
+            display: flex;
+            position: absolute;
+            margin-left: 6%;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
           }
-  
           .form {
+            width: 100%;
             display: flex;
             flex-direction: column;
+            gap: 5px;
           }
   		    .header_2{
-		        padding: 0;
-		        color: var(--theme-dark);
-		        font-size: 4vh;
+            font-size: 4vh;
+            color: var(--theme-dark);
+            flex-grow: 1;
+            text-align: left;
+            padding:0;
 		      }
           .form > * {
             margin-bottom: 10px;
@@ -71,6 +78,8 @@ export class SignupModal extends HTMLElement {
             border: 0.2vh solid var(--theme-dark);
             border-radius: 6px;
             padding: 10px;
+            width: 100%;
+            font-size:large;
           }
           .form input:focus {
             outline: none;
@@ -85,6 +94,9 @@ export class SignupModal extends HTMLElement {
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
+            align-self: center;
+            width: auto;
+            margin-bottom: 20px;
           }
           .form_error {
             display: none;

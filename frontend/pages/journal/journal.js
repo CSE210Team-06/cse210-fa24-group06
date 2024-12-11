@@ -11,9 +11,6 @@ const easyMDE = new EasyMDE({
   element: document.getElementById("journal-text-area"),
 });
 
-document.querySelector('.EasyMDEContainer .CodeMirror').style.backgroundColor = '#000000';
-document.querySelector('.EasyMDEContainer .CodeMirror').style.Color = '#000000';
-
 async function fetchJournal(journalId) {
   let journal;
 
@@ -242,4 +239,11 @@ document.getElementById("delete-journal-btn").addEventListener("click", () => {
   } else {
     deleteJournal(journalId);
   }
+});
+
+
+document.getElementById('search-toggle-btn').addEventListener('click', () => {
+  const sidePanel = document.getElementById('side-panel');
+  sidePanel.classList.toggle('hidden');
+  sidePanel.classList.toggle('visible');
 });
