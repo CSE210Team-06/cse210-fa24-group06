@@ -1,12 +1,11 @@
-from fastapi import FastAPI, HTTPException, Depends, APIRouter
+from fastapi import HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
-from db import models
-from db.database import SessionLocal
-from auth import verify_token
+from backend.db import models
+from backend.db.database import SessionLocal
 from sentence_transformers import SentenceTransformer
 import faiss
 import numpy as np
-from auth import verify_token
+from backend.auth import verify_token
 
 
 router = APIRouter()

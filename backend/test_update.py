@@ -1,10 +1,15 @@
+import sys
+
+sys.path.append("./")
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import MagicMock, patch
 from backend.main import app
-from backend.db import models
+
+# from backend.db import models
 
 client = TestClient(app)
+
 
 # Fixture for logging in the user and obtaining the auth token
 @pytest.fixture
@@ -17,6 +22,7 @@ def login_user():
     response_data = response.json()
     return response_data["access_token"]
 
+
 # Fixture to mock the database session
 @pytest.fixture
 def mock_db_session():
@@ -25,6 +31,7 @@ def mock_db_session():
         db = MagicMock()
         mock_session.return_value = db
         yield db
+
 
 # Fixture to mock a user in the database
 @pytest.fixture
@@ -38,6 +45,7 @@ def mock_user(mock_db_session):
     mock_db_session.query.return_value.filter_by.return_value.first.return_value = user
     return user
 
+
 # Test for updating the user's first name
 def test_update_user_first_name(login_user, mock_db_session, mock_user):
     """Test the update_user_first_name endpoint."""
@@ -45,7 +53,7 @@ def test_update_user_first_name(login_user, mock_db_session, mock_user):
     first_name = "NewFirstName"
 
     response = client.put(
-        "/update_user_first_name",
+        "/update/update_user_first_name",
         params={"auth_token": auth_token, "first_name": first_name},
     )
 
@@ -62,7 +70,7 @@ def test_update_user_last_name(login_user, mock_db_session, mock_user):
     last_name = "NewLastName"
 
     response = client.put(
-        "/update_user_last_name",
+        "/update/update_user_last_name",
         params={"auth_token": auth_token, "last_name": last_name},
     )
 
@@ -76,18 +84,18 @@ def test_update_user_last_name(login_user, mock_db_session, mock_user):
 def test_update_user_entry(login_user, mock_db_session, mock_user):
     """Test the update_user_entry endpoint."""
     auth_token = login_user
-    journal_id = 21  # Mocked journal ID
-    page_num = 1
+    journal_id = 23  # Mocked journal ID
+    page_num = 0
     new_entry_text = "Updated entry text"
 
     # Mock journal and entry
     entry = MagicMock()
-    entry.entry_id = 1
+    entry.entry_id = 53
     entry.entry_text = "Old entry text"
     mock_db_session.query.return_value.filter.return_value.first.return_value = entry
 
     response = client.put(
-        "/update_user_entry",
+        "/update/update_user_entry",
         params={
             "auth_token": auth_token,
             "page_num": page_num,
@@ -106,7 +114,7 @@ def test_update_user_entry(login_user, mock_db_session, mock_user):
 def test_update_journal(login_user, mock_db_session, mock_user):
     """Test the update_journal endpoint."""
     auth_token = login_user
-    journal_id = 21  # Mocked journal ID
+    journal_id = 23  # Mocked journal ID
     new_journal_title = "Updated Journal Title"
 
     # Mock journal
@@ -116,7 +124,7 @@ def test_update_journal(login_user, mock_db_session, mock_user):
     mock_db_session.query.return_value.filter.return_value.first.return_value = journal
 
     response = client.put(
-        "/update_journal",
+        "/update/update_journal",
         params={
             "auth_token": auth_token,
             "journal_id": journal_id,

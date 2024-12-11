@@ -1,10 +1,11 @@
-from fastapi import HTTPException, Depends, status, APIRouter
+from fastapi import HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import func
-from db import models, schemas
-from auth import verify_token
-from db.database import SessionLocal
-from datetime import datetime, timedelta, timezone
+from backend.db import models
+from backend.auth import verify_token
+from backend.db.database import SessionLocal
+
+# from datetime import datetime, timedelta, timezone
 
 router = APIRouter()
 
@@ -62,9 +63,9 @@ def create_group(
 ):
 
     # Verify the token and get the email
-    user_email = verify_token(
-        auth_token
-    )  # TODO: determine if user_email will also be used in group creation
+    # user_email = verify_token(
+    #     auth_token
+    # )  # TODO: determine if user_email will also be used in group creation
 
     # Create a new group
     new_group = models.Group(
@@ -88,54 +89,55 @@ def create_group(
         "updated_at": new_group.updated_at,
     }
 
+
 @router.post("/create_codes")
 def create_codes(
-    auth_token: str, 
-    journal_id: int, 
-    code_text: str, 
-    Language: str, 
-    db: Session = Depends(get_db)
-    ):
+    auth_token: str,
+    journal_id: int,
+    code_text: str,
+    language: str,
+    db: Session = Depends(get_db),
+):
     # Verify the token and get the email
     user_email = verify_token(auth_token)
 
-
     # Find the journal in the database
-    db_journal = db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    db_journal = (
+        db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    )
     if not db_journal:
         raise HTTPException(status_code=404, detail="Journal not found")
 
-
     # Check if the user is the owner of the journal
     if db_journal.user.email != user_email:
-        raise HTTPException(status_code=403, detail="Not authorized to modify this journal")
-
+        raise HTTPException(
+            status_code=403, detail="Not authorized to modify this journal"
+        )
 
     # Create a new entry
     new_codes = models.CodeSnippet(
-        code_text=code_text, 
-        Language=Language, 
-        journal_id=journal_id, 
-        created_at=func.now(), 
-        updated_at=func.now()
-        )
-
+        code_text=code_text,
+        language=language,
+        journal_id=journal_id,
+        created_at=func.now(),
+        updated_at=func.now(),
+    )
 
     # Insert the entry into the database
     db.add(new_codes)
     db.commit()
     db.refresh(new_codes)
 
-
     return {
-        "status": "success", 
-        "code_id": new_codes.code_id, 
+        "status": "success",
+        "code_id": new_codes.code_id,
         "code_text": new_codes.code_text,
-        "Language": new_codes.language, 
+        "Language": new_codes.language,
         "journal_id": new_codes.journal_id,
         "created_at": new_codes.created_at,
         "updated_at": new_codes.updated_at,
-        }
+    }
+
 
 @router.post("/create_code")
 def create_code(
@@ -159,13 +161,17 @@ def create_code(
             status_code=403, detail="Not authorized to modify this journal"
         )
 
-    codes = db.query(models.CodeSnippet).filter(models.CodeSnippet.journal_id == journal_id).all()
+    # codes = (
+    #     db.query(models.CodeSnippet)
+    #     .filter(models.CodeSnippet.journal_id == journal_id)
+    #     .all()
+    # )
 
     # get the last page number
     last_page = 0
-    for code in codes:
-        if code.page_number > last_page:
-            last_page = code.page_number
+    # for code in codes:
+    #     if code.page_number > last_page:
+    #         last_page = code.page_number
 
     # Create a new code
     new_code = models.CodeSnippet(
@@ -184,6 +190,7 @@ def create_code(
         "code_text": new_code.code_text,
         "journal_id": new_code.journal_id,
     }
+
 
 @router.post("/create_entry")
 def create_entry(
@@ -233,10 +240,11 @@ def create_entry(
         "journal_id": new_entry.journal_id,
     }
 
+
 @router.post("/create_tag")
 def create_tag(auth_token: str, tag_name: str, db: Session = Depends(get_db)):
     # Verify the token and get the email
-    #user_email = verify_token(auth_token)
+    # user_email = verify_token(auth_token)
 
     # Create a new tag entry
     new_tag = models.Tag(tag_name=tag_name)

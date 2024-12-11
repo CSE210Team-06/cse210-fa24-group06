@@ -1,0 +1,14 @@
+[flake8]
+# Ignore specific rules
+; ignore = E203, E266, E501, W503
+ignore = E402
+# Maximum line length
+max-line-length = 88
+# Exclude specific directories
+; exclude = 
+;     .git,
+;     __pycache__,
+;     build,
+;     dist
+# Define custom rules for specific plugins
+; max-complexity = 10

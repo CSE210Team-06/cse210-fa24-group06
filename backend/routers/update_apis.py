@@ -1,9 +1,9 @@
-from fastapi import HTTPException, Depends, status, APIRouter
+from fastapi import HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
-from db import models, schemas
-from auth import verify_token
-from db.database import SessionLocal
-from datetime import datetime, timedelta, timezone
+from backend.db import models
+from backend.auth import verify_token
+from backend.db.database import SessionLocal
+from datetime import datetime, timezone
 
 router = APIRouter()
 
@@ -98,6 +98,7 @@ def update_entry(
 
     return {"status": "success", "updated_entry_text": db_entry.entry_text}
 
+
 @router.put("/update_user_code")
 def update_code(
     auth_token: str,
@@ -113,7 +114,8 @@ def update_code(
     db_code = (
         db.query(models.CodeSnippet)
         .filter(
-            models.CodeSnippet.journal_id == journal_id, models.CodeSnippet.page_number == page_num
+            models.CodeSnippet.journal_id == journal_id,
+            models.CodeSnippet.page_number == page_num,
         )
         .first()
     )
@@ -139,6 +141,7 @@ def update_code(
     db.refresh(db_code)
 
     return {"status": "success", "updated_code_text": db_code.code_text}
+
 
 @router.put("/update_journal")
 def update_journal(
@@ -170,14 +173,17 @@ def update_journal(
 
     return {"status": "success", "updated_journal_title": db_journal.journal_title}
 
+
 @router.patch("/update_tag_name")
-def update_tag_name(auth_token: str, tag_id: int, new_name: str, db: Session = Depends(get_db)):
-    '''
+def update_tag_name(
+    auth_token: str, tag_id: int, new_name: str, db: Session = Depends(get_db)
+):
+    """
     Updates the name of a tag with the given tag_id.
-    '''
+    """
 
     # Verify the token and get the email
-    #user_email = verify_token(auth_token)
+    # user_email = verify_token(auth_token)
 
     # Find the tag by tag_id
     db_tag = db.query(models.Tag).filter(models.Tag.tag_id == tag_id).first()
@@ -191,14 +197,17 @@ def update_tag_name(auth_token: str, tag_id: int, new_name: str, db: Session = D
 
     return {"status": "success", "updated_tag_name": db_tag.tag_name}
 
+
 @router.patch("/add_tag_to_journal")
-def add_tag_to_journal(auth_token: str, journal_id: int, tag_id: int, db: Session = Depends(get_db)):
-    '''
+def add_tag_to_journal(
+    auth_token: str, journal_id: int, tag_id: int, db: Session = Depends(get_db)
+):
+    """
     Adds a tag to a journal by creating a new entry in the journals_and_tags table.
-    '''
+    """
 
     # Verify the token and get the email
-    #user_email = verify_token(auth_token)
+    # user_email = verify_token(auth_token)
 
     # Verify that the tag still exists
     db_tag = db.query(models.Tag).filter(models.Tag.tag_id == tag_id).first()
@@ -206,7 +215,9 @@ def add_tag_to_journal(auth_token: str, journal_id: int, tag_id: int, db: Sessio
         raise HTTPException(status_code=404, detail="Tag not found")
 
     # Create a new entry in the journals_and_tags table
-    new_entry = models.journals_and_tags.insert().values(journal_id=journal_id, tag_id=tag_id)
+    new_entry = models.journals_and_tags.insert().values(
+        journal_id=journal_id, tag_id=tag_id
+    )
 
     # Execute the query
     db.execute(new_entry)
@@ -215,17 +226,24 @@ def add_tag_to_journal(auth_token: str, journal_id: int, tag_id: int, db: Sessio
     # Return status
     return {"status": "success", "message": "Tag added to journal successfully"}
 
+
 @router.patch("/delete_tag_from_journal")
-def delete_tag_from_journal(auth_token: str, journal_id: int, tag_id: int, db: Session = Depends(get_db)):
-    '''
+def delete_tag_from_journal(
+    auth_token: str, journal_id: int, tag_id: int, db: Session = Depends(get_db)
+):
+    """
     Deletes a tag from a journal by deleting the entry in the journals_and_tags table.
-    '''
+    """
 
     # Verify the token and get the email
-    #user_email = verify_token(auth_token)
+    # user_email = verify_token(auth_token)
 
     # Delete the entry in the journals_and_tags table
-    db.execute(models.journals_and_tags.delete().where(models.journals_and_tags.c.journal_id == journal_id).where(models.journals_and_tags.c.tag_id == tag_id))
+    db.execute(
+        models.journals_and_tags.delete()
+        .where(models.journals_and_tags.c.journal_id == journal_id)
+        .where(models.journals_and_tags.c.tag_id == tag_id)
+    )
     db.commit()
 
     # Return status

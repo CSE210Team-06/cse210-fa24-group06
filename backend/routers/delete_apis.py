@@ -1,8 +1,8 @@
 from fastapi import HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
-from db import models
-from auth import verify_token
-from db.database import SessionLocal
+from backend.db import models
+from backend.auth import verify_token
+from backend.db.database import SessionLocal
 from datetime import datetime
 
 router = APIRouter()
@@ -54,7 +54,9 @@ def delete_from_group(journal_id: int, db: Session = Depends(get_db)):
 
 
 @router.delete("/delete_codes")
-def delete_codes(auth_token: str, journal_id: int, page_num: int, db: Session = Depends(get_db)):
+def delete_codes(
+    auth_token: str, journal_id: int, page_num: int, db: Session = Depends(get_db)
+):
     """
     Deletes code from a journal and shifts subsequent code snippets to left.
     """
@@ -62,28 +64,50 @@ def delete_codes(auth_token: str, journal_id: int, page_num: int, db: Session = 
     user_email = verify_token(auth_token)
 
     # Check if the journal belongs to the user
-    journal = db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    journal = (
+        db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
+    )
     if not journal:
         raise HTTPException(status_code=404, detail="Journal not found")
 
     if journal.user.email != user_email:
-        raise HTTPException(status_code=403, detail="Not authorized to access this journal")
+        raise HTTPException(
+            status_code=403, detail="Not authorized to access this journal"
+        )
 
     # Get the code to delete
-    code = db.query(models.CodeSnippet).filter(models.CodeSnippet.journal_id == journal_id, models.CodeSnippet.page_number == page_num).first()
+    code = (
+        db.query(models.CodeSnippet)
+        .filter(
+            models.CodeSnippet.journal_id == journal_id,
+            models.CodeSnippet.page_number == page_num,
+        )
+        .first()
+    )
     if not code:
         raise HTTPException(status_code=404, detail="Code not found")
 
     db.delete(code)
 
     # Shift subsequent codes left
-    subsequent_codes = db.query(models.CodeSnippet).filter(models.CodeSnippet.journal_id == journal_id, models.CodeSnippet.page_number > page_num).all()
+    subsequent_codes = (
+        db.query(models.CodeSnippet)
+        .filter(
+            models.CodeSnippet.journal_id == journal_id,
+            models.CodeSnippet.page_number > page_num,
+        )
+        .all()
+    )
     for subsequent_code in subsequent_codes:
         subsequent_code.code_id -= 1
 
     db.commit()
 
-    return {"status": "success", "message": "Code deleted and entries shifted successfully"}
+    return {
+        "status": "success",
+        "message": "Code deleted and entries shifted successfully",
+    }
+
 
 @router.delete("/delete_entry")
 def delete_entry(
@@ -197,6 +221,7 @@ def delete_group(group_id: int, db: Session = Depends(get_db)):
         "message": "Group deleted and journals unlinked successfully",
     }
 
+
 @router.delete("/delete_tag")
 def delete_tag(tag_id: int, db: Session = Depends(get_db)):
     """
@@ -207,11 +232,15 @@ def delete_tag(tag_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Tag not found")
 
     # Remove the tag from all journals
-    db.query(models.journals_and_tags).filter(models.journals_and_tags.c.tag_id == tag_id).delete()
+    db.query(models.journals_and_tags).filter(
+        models.journals_and_tags.c.tag_id == tag_id
+    ).delete()
 
     # Delete the tag
     db.delete(tag)
     db.commit()
 
-    return {"status": "success", "message": "Tag deleted and removed from journals successfully"}
-
+    return {
+        "status": "success",
+        "message": "Tag deleted and removed from journals successfully",
+    }

@@ -9,3 +9,7 @@ faiss-cpu
 pydantic[email]
 httpx
 pytest
+pre-commit
+flake8
+black
+faker

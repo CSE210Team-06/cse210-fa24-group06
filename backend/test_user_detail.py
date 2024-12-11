@@ -1,18 +1,21 @@
 import sys
-sys.path.append('./')
+
+sys.path.append("./")
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import MagicMock, patch
 from backend.main import app
-from backend.db import models
+
+# from backend.db import models
 from backend.routers import create_apis
 
 client = TestClient(app)
-# Centralized test data .You need to specify these according to user user info and jounal info and needs to be hardcoded
+# Centralized test data .You need to specify these
+# according to user user info and jounal info and needs to be hardcoded
 user_id = 13
 journal_id = 23
 entry_id = 53
-first_name ="bro"
+first_name = "bro"
 last_name = "no"
 journal_title = "Test Journal"
 entry_text = "This is a test entry"
@@ -37,6 +40,7 @@ TEST_ENTRY = {
     "page_number": 0,
     "journal_id": journal_id,
 }
+
 
 @pytest.fixture
 def login_user():
@@ -81,6 +85,7 @@ def mock_create_journal():
         }
         yield mock_create
 
+
 @pytest.fixture
 def mock_journals(mock_db_session, mock_user):
     """Fixture to mock journals for a user."""
@@ -92,6 +97,7 @@ def mock_journals(mock_db_session, mock_user):
 
     mock_db_session.query.return_value.filter.return_value.all.return_value = [journal]
     return [journal]
+
 
 @pytest.fixture
 def mock_entries(mock_db_session, mock_user):

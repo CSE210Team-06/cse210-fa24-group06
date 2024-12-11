@@ -1,8 +1,8 @@
 from fastapi import HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
-from db import models
-from auth import verify_token
-from db.database import SessionLocal
+from backend.db import models
+from backend.auth import verify_token
+from backend.db.database import SessionLocal
 
 router = APIRouter()
 
@@ -49,6 +49,7 @@ def read_entries(
         )
 
     return {"status": "success", "entry_text": db_entry.entry_text}
+
 
 @router.get("/read_codes")
 def read_codes(

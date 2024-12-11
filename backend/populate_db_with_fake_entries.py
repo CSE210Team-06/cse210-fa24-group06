@@ -1,6 +1,14 @@
 from faker import Faker
 from sqlalchemy.orm import Session
-from db.models import Base, engine, Journal, Group, User, Entry, CodeSnippet  # Import your models
+from .db.models import (
+    Base,
+    engine,
+    Journal,
+    Group,
+    User,
+    Entry,
+    CodeSnippet,
+)  # Import your models
 import random
 
 # Initialize Faker
@@ -52,6 +60,7 @@ def create_fake_journals(n=20):
         session.add(journal)
     session.commit()
 
+
 def create_fake_codes(n=50):
     journals = session.query(Journal).all()
     languages = ["Python", "JavaScript", "Java", "C++", "C#", "Ruby", "Go", "Swift"]
@@ -59,12 +68,12 @@ def create_fake_codes(n=50):
         journal = random.choice(journals) if journals else None
         if journal:
             codeSnippet = CodeSnippet(
-                journal_id = random.choice(journals).journal_id if journals else None,
-                code_text= fake.text(max_nb_chars=200),
-                Language = random.choice(languages),
+                journal_id=random.choice(journals).journal_id if journals else None,
+                code_text=fake.text(max_nb_chars=200),
+                Language=random.choice(languages),
                 page_number=random.randint(1, 10),
-                created_at = fake.date_time_this_year().isoformat(),
-                updated_at = fake.date_time_this_year().isoformat()
+                created_at=fake.date_time_this_year().isoformat(),
+                updated_at=fake.date_time_this_year().isoformat(),
             )
             session.add(codeSnippet)
     session.commit()

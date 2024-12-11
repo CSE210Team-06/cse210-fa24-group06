@@ -1,9 +1,8 @@
-from fastapi import HTTPException, Depends, status, APIRouter
 from fastapi import HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
-from db import models
-from auth import verify_token
-from db.database import SessionLocal
+from backend.db import models
+from backend.auth import verify_token
+from backend.db.database import SessionLocal
 from datetime import datetime
 
 
@@ -98,8 +97,9 @@ def search_entry_in_journal(
 
     return {"status": "success", "matches": results}
 
+
 @router.get("/search_code")
-def search_entry(auth_token: str, search_code: str, db: Session = Depends(get_db)):
+def search_code(auth_token: str, search_code: str, db: Session = Depends(get_db)):
     """
     Search for a text in all codes of all journals owned by the user.
     """
@@ -164,7 +164,11 @@ def search_code_in_journal(
     results = []
 
     # Search for the text in codes of the specified journal
-    codes = db.query(models.CodeSnippet).filter(models.CodeSnippet.journal_id == journal_id).all()
+    codes = (
+        db.query(models.CodeSnippet)
+        .filter(models.CodeSnippet.journal_id == journal_id)
+        .all()
+    )
     for code in codes:
         start_idx = code.code_text.find(search_code)
         if start_idx != -1:

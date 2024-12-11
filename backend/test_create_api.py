@@ -1,10 +1,12 @@
 import sys
-sys.path.append('./')
+
+sys.path.append("./")
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import MagicMock, patch
 from backend.main import app  # Import your FastAPI app
-from backend.db import models
+
+# from backend.db import models
 from backend.routers import create_apis
 
 client = TestClient(app)
@@ -82,6 +84,7 @@ def mock_create_entry():
         }
         yield mock_create
 
+
 @pytest.fixture
 def mock_create_code():
     """Fixture to mock the create_code function."""
@@ -150,6 +153,7 @@ def test_create_entry(login_user, mock_create_entry):
     # assert response["page_number"] == 0
     assert response["entry_text"] == entry_text
     assert response["journal_id"] == journal_id
+
 
 def test_create_code(login_user, mock_create_code):
     """Test creating an code."""

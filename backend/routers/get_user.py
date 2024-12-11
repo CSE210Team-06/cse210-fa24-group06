@@ -1,10 +1,10 @@
 from fastapi import HTTPException, Depends, status, APIRouter
 from sqlalchemy.orm import Session
-from sqlalchemy.sql import func
-from db import models, schemas
-from auth import verify_token
-from db.database import SessionLocal
-from datetime import datetime, timedelta, timezone
+
+# from sqlalchemy.sql import func
+from backend.db import models
+from backend.auth import verify_token
+from backend.db.database import SessionLocal
 
 router = APIRouter()
 
@@ -71,9 +71,7 @@ def get_user_journals(auth_token: str, db: Session = Depends(get_db)):
 
 # get all the codes for a journal
 @router.get("/journal_codes")
-def get_journal_codes(
-    auth_token: str, journal_id: int, db: Session = Depends(get_db)
-):
+def get_journal_codes(auth_token: str, journal_id: int, db: Session = Depends(get_db)):
 
     # Verify the token and get the email
     user_email = verify_token(auth_token)
@@ -92,17 +90,19 @@ def get_journal_codes(
         )
 
     # Retrieve all codes for the journal
-    codes = db.query(models.CodeSnippet).filter(models.CodeSnippet.journal_id == journal_id).all()
+    codes = (
+        db.query(models.CodeSnippet)
+        .filter(models.CodeSnippet.journal_id == journal_id)
+        .all()
+    )
 
     if not codes:
         return {"status": "success", "message": "No codes found for this journal"}
 
-    result = [
-        {"code_id": code.code_id, "entry_text": code.code_text}
-        for code in codes
-    ]
+    result = [{"code_id": code.code_id, "entry_text": code.code_text} for code in codes]
 
     return {"status": "success", "codes": result}
+
 
 # get all the entries for a journal
 @router.get("/journal_entries")
