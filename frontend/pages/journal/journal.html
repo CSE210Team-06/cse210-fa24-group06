@@ -49,7 +49,7 @@
         text-decoration: underline;
       }
 
-      #selected-groups-container {
+      #selected-tags-container {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
@@ -64,7 +64,7 @@
         font-size: 14px;
       }
 
-      .group-chip {
+      .tag-chip {
         color: #fff;
         background-color: #00a000;
       }
@@ -93,18 +93,18 @@
         />
         <div class="journal-attributes">
           <!-- Plus Button -->
-          <button class="chip" id="add-group-btn">+ Group</button>
+          <button class="chip" id="add-tag-btn">+ tag</button>
 
-          <div id="add-group-options" style="display: none">
-            <button class="chip" id="add-new-group-btn">Add Group</button>
-            <!-- Dropdown for selecting groups -->
-            <select id="group-select-dropdown">
-              <option value="" disabled selected>Select a group</option>
+          <div id="add-tag-options" style="display: none">
+            <button class="chip" id="add-new-tag-btn">Add tag</button>
+            <!-- Dropdown for selecting tags -->
+            <select id="tag-select-dropdown">
+              <option value="" disabled selected>Select a tag</option>
             </select>
           </div>
 
           <!-- Container for chips -->
-          <div id="selected-groups-container"></div>
+          <div id="selected-tags-container"></div>
         </div>
       </header>
       <main class="editor-main">
@@ -127,20 +127,14 @@
       href="https://unpkg.com/easymde/dist/easymde.min.css"
     />
 
-    <dialog class="modal" id="add-group-modal">
+    <dialog class="modal" id="add-tag-modal">
       <header class="modal__header">
-        <h2>Create Group</h2>
+        <h2>Create tag</h2>
         <button class="close-button" id="closeModal">&#10006;</button>
       </header>
-      <form method="POST" class="form" id="add-group-form">
-        <label for="groupName">Group Name:</label>
-        <input
-          type="text"
-          id="groupName"
-          name="groupName"
-          minlength="3"
-          required
-        />
+      <form method="POST" class="form" id="add-tag-form">
+        <label for="tagName">tag Name:</label>
+        <input type="text" id="tagName" name="tagName" minlength="3" required />
         <button type="submit">Add</button>
         <p class="form_error"></p>
       </form>

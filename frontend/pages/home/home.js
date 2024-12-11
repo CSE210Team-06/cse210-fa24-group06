@@ -26,33 +26,33 @@ document.getElementById("secrets-btn").addEventListener("click", () => {
   window.location.href = "../secrets/secrets.html";
 });
 
-const dropdown = document.getElementById("journal-group-select");
+const dropdown = document.getElementById("tag-select");
 /**
- * Populates a dropdown menu with group data.
+ * Populates a dropdown menu with tag data.
  *
- * @param {Object} data - The data object containing groups.
- * @param {Array} data.groups - An array of group objects.
- * @param {string} data.groups[].id - The unique identifier for the group.
- * @param {string} data.groups[].name - The name of the group.
+ * @param {Object} data - The data object containing tags.
+ * @param {Array} data.tags - An array of tag objects.
+ * @param {string} data.tags[].id - The unique identifier for the tag.
+ * @param {string} data.tags[].name - The name of the tag.
  */
 function populateDropdown(data) {
-  data.groups.forEach((group, index) => {
+  data.tags.forEach((tag, index) => {
     const option = document.createElement("option");
-    option.value = group.id;
-    option.textContent = group.name;
+    option.value = tag.id;
+    option.textContent = tag.name;
     dropdown.appendChild(option);
 
-    // Select the first group by default
+    // Select the first tag by default
     if (index === 0) {
-      dropdown.value = group.id;
+      dropdown.value = tag.id;
     }
   });
 }
 
 /**
- * Fetches group data from a mock database and populates the dropdown menu.
+ * Fetches tag data from a mock database and populates the dropdown menu.
  */
-fetch("../../mock-db/groups.json")
+fetch("../../mock-db/tags.json")
   .then((response) => {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

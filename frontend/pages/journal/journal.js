@@ -1,58 +1,55 @@
-/* global EasyMDE */
 import { searchGoogle } from "../../utils/utils.js";
-import { API_BASE_URL, CREATE_GROUP_URL } from "../../constants/constants.js";
+import { API_BASE_URL, CREATE_TAG_URL } from "../../constants/constants.js";
 const urlParams = new URLSearchParams(window.location.search);
 const journalId = urlParams.get("journalId");
 
 // DOM Elements
-const addGroupBtn = document.getElementById("add-group-btn");
-const addGroupOptions = document.getElementById("add-group-options");
-const dropdown = document.getElementById("group-select-dropdown");
-const addNewGroupBtn = document.getElementById("add-new-group-btn");
-const addGroupModal = document.getElementById("add-group-modal");
-const selectedGroupsContainer = document.getElementById(
-  "selected-groups-container",
+const addtagBtn = document.getElementById("add-tag-btn");
+const addtagOptions = document.getElementById("add-tag-options");
+const dropdown = document.getElementById("tag-select-dropdown");
+const addNewtagBtn = document.getElementById("add-new-tag-btn");
+const addtagModal = document.getElementById("add-tag-modal");
+const selectedtagsContainer = document.getElementById(
+  "selected-tags-container",
 );
 const saveJournalBtn = document.getElementById("save-journal-btn");
 
-// Set to keep track of selected group IDs
-const selectedGroupIds = new Set();
-
-// console.log("Journal ID inside journal.js:", journalId);
+// Set to keep track of selected tag IDs
+const selectedtagIds = new Set();
 
 const easyMDE = new EasyMDE({
   element: document.getElementById("journal-text-area"),
 });
 
 /**
- * Populates the dropdown menu with group data.
+ * Populates the dropdown menu with tag data.
  *
- * @param {Object} data - The data object containing groups.
- * @param {Array} data.groups - An array of group objects.
- * @param {string} data.groups[].id - The unique identifier for the group.
- * @param {string} data.groups[].name - The name of the group.
+ * @param {Object} data - The data object containing tags.
+ * @param {Array} data.tags - An array of tag objects.
+ * @param {string} data.tags[].id - The unique identifier for the tag.
+ * @param {string} data.tags[].name - The name of the tag.
  */
 function populateDropdown(data) {
-  data.groups.forEach((group) => {
+  data.tags.forEach((tag) => {
     const option = document.createElement("option");
-    option.value = group.id;
-    option.textContent = group.name;
+    option.value = tag.id;
+    option.textContent = tag.name;
     dropdown.appendChild(option);
   });
 }
 
 /**
- * Adds a chip for the selected group.
+ * Adds a chip for the selected tag.
  *
- * @param {string} groupId - The ID of the selected group.
- * @param {string} groupName - The name of the selected group.
+ * @param {string} tagId - The ID of the selected tag.
+ * @param {string} tagName - The name of the selected tag.
  */
-function addGroupChip(groupId, groupName) {
+function addtagChip(tagId, tagName) {
   // Create chip container
   const chip = document.createElement("div");
-  chip.className = "chip group-chip";
-  chip.dataset.groupId = groupId;
-  chip.textContent = groupName;
+  chip.className = "chip tag-chip";
+  chip.dataset.tagId = tagId;
+  chip.textContent = tagName;
 
   // Create "X" button to remove chip
   const removeButton = document.createElement("button");
@@ -60,53 +57,45 @@ function addGroupChip(groupId, groupName) {
   removeButton.className = "remove-chip-btn";
   removeButton.addEventListener("click", () => {
     chip.remove();
-    selectedGroupIds.delete(groupId);
+    selectedtagIds.delete(tagId);
   });
 
   // Append remove button to chip
   chip.appendChild(removeButton);
 
   // Add chip to container
-  selectedGroupsContainer.appendChild(chip);
+  selectedtagsContainer.appendChild(chip);
 }
 
+/**
+ * Fetches the journal data from the server and returns the journal object if found.
+ *
+ * @param {string} journalId - The ID of the journal to fetch.
+ * @returns {Promise<Object>} A promise that resolves to the journal object.
+ */
 async function fetchJournal(journalId) {
   try {
     const response = await fetch("http://localhost:3000/journals");
     const data = await response.json();
-    // console.log(data);
 
-    // console.log("Journal ID:", journalId);
-
-    // return data;
     if (journalId) {
-      // console.log("inside if");
       let journal = data.find((journal) => journal.id === journalId);
       return journal;
-
-      // console.log(
-      // 	data.journals.find((journal) => journal.id === parseInt(journalId))
-      // );
-      // return data.journals.find(
-      // 	(journal) => journal.id === parseInt(journalId)
-      // );
     }
-    // else {
-    // console.log("inside else");
-    // console.log(data.journals);
-    // return data.journals;
-    // }
   } catch (error) {
     // console.error("Error fetching data:", error);
     alert("Error fetching data", error);
   }
 }
 
+/**
+ * Saves the journal to the server with the given title and entry content.
+ *
+ * @param {string} journalTitle - The title of the journal.
+ * @param {string} journalEntry - The content of the journal entry.
+ * @returns {Promise<void>}
+ */
 async function saveJournal(journalTitle, journalEntry) {
-  // const journalTitle = document.getElementById("journal-title").value;
-  // const journalEntry = easyMDE.value();
-  // console.log("Journal saved:", journalTitle, journalEntry);
-
   let journalId = Math.floor(Math.random() * 1000).toString();
 
   window.alert(`Saved journal with ID: ${journalId}`);
@@ -122,15 +111,18 @@ async function saveJournal(journalTitle, journalEntry) {
       content: journalEntry,
     }),
   });
-
-  // console.log(response);
 }
 
+/**
+ * Loads the journal data into the editor.
+ *
+ * @async
+ * @function
+ * @returns {Promise<void>}
+ */
 if (journalId) {
   async function loadJournal() {
     const journal = await fetchJournal(journalId);
-
-    // console.log("Journal:", journal);
 
     document.getElementById("journal-title").value = `${journal.title}`;
     easyMDE.value(`${journal.content}`);
@@ -166,8 +158,6 @@ easyMDE.codemirror.on("change", async function () {
 
     resultsContainer.appendChild(card);
   });
-
-  // console.log(results);
 });
 
 saveJournalBtn.addEventListener("click", () => {
@@ -175,8 +165,6 @@ saveJournalBtn.addEventListener("click", () => {
   const journalEntry = easyMDE.value();
 
   saveJournal(journalTitle, journalEntry);
-
-  // console.log("Journal saved:", journalTitle, journalEntry);
 });
 
 document
@@ -186,45 +174,45 @@ document
   });
 
 // Event Listener for Plus Button
-addGroupBtn.addEventListener("click", () => {
-  addGroupOptions.style.display =
-    addGroupOptions.style.display === "none" ? "inline" : "none";
+addtagBtn.addEventListener("click", () => {
+  addtagOptions.style.display =
+    addtagOptions.style.display === "none" ? "inline" : "none";
 });
 
-addNewGroupBtn.addEventListener("click", () => {
-  addGroupModal.dispatchEvent(new Event("open"));
+addNewtagBtn.addEventListener("click", () => {
+  addtagModal.dispatchEvent(new Event("open"));
 });
 
-addGroupModal.addEventListener("open", () => {
-  addGroupModal.showModal();
+addtagModal.addEventListener("open", () => {
+  addtagModal.showModal();
   document.body.style.overflow = "hidden"; // Disable scrolling
 });
 
 const closeButton = document.querySelector("#closeModal");
 const formError = document.querySelector(".modal .form_error");
-const addGroupForm = document.getElementById("add-group-form");
+const addtagForm = document.getElementById("add-tag-form");
 
 // Close modal on button click
 closeButton.addEventListener("click", () => {
   formError.innerHTML = "";
   formError.style.display = "hidden";
-  addGroupForm.reset();
-  addGroupModal.close();
+  addtagForm.reset();
+  addtagModal.close();
   document.body.style.overflow = "";
 });
 
-addGroupForm.addEventListener("submit", async function (event) {
+addtagForm.addEventListener("submit", async function (event) {
   event.preventDefault(); // Prevent the default form submission
 
   // Create the dictionary from form inputs
   const formData = {
     auth_token: sessionStorage.getItem("accessToken"),
-    group_name: document.getElementById("groupName").value,
+    tag_name: document.getElementById("tagName").value,
   };
 
   // Send the data to the endpoint
   const response = await fetch(
-    `${API_BASE_URL}${CREATE_GROUP_URL}?auth_token=${formData.auth_token}&group_name=${formData.group_name}`,
+    `${API_BASE_URL}${CREATE_TAG_URL}?auth_token=${formData.auth_token}&tag_name=${formData.tag_name}`,
     {
       method: this.method,
       headers: {
@@ -237,7 +225,7 @@ addGroupForm.addEventListener("submit", async function (event) {
   if (response.ok) {
     const data = await response.json();
     console.log(data);
-    getGroups();
+    getTags();
     closeButton.dispatchEvent(new Event("click"));
   } else {
     return response.json().then((errorData) => {
@@ -250,22 +238,29 @@ addGroupForm.addEventListener("submit", async function (event) {
 // Event Listener for Dropdown Selection
 dropdown.addEventListener("change", () => {
   const selectedOption = dropdown.options[dropdown.selectedIndex];
-  const groupId = selectedOption.value;
-  if (!selectedGroupIds.has(groupId)) {
-    const groupName = selectedOption.textContent;
+  const tagId = selectedOption.value;
+  if (!selectedtagIds.has(tagId)) {
+    const tagName = selectedOption.textContent;
 
-    // Add chip for the selected group
-    addGroupChip(groupId, groupName);
-    selectedGroupIds.add(groupId);
+    // Add chip for the selected tag
+    addtagChip(tagId, tagName);
+    selectedtagIds.add(tagId);
   }
   // Reset dropdown
   dropdown.value = "";
-  addGroupOptions.style.display = "none";
+  addtagOptions.style.display = "none";
 });
 
-async function getGroups() {
-  // Fetch groups and populate the dropdown
-  fetch("../../mock-db/groups.json")
+/**
+ * Fetches and displays tags in the dropdown menu.
+ *
+ * @async
+ * @function
+ * @returns {Promise<void>}
+ */
+async function getTags() {
+  // Fetch tags and populate the dropdown
+  fetch("../../mock-db/tags.json")
     .then((response) => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -280,4 +275,4 @@ async function getGroups() {
     });
 }
 
-getGroups();
+getTags();
