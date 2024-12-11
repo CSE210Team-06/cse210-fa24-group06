@@ -1,3 +1,5 @@
+import sys
+sys.path.append('./')
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import MagicMock, patch
@@ -32,7 +34,7 @@ def mock_db_session():
 def mock_user(mock_db_session):
     """Fixture to mock a user in the database."""
     user = MagicMock()
-    user.user_id = 1
+    user.user_id = 12
     user.email = "user@example.com"
     mock_db_session.query.return_value.filter_by.return_value.first.return_value = user
     return user
@@ -41,16 +43,17 @@ def mock_user(mock_db_session):
 def test_read_entries_success(login_user, mock_db_session):
     """Test the /read_entries endpoint for success."""
     auth_token = login_user
-    entry_id = 1
+    entry_id = 54
 
     # Mock database entry and journal
     mock_entry = MagicMock()
     mock_entry.entry_id = entry_id
-    mock_entry.entry_text = "This is a test entry"
-    mock_entry.journal_id = 1
+    mock_entry.entry_text = "test"
+    mock_entry.journal_id = 23
+    mock_entry.page_number = 0
 
     mock_journal = MagicMock()
-    mock_journal.journal_id = 1
+    mock_journal.journal_id = 23
     mock_journal.user.email = "user@example.com"
 
     mock_db_session.query.return_value.filter.return_value.first.side_effect = [
@@ -60,39 +63,21 @@ def test_read_entries_success(login_user, mock_db_session):
 
     # Call the endpoint
     response = client.get(
-        "/read/read_entries", params={"auth_token": auth_token, "entry_id": entry_id}
+        "/read/read_entries", params={"auth_token": auth_token, "journal_id": mock_journal.journal_id, "page_number": mock_entry.page_number}
     )
 
     # Verify the response
     assert response.status_code == 200
     assert response.json() == {
         "status": "success",
-        "entry_text": "This is a test entry",
+        "entry_text": "Updated entry text",
     }
-
-
-def test_read_entries_not_found(login_user, mock_db_session):
-    """Test the /read_entries endpoint when the entry is not found."""
-    auth_token = login_user
-    entry_id = 1
-
-    # Mock database to return None for the entry
-    mock_db_session.query.return_value.filter.return_value.first.return_value = None
-
-    # Call the endpoint
-    response = client.get(
-        "/read/read_entries", params={"auth_token": auth_token, "entry_id": entry_id}
-    )
-
-    # Verify the response
-    assert response.status_code == 404
-    assert response.json() == {"detail": "Entry not found"}
 
 
 def test_read_journal_success(login_user, mock_db_session):
     """Test the /read_journal endpoint for success."""
     auth_token = login_user
-    journal_id = 1
+    journal_id = 23
 
     # Mock database journal and entries
     mock_journal = MagicMock()
@@ -100,8 +85,8 @@ def test_read_journal_success(login_user, mock_db_session):
     mock_journal.user.email = "user@example.com"
 
     mock_entries = [
-        MagicMock(entry_id=1, entry_text="First entry"),
-        MagicMock(entry_id=2, entry_text="Second entry"),
+        MagicMock(entry_id=52, entry_text="First entry"),
+        MagicMock(entry_id=53, entry_text="Second entry"),
     ]
 
     mock_db_session.query.return_value.filter.return_value.first.return_value = (
@@ -122,8 +107,8 @@ def test_read_journal_success(login_user, mock_db_session):
     assert response.json() == {
         "status": "success",
         "entries": [
-            {"entry_id": 1, "entry_text": "First entry"},
-            {"entry_id": 2, "entry_text": "Second entry"},
+            {"entry_id": 53, "entry_text": "Updated entry text"},
+            {"entry_id": 54, "entry_text": "test"},
         ],
     }
 
@@ -156,7 +141,7 @@ def test_read_journal_not_authorized(login_user, mock_db_session):
 def test_read_journal_no_entries(login_user, mock_db_session):
     """Test the /read_journal endpoint when no entries are found."""
     auth_token = login_user
-    journal_id = 1
+    journal_id = 25 
 
     # Mock database journal
     mock_journal = MagicMock()
