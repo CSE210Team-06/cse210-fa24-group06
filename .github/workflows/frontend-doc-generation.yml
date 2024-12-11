@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "dev/frontend"
+      - "frontend/feat/docs"
   pull_request:
     branches:
       - "dev/frontend"

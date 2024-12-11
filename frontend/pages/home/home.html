@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>CodeChronicle</title>
+		<link rel="stylesheet" href="./home.css" />
+		<!-- <link rel="stylesheet" href="../../styles/styles.css" /> -->
+	</head>
+	<body>
+		<header class="header">
+			<h1 class="header__title">(code) => {chronicle;}</h1>
+			<div class="header__button__group" id="user-profile">
+				<div class="first-name" id="user-first-name"></div>
+				<button class="logout-btn" id="Logout">Logout</button>
+			</div>
+		</header>
+		<div class="search-bar">
+			<input
+				class="search-bar__input"
+				type="text"
+				placeholder="Search journals"
+				id="search-journals-input"
+			/>
+			<div>
+				<button id="ai-chat-btn" class="ai-chat-button">
+					Chat with AI Prof
+				</button>
+			</div>
+		</div>
+		<div class="searched-journals__list"></div>
+		<section class="recent-journals" aria-labelledby="recent-journals-heading">
+			<div class="recent-journals-header">
+				<h2 id="recent-journals-heading" class="journals__title">Journals</h2>
+				<div class="recent-journal__button__group">
+					<button id="secrets-btn" class="secret-button">Secret</button>
+					<button id="create-journal-btn" class="create-button">
+						+ Create
+					</button>
+				</div>
+			</div>
+			<div id="journals-container" class="journals-container"></div>
+		</section>
+
+		<!-- <div>
+      <button id="ai-chat-btn" class="ai-chat-btm-button">
+        Chat with AI Prof
+      </button>
+    </div>  -->
+
+		<div class="right-side-panel" id="right-side-panel">
+			<div class="chat-container">
+				<div class="chat-btn-grp">
+					<div class="chat-header">Chat with AI Prof. Powell</div>
+					<button id="close-button" class="close-button">&#10006;</button>
+				</div>
+				<div class="chat-body" id="chatBody"></div>
+				<div class="chat-footer">
+					<input type="text" id="chatInput" placeholder="Type a message..." />
+					<div class="button-grp">
+						<button id="sendButton">Send</button>
+						<button id="clearButton">Clear</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="module" src="./home.js"></script>
+		<script type="module" src="user-name.js"></script>
+		<!-- <script type="module" src="./renderer.js"></script> -->
+	</body>
+</html>

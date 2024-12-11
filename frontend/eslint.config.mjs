@@ -8,15 +8,16 @@ export default [
       globals: {
         ...globals.browser,
         ...globals.node,
+        EasyMDE: "readonly", // Declare easymde as a global variable
       },
     },
     rules: {
-      "no-unused-vars": "error",    // Disallow unused variables
-      "no-undef": "error",          // Disallow undefined variables
-      semi: ["error", "always"],    // Enforce semicolons
-      eqeqeq: "error",              // Enforce strict equality (===)
-      "no-console": "warn"          // Warn about console.log usage (optional)
-    }
+      "no-unused-vars": "error", // Disallow unused variables
+      "no-undef": "error", // Disallow undefined variables
+      semi: ["error", "always"], // Enforce semicolons
+      eqeqeq: "error", // Enforce strict equality (===)
+      "no-console": "warn", // Warn about console.log usage (optional)
+    },
   },
   pluginJs.configs.recommended,
 ];
