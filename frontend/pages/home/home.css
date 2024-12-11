@@ -32,6 +32,7 @@ body {
   color: var(--theme-dark);
   flex-grow: 1;
   text-align: center;
+  font-family: "Cascadia Code", "Courier New", Courier, monospace;
 }
 .header__button__group {
   display: flex;
@@ -48,7 +49,7 @@ body {
   color: var(--theme-dark);
   font-weight: bold;
 }
-.logout-btn{
+.logout-btn {
   background-color: var(--clickbutton-dark);
   color: white;
   border: 0.2vh solid var(--clickbutton-dark);
@@ -58,7 +59,7 @@ body {
   font-weight: bold;
   cursor: pointer;
 }
-.logout-btn:active{
+.logout-btn:active {
   background-color: var(--theme-dark);
   border: 0.2vh solid var(--theme-dark);
   color: white;
@@ -71,7 +72,7 @@ body {
   margin-bottom: 30px;
   gap: 1.5vw;
 }
-.ai-chat-button{
+.ai-chat-button {
   width: 200px;
   height: 50px;
   padding: 0;
@@ -186,12 +187,12 @@ body {
 }
 .journals-container {
   display: flex;
-  flex-wrap: wrap; 
-  gap: 20px; 
+  flex-wrap: wrap;
+  gap: 20px;
   margin-top: 20px;
   justify-content: flex-start;
 }
-.card__link{
+.card__link {
   text-decoration: none;
   color: inherit;
   display: flex;
@@ -205,8 +206,8 @@ body {
   color: var(--bg-dark);
   width: 200px;
   height: 80px;
-  display: flex; 
-  flex-direction: column; 
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -215,8 +216,8 @@ body {
 .card__title {
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap; 
-  display: block; 
+  white-space: nowrap;
+  display: block;
   text-align: center;
   width: 70%;
 }
@@ -231,7 +232,7 @@ body {
   justify-content: flex-start;
   margin-top: 20px;
 }
-.search_card__link{
+.search_card__link {
   text-decoration: none;
   color: inherit;
   display: flex;
@@ -245,8 +246,8 @@ body {
   color: var(--bg-dark);
   width: 200px;
   height: 80px;
-  display: flex; 
-  flex-direction: column; 
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -255,17 +256,22 @@ body {
 .search_card__title {
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap; 
-  display: block; 
+  /* white-space: nowrap; */
+  display: block;
   text-align: center;
-  width: 70%;
-  margin:10px;
+  /* width: 70%; */
+  width: 100%;
+  margin: 10px;
+  z-index: 5;
 }
 .search_card__description {
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
+  /* padding-bottom: 0.5rem;
+	padding-right: 1.9rem; */
   font-size: 1rem;
   color: white;
+  z-index: 1;
 }
 
 /* Chat container styles */
@@ -280,12 +286,12 @@ body {
   box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
   padding: 10px;
   overflow-y: auto;
-
+  overflow: hidden;
   /* display: block; */
 }
 
 .chat-container {
-  width: 400px;
+  width: 100%;
   height: 100%;
   background-color: var(--bg-dark);
   border-radius: 10px;
@@ -295,7 +301,7 @@ body {
   overflow: hidden;
   border: 3px solid var(--clickbutton-dark);
 }
-.chat-btn-grp{
+.chat-btn-grp {
   background: var(--clickbutton-dark);
   display: flex;
   justify-content: space-between;
@@ -306,9 +312,9 @@ body {
   border: none;
   right: 0;
   background-color: transparent;
-  color: white; 
-  font-size: 30px; 
-  cursor: pointer; 
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
   display: flex;
   position: absolute;
   margin-right: 2%;
@@ -334,7 +340,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background-color: var(--bg-dark);
+  scrollbar-color: red yellow;
 }
 
 /* Chat messages */
@@ -373,7 +379,7 @@ body {
   flex: 1;
   padding: 10px;
   border: 2px solid var(--theme-dark);
-  color:white;
+  color: white;
   background-color: var(--bg-dark);
   border-radius: 5px;
   font-size: 14px;
@@ -397,7 +403,12 @@ body {
 
 .chat-footer button:hover {
   background: var(--clickbutton-dark);
-  color:white;
+  color: white;
+}
+
+.badge-container {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .badge {
@@ -406,7 +417,11 @@ body {
   color: var(--theme-dark);
   font-size: 12px;
   padding: 5px 10px;
-  border-radius: 50px;
+  margin-right: 0.3rem;
+  margin-bottom: 0.3rem;
+  /* border-radius: 5px; */
+  /* margin-bottom: 2rem; */
+  /* padding: 0.5rem 1rem; */
 }
 
 .profile-pic {
@@ -416,9 +431,9 @@ body {
   margin-right: 10px;
 }
 
-.ai-chat-btm-button{
+.ai-chat-btm-button {
   position: fixed;
-  bottom: 60px; 
+  bottom: 60px;
   right: 150px;
   width: 200px;
   height: 50px;

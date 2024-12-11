@@ -241,9 +241,8 @@ document.getElementById("delete-journal-btn").addEventListener("click", () => {
   }
 });
 
-
-document.getElementById('search-toggle-btn').addEventListener('click', () => {
-  const sidePanel = document.getElementById('side-panel');
-  sidePanel.classList.toggle('hidden');
-  sidePanel.classList.toggle('visible');
-});
+// document.getElementById('search-toggle-btn').addEventListener('click', () => {
+//   const sidePanel = document.getElementById('side-panel');
+//   sidePanel.classList.toggle('hidden');
+//   sidePanel.classList.toggle('visible');
+// });

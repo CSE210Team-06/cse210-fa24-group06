@@ -29,14 +29,14 @@ body {
   gap: 20px;
   overflow-y: auto;
 }
-.header{
+.header {
   display: flex;
   gap: 20px;
   flex-shrink: 0;
   flex-direction: row;
   margin-bottom: 3vh;
 }
-.home{
+.home {
   background-color: var(--theme-dark);
   color: white;
   border: 0.2vh solid var(--theme-dark);
@@ -46,7 +46,7 @@ body {
   font-weight: bold;
   cursor: pointer;
 }
-.home:active{
+.home:active {
   background-color: var(--theme-dark);
   border: 0.2vh solid var(--theme-dark);
   color: white;
@@ -72,12 +72,12 @@ body {
 .title-input::placeholder {
   color: #909090;
 }
-.editor-main{
-  margin-right: 30vh;
+.editor-main {
+  margin-right: 40vh;
   border-radius: 6px;
   margin-bottom: 1vh;
 }
-.save-btn{
+.save-btn {
   background-color: var(--clickbutton-dark);
   color: white;
   border: 0.2vh solid var(--clickbutton-dark);
@@ -87,7 +87,7 @@ body {
   font-weight: bold;
   cursor: pointer;
 }
-.save-btn:hover{
+.save-btn:hover {
   background-color: var(--border-dark);
   border: 0.2vh solid var(--border-dark);
   color: var(--clickbutton-dark);
@@ -98,7 +98,8 @@ body {
   position: fixed;
   top: 0;
   right: 0;
-  width: 25vw;
+  /* width: 25vw; */
+  width: 30rem;
   height: 100%;
   border-left: 0.2vh solid var(--theme-dark);
   background-color: var(--bg-dark);
@@ -109,7 +110,7 @@ body {
   overflow-y: auto;
   display: block;
 }
-.delete-btn{
+.delete-btn {
   background-color: #de2020;
   color: white;
   border: 0.2vh solid #de2020;
@@ -119,12 +120,12 @@ body {
   font-weight: bold;
   cursor: pointer;
 }
-.delete-btn:hover{
+.delete-btn:hover {
   background-color: #ff0000;
   border: 0.2vh solid #ff0000;
   color: white;
 }
-.delete-btn:active{
+.delete-btn:active {
   background-color: #de2020;
   border: 0.2vh solid #de2020;
   color: white;
@@ -161,28 +162,32 @@ body {
 }
 
 .EasyMDEContainer .editor-toolbar button {
-  color: #FFFFFF; 
-  border: none; 
+  color: #ffffff;
+  border: none;
 }
 
 .EasyMDEContainer .editor-toolbar button:hover {
-  background-color: var(--theme-dark); 
+  background-color: var(--theme-dark);
 }
 
 .EasyMDEContainer .editor-toolbar button.active {
   background-color: var(--clickbutton-dark);
-  color: white; 
+  color: white;
 }
 
 .EasyMDEContainer .CodeMirror {
   border: 2px solid var(--theme-dark) !important;
-  color: white !important; 
-  background-color: var(--bg-dark) !important; 
+  color: white !important;
+  background-color: var(--bg-dark) !important;
   caret-color: white !important;
 }
 
 .EasyMDEContainer .editor-toolbar {
   border-bottom: none !important;
-  background-color: var(--bg-dark); 
+  background-color: var(--bg-dark);
   border: 2px solid var(--theme-dark);
+}
+
+.EasyMDEContainer .CodeMirror-cursor {
+  border-left: 2px solid var(--theme-dark); /* Change 'red' to your desired color */
 }

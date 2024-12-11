@@ -40,6 +40,7 @@ body {
   color: var(--theme-dark);
   flex-grow: 1;
   text-align: center;
+  font-family: "Cascadia Code", "Courier New", Courier, monospace;
 }
 .header__button__group {
   display: flex;

@@ -219,11 +219,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       matches[i].journal_title = data["entries"][0].journal_title;
       // console.log("after journal_title");
       // console.log(matches[i]);
-
-      addMessage(
-        "Hi, I'm the AI version of Prof. Powell! I'm trained on Prof. Powell's lecture notes. You can ask me anything, but if it is of importance do ask Prof. Powell directly.",
-        "bot",
-      );
     }
 
     // Select the container where the cards will be displayed
@@ -243,8 +238,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Add card content
       card.innerHTML = `
           <a href="../journal/journal.html?journalId=${item.journal_id}" class="card__link">
-            <div class="card__content">
-              <h3 class="card__title">${item.journal_title}</h3>            
+            <div class="search_card__content">
+              <h3 class="search_card__title">${item.journal_title}</h3>    
+						  <p class="search_card__description">${item.entry_text.substring(item.char_index, item.char_index + item.journal_title.length - 3)}...</p>
             </div>
           </a>
         `;
@@ -257,6 +253,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     // console.error("Failed to fetch search results:", error);
     window.alert("Failed to fetch journals.", error);
   }
+
+  addMessage(
+    "Hi, I'm the AI version of Prof. Powell! I'm trained on Prof. Powell's lecture notes. You can ask me anything, but if it is of importance do ask Prof. Powell directly.",
+    "bot",
+  );
 });
 
 const chatBody = document.getElementById("chatBody");
@@ -393,4 +394,8 @@ clearButton.addEventListener("click", () => {
     "Hi, I'm the AI version of Prof. Powell! I'm trained on Prof. Powell's lecture notes. You can ask me anything, but if it is of importance do ask Prof. Powell directly.",
     "bot",
   );
+});
+
+document.getElementById("close-button").addEventListener("click", () => {
+  document.getElementById("ai-chat-btn").click();
 });
