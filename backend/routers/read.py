@@ -1,8 +1,8 @@
 from fastapi import HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
-from db import models
-from auth import verify_token
-from db.database import SessionLocal
+from backend.db import models
+from backend.auth import verify_token
+from backend.db.database import SessionLocal
 
 router = APIRouter()
 

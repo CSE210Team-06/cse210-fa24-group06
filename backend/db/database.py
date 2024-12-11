@@ -4,7 +4,8 @@ Responsible for creating the database connection and session by defining a depen
 
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
-from .models import Base
+
+# from .models import Base
 
 DATABASE_URL = "sqlite:///./journaler.db"
 

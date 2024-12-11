@@ -1,13 +1,13 @@
-from re import search
+import sys
 
-from fastapi import FastAPI, Depends, HTTPException, status
+sys.path.append("../")
+from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-from routers import read_apis
-from db import models, schemas
-from utils import hash_password, verify_password
-from auth import create_access_token, verify_token
-from db.database import SessionLocal
-from routers import (
+from backend.db import models, schemas
+from backend.utils import hash_password, verify_password
+from backend.auth import create_access_token, verify_token
+from backend.db.database import SessionLocal
+from backend.routers import (
     update_apis,
     search,
     read,
@@ -15,7 +15,7 @@ from routers import (
     delete_apis,
     get_user,
     read_apis,
-    # rag_search,
+    rag_search,
 )
 
 app = FastAPI(
@@ -36,7 +36,7 @@ app.include_router(delete_apis.router, prefix="/delete", tags=["Delete"])
 
 app.include_router(get_user.router, prefix="/get_user", tags=["User"])
 
-# app.include_router(rag_search.router, prefix="/rag_search", tags=["RAG Search"])
+app.include_router(rag_search.router, prefix="/rag_search", tags=["RAG Search"])
 
 
 # Dependency to get the DB session

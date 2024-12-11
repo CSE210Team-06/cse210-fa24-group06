@@ -1,10 +1,12 @@
 import sys
-sys.path.append('./')
+
+sys.path.append("./")
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import MagicMock, patch
 from backend.main import app  # Import your FastAPI app
-from backend.db import models
+
+# from backend.db import models
 from backend.routers import create_apis
 
 client = TestClient(app)
