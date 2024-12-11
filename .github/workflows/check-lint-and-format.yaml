@@ -3,7 +3,7 @@ name: Lint and Format for Backend
 on:
   push:
     branches:
-      - "backend/*" # Match branches starting with "backend/"
+      - "backend/**" # Match branches starting with "backend/"
       - "dev/backend"
     paths:
       - "backend/**" # Trigger only for changes in backend folder
