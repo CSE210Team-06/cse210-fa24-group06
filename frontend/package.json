@@ -1,13 +1,14 @@
 {
   "name": "frontend",
   "version": "1.0.0",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
     "start": "electron .",
     "lint": "npx eslint **/*.{js,ts}",
     "prettier": "npx prettier --check **/*.{js,ts,json,css,html}",
     "format": "npx prettier --write **/*.{js,ts,json,css,html}",
-    "dev-server": "json-server --watch ./mock-db/db.json --port 5000"
+    "dev-server": "json-server --watch ./mock-db/db.json --port 5000",
+    "docs": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
     "easymde": "^2.18.0",
@@ -15,9 +16,11 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
-    "eslint": "^9.15.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "eslint": "^9.16.0",
     "globals": "^15.12.0",
-    "json-server": "^1.0.0-beta.3",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "jsdoc": "^4.0.4"
   }
 }

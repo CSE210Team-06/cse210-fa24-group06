@@ -1,0 +1,74 @@
+:root {
+  /*colors - light mode*/
+  /* --bg-light: white;
+  --theme-light: dodgerblue;
+  --clickbutton-light: #0158ae;
+  --text-light: white; */
+
+  /*colors - dark mode*/
+  --bg-dark: #131313;
+  --theme-dark: #b46dd2;
+  --clickbutton-dark: rgb(149, 36, 198);
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  flex-direction: column;
+  background-color: var(--bg-dark);
+  /* background-color: var(--bg-light); */
+}
+.mainbody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+}
+.header__title {
+  font-size: 8vh;
+  /* color: var(--theme-light); */
+  color: var(--theme-dark);
+  flex-grow: 1;
+  text-align: center;
+  font-family: "Cascadia Code", "Courier New", Courier, monospace;
+}
+.header__button__group {
+  display: flex;
+  gap: 5vh;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+.header__button {
+  /* background-color: var(--theme-light); */
+  background-color: var(--theme-dark);
+  /* color: var(--text-light); */
+  /* color: var(--text-dark); */
+  border: 2px solid var(--theme-dark);
+  /* border: 2px solid var(--theme-light); */
+  border-radius: 100px;
+  height: 7vh;
+  width: 40vh;
+  font-size: 3.5vh;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.header__button--signin:active {
+  background-color: var(--clickbutton-dark);
+  /* background-color: var(--clickbutton-light); */
+  color: var(--text);
+  border-color: var(--clickbutton-dark);
+  /* border-color: var(--clickbutto-light); */
+}

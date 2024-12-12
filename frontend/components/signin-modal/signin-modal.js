@@ -17,36 +17,38 @@ export class SigninModal extends HTMLElement {
         }
 
         .modal {
-            background: #fff;
+            background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
+			overflow: hidden;
         }
-
         .modal__header {
             display: flex;
             flex-direction: row;
-            align-items: top;
-            justify-content: space-around;
+            align-items: center;
+            justify-content: center;
         }
-
+		.header{
+		  padding: 0;
+		  color: var(--theme-dark);
+		  font-size: 7vh;
+		}
         .modal button {
             margin-top: 15px;
         }
 
         .close-button {
-            /* float: right;*/
             width: 30px;
             height: 30px;
-            border-radius: 50%;
         }
 
         .form {
           display: flex;
           flex-direction: column;
+		  height: 55vh;
+		  width: 50vh;
         }
-
         .form > * {
           margin-bottom: 10px;
         }
@@ -59,12 +61,12 @@ export class SigninModal extends HTMLElement {
         </style>
         <dialog class="modal" id="signin-modal">
             <header class="modal__header">
-                <h2>Sign In</h2>
+                <h2 class="header">Sign In</h2>
                 <button class="close-button" id="closeModal">&#10006;</button>
             </header>
             <form action="${API_BASE_URL}/login" method="POST" class="form" id="signin-form">
               <label for="email">Email</label>
-              <input type="email" id="signin-email" name="email" required /> 
+              <input type="email" class="signin-email" id="signin-email" name="email" required /> 
               <label for="password">Password</label>
               <input type="password" id="signin-password" name="password" required />
               <button type="submit">Sign In</button>
