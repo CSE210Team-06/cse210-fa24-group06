@@ -171,7 +171,7 @@ async function saveJournal(journalTitle, journalEntry, codeLanguage, codeContent
       page_num: 0,
       auth_token: loadFromSessionStorage("accessToken"),
       entry_text: journalEntry,
-      language: codeLanguage || '',
+      Language: codeLanguage || '',
       code_text: codeContent || '',
     });
 
@@ -239,7 +239,8 @@ saveJournalBtn.addEventListener("click", () => {
   // Only save code if a language is selected and code is not empty
   const finalCodeLanguage = codeLanguage !== "" ? codeLanguage : null;
   const finalCodeContent = codeContent.trim() !== "" ? codeContent : null;
-
+  console.log(finalCodeContent)
+  console.log(finalCodeLanguage)
   saveJournal(journalTitle, journalEntry, finalCodeLanguage, finalCodeContent);
 
   // console.log("Journal saved:", journalTitle, journalEntry);
