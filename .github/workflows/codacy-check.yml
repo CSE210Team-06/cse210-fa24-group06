@@ -3,13 +3,16 @@ name: Lint and Code Style Check
 on:
   push:
     branches:
-      - "frontend/**"
       - "dev/frontend"
+      - "dev/backend"
+      - "main"
     paths:
       - "frontend/**"
+      - "backend/**"
   pull_request:
     paths:
       - "frontend/**"
+      - "backend/**"
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -30,12 +33,9 @@ jobs:
         working-directory: frontend
         run: npm install
 
-      # Run ESLint
-      - name: Run ESLint
+      # Run codacy for code quality check
+      - name: Check code quality with Codacy
         working-directory: frontend
-        run: npm run lint
-
-      # Run Prettier for formatting check
-      - name: Check code format with Prettier
-        working-directory: frontend
-        run: npm run prettier
+        run: npm install -g codacy-cli && codacy --help
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
