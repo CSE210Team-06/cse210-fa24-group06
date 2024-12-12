@@ -50,11 +50,10 @@ jobs:
       # Commit and push documentation
       - name: Commit and Push Docs
         run: |
-          cp -RT package/frontend/docs/ documentation/
-          git pull
-          cd documentation
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git pull https://$USERNAME:$REPO_KEY@github.com/CSE210Team-06/cse210-fa24-group06-docs.git
+          cp -RT package/frontend/docs/ documentation/
           git add -A
           git commit -m "Update JSDoc documentation"
           git push https://$USERNAME:$REPO_KEY@github.com/CSE210Team-06/cse210-fa24-group06-docs.git
