@@ -1,41 +1,45 @@
-name: Lint and Code Style Check
+name: Codacy Check
 
 on:
   push:
     branches:
-      - "dev/frontend"
-      - "dev/backend"
-      - "main"
-    paths:
-      - "frontend/**"
-      - "backend/**"
+      - dev/frontend
+      - dev/backend
+      - main
+
   pull_request:
-    paths:
-      - "frontend/**"
-      - "backend/**"
+    branches:
+      - dev/frontend
+      - dev/backend
+      - main
+
 jobs:
-  lint:
+  build:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        node-version: [12.x]
     steps:
-      # Checkout code
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      # Set up Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v1
+      - name: Use Node.js $0
+        uses: actions/setup-node@v1
         with:
-          node-version: "18"
-
-      # Install dependencies from the frontend directory
-      - name: Install dependencies
-        working-directory: frontend
-        run: npm install
-
-      # Run codacy for code quality check
-      - name: Check code quality with Codacy
-        working-directory: frontend
-        run: npm install -g codacy-cli && codacy --help
+          node-version: $0
+      - name: npm coverage
+        run: |
+          set -e
+          npm install
+          npm run coverage-to-codacy
+          grade=$(curl -s -X GET https://api.codacy.com/2.0/project \
+            -H 'Accept: application/json' \
+            -H 'project_token: $' | jq -r '.commit.commit.grade')
+          echo $grade
+          if [[ "$grade" == "B" ]]
+            then
+              echo -e "\e[1;42m Grade $grade is ok. Build will continue. \e[0m"
+            else
+              echo -e "\e[1;31m Grade $grade is below the expected and the build will stop. \e[0m"
+              exit 1
+          fi
         env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          CI: true
