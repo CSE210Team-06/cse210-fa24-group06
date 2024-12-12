@@ -1,8 +1,10 @@
 {
   "source": {
-    "include": ["src"],
+    "include": [
+      "."
+    ],
     "includePattern": ".js$",
-    "excludePattern": "(node_modules/|docs)"
+    "excludePattern": "(node_modules|docs)"
   },
   "opts": {
     "destination": "./docs",
