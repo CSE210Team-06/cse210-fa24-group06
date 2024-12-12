@@ -17,3 +17,4 @@ qdrant_client
 google-generativeai
 torch
 transformers
+python-dotenv
