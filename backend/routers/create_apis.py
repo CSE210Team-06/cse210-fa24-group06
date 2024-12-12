@@ -1,3 +1,19 @@
+"""
+This file contains the API endpoints for creating new journals, groups, codes, entries, and tags.
+
+Functions:
+    get_db: Get the database session
+    create_journal: Create a new journal
+    create_group: Create a new group
+    create_codes: Create a new code snippet
+    create_code: Also create a new code snippet, but with a page number and without language
+    create_entry: Create a new entry
+    create_tag: Create a new tag
+
+Variables:
+    router: The APIRouter object that contains the endpoints
+"""
+
 from fastapi import HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import func
@@ -11,6 +27,9 @@ router = APIRouter()
 
 
 def get_db():
+    """
+    Creates a new database session.
+    """
     db = SessionLocal()
     try:
         yield db
@@ -20,6 +39,17 @@ def get_db():
 
 @router.post("/create_journal")
 def create_journal(auth_token: str, journal_title: str, db: Session = Depends(get_db)):
+    """
+    Creates a new journal in the database.
+
+    Args:
+        auth_token: The JWT token for the user
+        journal_title: The title of the journal
+        db: The database session
+    
+    Returns:
+        A dictionary containing the status of the request, the journal ID, title, and timestamps for creation and update times
+    """
     # Verify the token and get the email
 
     user_email = verify_token(auth_token)
@@ -61,6 +91,18 @@ def create_group(
     group_desc: str = None,
     db: Session = Depends(get_db),
 ):
+    """
+    Creates a new group in the database.
+
+    Args:
+        auth_token: The JWT token for the user. Currently unused.
+        group_name: The name of the group
+        group_desc: The description of the group
+        db: The database session
+    
+    Returns:
+        A dictionary containing the status of the request, the group ID, name, description, and timestamps for creation and update times
+    """
 
     # Verify the token and get the email
     # user_email = verify_token(
@@ -98,6 +140,19 @@ def create_codes(
     language: str,
     db: Session = Depends(get_db),
 ):
+    """
+    Creates a new code snippet in the database.
+
+    Args:
+        auth_token: The JWT token for the user
+        journal_id: The ID of the journal
+        code_text: The code snippet text
+        language: The language of the code snippet e.g. Java, Python, etc.
+        db: The database session
+
+    Returns:
+        A dictionary containing the status of the request, the code ID, text, language, journal ID, and timestamps for creation and update times
+    """
     # Verify the token and get the email
     user_email = verify_token(auth_token)
 
@@ -143,6 +198,18 @@ def create_codes(
 def create_code(
     auth_token: str, journal_id: int, code_text: str, db: Session = Depends(get_db)
 ):
+    """
+    Creates a new code snippet in the database, albiet with a page number and without specifying language.
+
+    Args:
+        auth_token: The JWT token for the user
+        journal_id: The ID of the journal
+        code_text: The code snippet text
+        db: The database session
+    
+    Returns:
+        A dictionary containing the status of the request, the code ID, page number, text, journal ID, and timestamps for creation and update times
+    """
     # Verify the token and get the email
     user_email = verify_token(auth_token)
 
@@ -196,6 +263,18 @@ def create_code(
 def create_entry(
     auth_token: str, journal_id: int, entry_text: str, db: Session = Depends(get_db)
 ):
+    """
+    Creates a new entry in the database.
+
+    Args:
+        auth_token: The JWT token for the user
+        journal_id: The ID of the journal
+        entry_text: The text of the entry
+        db: The database session
+    
+    Returns:
+        A dictionary containing the status of the request, the entry ID, page number, text, journal ID, and timestamps for creation and update times
+    """
     # Verify the token and get the email
     user_email = verify_token(auth_token)
 
@@ -243,6 +322,17 @@ def create_entry(
 
 @router.post("/create_tag")
 def create_tag(auth_token: str, tag_name: str, db: Session = Depends(get_db)):
+    """
+    Creates a new tag in the database.
+
+    Args:
+        auth_token: The JWT token for the user. Currently unused.
+        tag_name: The name of the tag
+        db: The database session
+    
+    Returns:
+        A dictionary containing the status of the request, the tag ID, and name
+    """
     # Verify the token and get the email
     # user_email = verify_token(auth_token)
 

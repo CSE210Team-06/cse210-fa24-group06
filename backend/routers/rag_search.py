@@ -1,3 +1,20 @@
+"""
+This module contains the FastAPI router for the RAG search API. This API is used to perform vector search across all user's entries.
+
+Functions:
+    check_model_downloaded: Check if the SentenceTransformer model has been downloaded.
+    get_db: Returns a database session object.
+    embed_and_index: Embed all user's entries and index them for vector search.
+    vector_search: Perform a vector search for the query text across all user's entries.
+
+Attributes:
+    router: FastAPI router object for the RAG search API.
+    embedding_model: SentenceTransformer model for embedding text.
+    faiss_index: FAISS index for vector search.
+    entry_metadata: Metadata for each entry.
+    MODEL_PATH: Path to the SentenceTransformer model directory.
+"""
+
 from fastapi import HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
 from backend.db import models
@@ -20,6 +37,9 @@ MODEL_PATH = "sentence-transformers/all-MiniLM-L6-v2"  # Model directory path
 def check_model_downloaded():
     """
     Check if the SentenceTransformer model has been downloaded.
+
+    Returns:
+        bool: True if the model is downloaded, False otherwise.
     """
     global embedding_model
     if not embedding_model:
@@ -33,6 +53,9 @@ def check_model_downloaded():
 
 # Dependency to get DB session
 def get_db():
+    """
+    Gets a database session object.
+    """
     db = SessionLocal()
     try:
         yield db
@@ -43,6 +66,13 @@ def get_db():
 def embed_and_index(auth_token: str, db: Session = Depends(get_db)):
     """
     Embed all user's entries and index them for vector search.
+
+    Args:
+        auth_token: The JWT token for the user.
+        db: The database session object.
+    
+    Returns:
+        A dictionary containing the success status and message.
     """
     # Verify the token and get user email
     user_email = verify_token(auth_token)
@@ -89,6 +119,14 @@ def embed_and_index(auth_token: str, db: Session = Depends(get_db)):
 def vector_search(auth_token: str, query: str, db: Session = Depends(get_db)):
     """
     Perform a vector search for the query text across all user's entries.
+
+    Args:
+        auth_token: The JWT token for the user.
+        query: The query text for vector search.
+        db: The database session object.
+
+    Returns:
+        A dictionary containing the search results.
     """
     # Verify the token and get user email
 

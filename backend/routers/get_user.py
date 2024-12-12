@@ -1,3 +1,17 @@
+"""
+This module contains the FastAPI routers for the get APIs that are used to fetch user details, journals, codes, and entries from the database.
+
+Functions:
+    get_db: Returns a database session object.
+    get_user_details: Fetches user details from the database.
+    get_user_journals: Fetches all journals for a user.
+    get_journal_codes: Fetches all codes for a journal.
+    get_journal_entries: Fetches all entries for a journal.
+
+Attributes:
+    router: FastAPI router object for the get APIs.
+"""
+
 from fastapi import HTTPException, Depends, status, APIRouter
 from sqlalchemy.orm import Session
 
@@ -10,6 +24,9 @@ router = APIRouter()
 
 
 def get_db():
+    """
+    Gets a database session object.
+    """
     db = SessionLocal()
     try:
         yield db
@@ -19,6 +36,16 @@ def get_db():
 
 @router.get("/user_details")
 def get_user_details(auth_token: str, db: Session = Depends(get_db)):
+    """
+    Fetches user details from the database.
+
+    Args:
+        auth_token: The JWT token for the user.
+        db: The database session object.
+    
+    Returns:
+        A dictionary containing the user details.
+    """
     # Verify the token and extract the email
     user_email = verify_token(auth_token)
 
@@ -43,7 +70,16 @@ def get_user_details(auth_token: str, db: Session = Depends(get_db)):
 # get all journals for a user
 @router.get("/user_journals")
 def get_user_journals(auth_token: str, db: Session = Depends(get_db)):
+    """
+    Fetches all journals for a specific user.
 
+    Args:
+        auth_token: The JWT token for the user. This is also used to identify the specific user.
+        db: The database session object.
+    
+    Returns:
+        A dictionary containing the journals for the user.
+    """
     # Verify the token and get the email
     user_email = verify_token(auth_token)
 
@@ -72,6 +108,17 @@ def get_user_journals(auth_token: str, db: Session = Depends(get_db)):
 # get all the codes for a journal
 @router.get("/journal_codes")
 def get_journal_codes(auth_token: str, journal_id: int, db: Session = Depends(get_db)):
+    """
+    This function fetches all codes for a specific journal, given the journal ID.
+
+    Args:
+        auth_token: The JWT token for the user.
+        journal_id: The ID of the journal for which the codes need to be fetched.
+        db: The database session object.
+    
+    Returns:
+        A dictionary containing the codes for the journal.
+    """
 
     # Verify the token and get the email
     user_email = verify_token(auth_token)
@@ -110,6 +157,17 @@ def get_journal_entries(
     auth_token: str, journal_id: int, db: Session = Depends(get_db)
 ):
 
+    """
+    This function fetches all entries for a specific journal, given the journal ID.
+
+    Args:
+        auth_token: The JWT token for the user.
+        journal_id: The ID of the journal for which the entries need to be fetched.
+        db: The database session object.
+    
+    Returns:
+        A dictionary containing the entries for the journal.
+    """
     # Verify the token and get the email
     user_email = verify_token(auth_token)
 

@@ -1,5 +1,17 @@
 """
-Stores SQLAlchemy models for database schema
+Stores SQLAlchemy models for database schema, and creates the tables in the database.
+
+Attributes:
+    Base (DeclarativeMeta): Base class for declarative class definitions. Model classes inherit from this class.
+    journals_and_tags (Table): Table to enable many-to-many relationship between Tag and Journal
+
+Classes:
+    Journal: Represents a journal entry
+    CodeSnippet: Represents a code snippet
+    Group: Represents a group of journals
+    User: Represents a user
+    Entry: Represents an entry in a journal
+    Tag: Represents a tag for a journal
 """
 
 from sqlalchemy import Column, Integer, String, ForeignKey, create_engine, Index, Table
@@ -24,6 +36,21 @@ journals_and_tags = Table(
 
 
 class Journal(Base):
+    """
+    This class contains the schema for the Journal table in the database.
+
+    Attributes:
+        journal_id (Column): The primary key for the table
+        group_id (Column): The foreign key to the Group table
+        journal_title (Column): The title of the journal entry
+        created_at (Column): The timestamp for when the journal entry was created
+        updated_at (Column): The timestamp for when the journal entry was last updated
+        entries (Relationship): A one-to-many relationship with the Entry table
+        user_id (Column): The foreign key to the User table
+        user (Relationship): A many-to-one relationship with the User table
+        tags (Relationship): A many-to-many relationship with the Tag table
+        codes (Relationship): A one-to-many relationship with the CodeSnippet table
+    """
     __tablename__ = "journal"
 
     journal_id = Column(Integer, primary_key=True, index=True)  # PK
@@ -56,6 +83,19 @@ class Journal(Base):
 # code Model
 class CodeSnippet(Base):
     __tablename__ = "code"
+    """
+    This class contains the schema for the CodeSnippet table in the database.
+
+    Attributes:
+        code_id (Column): The primary key for the table
+        journal_id (Column): The foreign key to the Journal table
+        code_text (Column): The text of the code snippet
+        language (Column): The programming language of the code snippet
+        page_number (Column): The page number of the code snippet
+        created_at (Column): The timestamp for when the code snippet was created
+        updated_at (Column): The timestamp for when the code snippet was last updated
+        journal (Relationship): A many-to-one relationship with the Journal table
+    """
 
     code_id = Column(Integer, primary_key=True, index=True)
     journal_id = Column(Integer, ForeignKey("journal.journal_id"), nullable=False)
@@ -74,6 +114,16 @@ class CodeSnippet(Base):
 
 # Group Model
 class Group(Base):
+    """
+    This class contains the schema for the Group table in the database.
+
+    Attributes:
+        group_id (Column): The primary key for the table
+        group_name (Column): The name of the group
+        group_desc (Column): The description of the group
+        created_at (Column): The timestamp for when the group was created
+        updated_at (Column): The timestamp for when the group was last updated
+    """
     __tablename__ = "group"
 
     group_id = Column(Integer, primary_key=True, index=True)
@@ -85,6 +135,17 @@ class Group(Base):
 
 # User Model
 class User(Base):
+    """
+    This class contains the schema for the User table in the database.
+
+    Attributes:
+        user_id (Column): The primary key for the table
+        first_name (Column): The first name of the user
+        last_name (Column): The last name of the user
+        email (Column): The email address of the user
+        password (Column): The hashed password of the user
+        journals (Relationship): A one-to-many relationship with the Journal table
+    """
     __tablename__ = "user"
 
     user_id = Column(Integer, primary_key=True, index=True)
@@ -101,6 +162,17 @@ class User(Base):
 
 # Entry Model
 class Entry(Base):
+    """
+    This class contains the schema for the Entry table in the database.
+
+    Attributes:
+        entry_id (Column): The primary key for the table
+        journal_id (Column): The foreign key to the Journal table
+        entry_text (Column): The text of the journal entry
+        word_count (Column): The word count of the journal entry
+        page_number (Column): The page number of the journal entry
+        journal (Relationship): A many-to-one relationship with the Journal table
+    """
     __tablename__ = "entry"
 
     entry_id = Column(Integer, primary_key=True, index=True)  # PK
@@ -126,6 +198,14 @@ class Entry(Base):
 
 # Tag Model
 class Tag(Base):
+    """
+    This class contains the schema for the Tag table in the database.
+
+    Attributes:
+        tag_id (Column): The primary key for the table
+        tag_name (Column): The name of the tag
+        journals (Relationship): A many-to-many relationship with the Journal table
+    """
     __tablename__ = "tag"
 
     tag_id = Column(Integer, primary_key=True, index=True)  # PK

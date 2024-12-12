@@ -1,3 +1,17 @@
+"""
+This module contains the main FastAPI application and routing setup, including user endpoints for registration and login.
+
+Functions:
+    get_db: Dependency to get the DB session
+    health_check: Basic health check endpoint
+    signup: User registration endpoint
+    login: User login endpoint
+    protected_route: Protect routes with token authentication
+
+Attributes:
+    app: FastAPI object for the main application.
+"""
+
 import sys
 
 sys.path.append("../")
@@ -44,6 +58,9 @@ app.include_router(ai_prof.router, prefix="/ai_prof", tags=["AI Prof Powell"])
 
 # Dependency to get the DB session
 def get_db():
+    """
+    Retrieves the DB session
+    """
     db = SessionLocal()
     try:
         yield db
@@ -54,12 +71,29 @@ def get_db():
 # Basic health check endpoint
 @app.get("/health", tags=["Health"])
 def health_check():
+    """
+    Sends a GET request to check if the server is running
+
+    Returns:
+        dict: A dictionary with the status "ok"
+    """
     return {"status": "ok"}
 
 
 # User registration endpoint
 @app.post("/signup")
 def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    """
+    Sends a POST request to register a new user, and saves the user details to the database. 
+    The password is hashed before saving.
+
+    Args:
+        user (schemas.UserCreate): The user registration details
+        db (Session, optional): The database session. Defaults to Depends(get_db).
+    
+    Returns:
+        models.User: The registered user details
+    """
     # Check if user already exists
     existing_user = (
         db.query(models.User).filter(models.User.email == user.email).first()
@@ -85,7 +119,18 @@ def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 # User login endpoint
 @app.post("/login")
+
 def login(user: schemas.LoginRequest, db: Session = Depends(get_db)):
+    """
+    Sends a POST request to login a user, and returns an access token if the user exists and the password is correct.
+
+    Args:
+        user (schemas.LoginRequest): The user login details
+        db (Session, optional): The database session. Defaults to Depends(get_db).
+    
+    Returns:
+        dict: The access token and token type
+    """
     db_user = db.query(models.User).filter(models.User.email == user.email).first()
 
     # If user doesn't exist or password is incorrect
@@ -100,4 +145,13 @@ def login(user: schemas.LoginRequest, db: Session = Depends(get_db)):
 # Protect routes with token authentication
 @app.get("/protected")
 def protected_route(user_email: str = Depends(verify_token)):
+    """
+    A protected route that requires a valid access token to access.
+    
+    Args:
+        user_email (str, optional): The user email decoded from the access token. Defaults to Depends(verify_token).
+    
+    Returns:
+        dict: A message confirming access to the protected route, and the user email
+    """
     return {"message": "You have access to this protected route", "user": user_email}

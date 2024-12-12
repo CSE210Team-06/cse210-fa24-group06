@@ -1,3 +1,21 @@
+"""
+This module is one of two modules containing the API endpoints for reading data from the database.
+These APIs are used to retrieve journal entries, code snippets, journals, tags, and groups from the database.
+
+Functions:
+    get_db: Returns a database session object.
+    read_entries: Retrieve the text of a specific journal entry by entry_id.
+    read_codes: Retrieve the text of a specific journal code by code_id.
+    read_journal: Retrieve all entries for a specific journal by journal_id.
+    read_journal_by_tags: Retrieve all entries for a specific journal by tag_id.
+    get_tags_by_journal: Retrieves all tags for a specific journal by journal_id.
+    get_tag_name: Retrieves the name of a tag by tag_id.
+    get_all_tags: Retrieves all tags in the database.
+    read_group: Retrieve all journals associated with a group via group_id.
+
+Attributes:
+    router: FastAPI router object for the read APIs.
+"""
 from fastapi import HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
 from backend.db import models
@@ -8,6 +26,9 @@ router = APIRouter()
 
 
 def get_db():
+    """
+    Gets a database session object.
+    """
     db = SessionLocal()
     try:
         yield db
@@ -19,6 +40,14 @@ def get_db():
 def read_entries(auth_token: str, entry_id: int, db: Session = Depends(get_db)):
     """
     Retrieve the text of a specific journal entry by entry_id.
+
+    Args:
+        auth_token: The JWT token for the user.
+        entry_id: The ID of the entry to retrieve.
+        db: The database session object.
+    
+    Returns:
+        A dictionary containing the status and the entry text.
     """
     # Verify the token and get the email
     user_email = verify_token(auth_token)
@@ -46,6 +75,14 @@ def read_entries(auth_token: str, entry_id: int, db: Session = Depends(get_db)):
 def read_codes(auth_token: str, code_id: int, db: Session = Depends(get_db)):
     """
     Retrieve the text of a specific journal code by code_id.
+
+    Args:
+        auth_token: The JWT token for the user.
+        code_id: The ID of the code to retrieve.
+        db: The database session object.
+    
+    Returns:
+        A dictionary containing the status and the code text.
     """
     # Verify the token and get the email
     user_email = verify_token(auth_token)
@@ -77,6 +114,14 @@ def read_codes(auth_token: str, code_id: int, db: Session = Depends(get_db)):
 def read_journal(auth_token: str, journal_id: int, db: Session = Depends(get_db)):
     """
     Retrieve all entries for a specific journal by journal_id.
+
+    Args:
+        auth_token: The JWT token for the user.
+        journal_id: The ID of the journal to retrieve.
+        db: The database session object.
+    
+    Returns:
+        A dictionary containing the status and the entries for the journal.
     """
     # Verify the token and get the email
     user_email = verify_token(auth_token)
@@ -118,6 +163,14 @@ def read_journal_by_tags(auth_token: str, tag_id: int, db: Session = Depends(get
     Retrieve all entries for a specific journal by tag_id.
     NOTE: This method retrieves just the journal ids; to retrieve the
     entries, use the /read_journal endpoint for each journal_id.
+
+    Args:
+        auth_token: The JWT token for the user.
+        tag_id: The ID of the tag to retrieve.
+        db: The database session object.
+    
+    Returns:
+        A dictionary containing the status and the journal ids
     """
     # Verify the token and get the email
     # user_email = verify_token(auth_token)
@@ -146,6 +199,14 @@ def get_tags_by_journal(
 ):
     """
     Retrieves all tags for a specific journal by journal_id
+
+    Args:
+        auth_token: The JWT token for the user.
+        journal_id: The ID of the journal to retrieve.
+        db: The database session object.
+    
+    Returns:
+        A dictionary containing the status and the tags for the journal.
     """
 
     # Verify the token and get the email
@@ -181,6 +242,14 @@ def get_tags_by_journal(
 def get_tag_name(auth_token: str, tag_id: int, db: Session = Depends(get_db)):
     """
     Retrieves the name of a tag by tag_id
+
+    Args:
+        auth_token: The JWT token for the user.
+        tag_id: The ID of the tag to retrieve.
+        db: The database session object.
+    
+    Returns:
+        A dictionary containing the status and the tag name.
     """
     # Verify the token and get the email
     # user_email = verify_token(auth_token)
@@ -197,6 +266,13 @@ def get_tag_name(auth_token: str, tag_id: int, db: Session = Depends(get_db)):
 def get_all_tags(auth_token: str, db: Session = Depends(get_db)):
     """
     Retrieves all tags in the database (no duplicates)
+
+    Args:
+        auth_token: The JWT token for the user.
+        db: The database session object.
+
+    Returns:
+        A dictionary containing the status and the tags.
     """
     # Verify the token and get the email
     # user_email = verify_token(auth_token)
@@ -214,6 +290,14 @@ def get_all_tags(auth_token: str, db: Session = Depends(get_db)):
 def read_group(auth_token: str, group_id: int, db: Session = Depends(get_db)):
     """
     Retrieve all journals associated with a group via group_id.
+
+    Args:
+        auth_token: The JWT token for the user.
+        group_id: The ID of the group to retrieve.
+        db: The database session object.
+    
+    Returns:
+        A dictionary containing the status and the journals for the group.
     """
     # Verify the token and get the email
     user_email = verify_token(auth_token)

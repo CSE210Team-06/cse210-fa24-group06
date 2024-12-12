@@ -1,3 +1,21 @@
+"""
+This module contains the FastAPI routers for the delete APIs. 
+These APIs are used to delete users, journals, code snippets, entries, groups, and tags from the database.
+
+Functions:
+    get_db: Returns a database session object.
+    delete_user: Deletes a user from the database.
+    delete_from_group: Removes a journal from a group and updates the updated_at field.
+    delete_codes: Deletes code from a journal and shifts subsequent code snippets to left.
+    delete_entry: Deletes an entry from a journal and shifts subsequent entries left.
+    delete_journal: Deletes a journal and all its entries.
+    delete_group: Deletes a group without deleting the journals inside it.
+    delete_tag: Deletes a tag and removes it from all journals.
+
+Attributes:
+    router: FastAPI router object for the delete APIs.
+"""
+
 from fastapi import HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
 from backend.db import models
@@ -9,6 +27,9 @@ router = APIRouter()
 
 
 def get_db():
+    """
+    Gets a database session object.
+    """
     db = SessionLocal()
     try:
         yield db
@@ -20,6 +41,13 @@ def get_db():
 def delete_user(auth_token: str, db: Session = Depends(get_db)):
     """
     Deletes a user from the database.
+
+    Args:
+        auth_token: The JWT token for the user.
+        db: The database session object.
+    
+    Returns:
+        A dictionary returning success status and message.
     """
     # Verify the token and get the email
     user_email = verify_token(auth_token)
@@ -39,6 +67,13 @@ def delete_user(auth_token: str, db: Session = Depends(get_db)):
 def delete_from_group(journal_id: int, db: Session = Depends(get_db)):
     """
     Removes a journal from a group and updates the updated_at field.
+
+    Args:
+        journal_id: The ID of the journal to remove from the group.
+        db: The database session object.
+    
+    Returns:
+        A dictionary returning success status and message.
     """
     journal = (
         db.query(models.Journal).filter(models.Journal.journal_id == journal_id).first()
@@ -59,6 +94,15 @@ def delete_codes(
 ):
     """
     Deletes code from a journal and shifts subsequent code snippets to left.
+
+    Args:
+        auth_token: The JWT token for the user.
+        journal_id: The ID of the journal.
+        page_num: The page number of the code snippet.
+        db: The database session object.
+    
+    Returns:
+        A dictionary returning success status and message.
     """
     # Verify the token and get the email
     user_email = verify_token(auth_token)
@@ -115,6 +159,15 @@ def delete_entry(
 ):
     """
     Deletes an entry from a journal and shifts subsequent entries left.
+
+    Args:
+        auth_token: The JWT token for the user.
+        journal_id: The ID of the journal.
+        page_num: The page number of the entry.
+        db: The database session object.
+    
+    Returns:
+        A dictionary returning success status and message.
     """
     # Verify the token and get the email
     user_email = verify_token(auth_token)
@@ -167,6 +220,14 @@ def delete_entry(
 def delete_journal(auth_token: str, journal_id: int, db: Session = Depends(get_db)):
     """
     Deletes a journal and all its entries.
+
+    Args:
+        auth_token: The JWT token for the user.
+        journal_id: The ID of the journal.
+        db: The database session object.
+    
+    Returns:
+        A dictionary returning success status and message.
     """
     # Verify the token and get the email
     user_email = verify_token(auth_token)
@@ -200,6 +261,13 @@ def delete_journal(auth_token: str, journal_id: int, db: Session = Depends(get_d
 def delete_group(group_id: int, db: Session = Depends(get_db)):
     """
     Deletes a group without deleting the journals inside it.
+
+    Args:
+        group_id: The ID of the group.
+        db: The database session object.
+    
+    Returns:
+        A dictionary returning success status and message.
     """
     group = db.query(models.Group).filter(models.Group.group_id == group_id).first()
     if not group:
@@ -226,6 +294,13 @@ def delete_group(group_id: int, db: Session = Depends(get_db)):
 def delete_tag(tag_id: int, db: Session = Depends(get_db)):
     """
     Deletes a tag and removes it from all journals.
+
+    Args:
+        tag_id: The ID of the tag.
+        db: The database session object.
+    
+    Returns:
+        A dictionary returning success status and message.
     """
     tag = db.query(models.Tag).filter(models.Tag.tag_id == tag_id).first()
     if not tag:

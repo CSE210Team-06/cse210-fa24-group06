@@ -1,3 +1,16 @@
+"""
+This module also contains some FastAPI routers for the read APIs. These APIs are used to read entries, codes, and journals from the database.
+
+Functions:
+    get_db: Returns a database session object.
+    read_entries: Retrieve the text of a specific journal entry by entry_id.
+    read_codes: Retrieve the text of a specific journal code by code_id.
+    read_journal: Retrieve all entries for a specific journal by journal_id.
+
+Attributes:
+    router: FastAPI router object for the read APIs.
+"""
+
 from fastapi import HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
 from backend.db import models
@@ -8,6 +21,9 @@ router = APIRouter()
 
 
 def get_db():
+    """
+    Gets a database session object.
+    """
     db = SessionLocal()
     try:
         yield db
@@ -21,6 +37,14 @@ def read_entries(
 ):
     """
     Retrieve the text of a specific journal entry by entry_id.
+
+    Args:
+        auth_token (str): The JWT token for the user.
+        journal_id (int): The journal_id of the journal the entry belongs to.
+        page_number (int): The page number of the entry.
+    
+    Returns:
+        A dictionary containing the status and entry text.
     """
     # Verify the token and get the email
     user_email = verify_token(auth_token)
@@ -57,6 +81,14 @@ def read_codes(
 ):
     """
     Retrieve the text of a specific journal code by code_id.
+
+    Args:
+        auth_token (str): The JWT token for the user.
+        journal_id (int): The journal_id of the journal the code belongs to.
+        page_number (int): The page number of the code.
+    
+    Returns:
+        A dictionary containing the status and code text.
     """
     # Verify the token and get the email
     user_email = verify_token(auth_token)
@@ -91,6 +123,13 @@ def read_codes(
 def read_journal(auth_token: str, journal_id: int, db: Session = Depends(get_db)):
     """
     Retrieve all entries for a specific journal by journal_id.
+
+    Args:
+        auth_token (str): The JWT token for the user.
+        journal_id (int): The journal_id of the journal.
+    
+    Returns:
+        A dictionary containing the status and entries for the journal.
     """
     # Verify the token and get the email
     user_email = verify_token(auth_token)
