@@ -21,10 +21,10 @@ jobs:
         node-version: [12.x]
     steps:
       - uses: actions/checkout@v1
-      - name: Use Node.js $0
+      - name: Use Node.js "18"
         uses: actions/setup-node@v1
         with:
-          node-version: $0
+          node-version: "18"
       - name: npm coverage
         run: |
           set -e
