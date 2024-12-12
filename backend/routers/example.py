@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 router = APIRouter()
 
+
 @router.get("/items/{item_id}", tags=["Items"])
 def read_item(item_id: int, q: str = None):
     """
