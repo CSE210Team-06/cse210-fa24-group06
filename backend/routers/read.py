@@ -84,7 +84,11 @@ def read_codes(
             status_code=403, detail="Not authorized to access this code"
         )
 
-    return {"status": "success", "code_text": db_code.code_text}
+    return {
+        "status": "success",
+        "code_text": db_code.code_text,
+        "language": db_code.language,
+    }
 
 
 @router.get("/read_journal")

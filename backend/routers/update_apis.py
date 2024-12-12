@@ -100,11 +100,12 @@ def update_entry(
 
 
 @router.put("/update_user_code")
-def update_code(
+def update_user_code(
     auth_token: str,
     page_num: int,
     journal_id: int,
     code_text: str,
+    language: str,
     db: Session = Depends(get_db),
 ):
     # Verify the token and get the email
@@ -137,6 +138,7 @@ def update_code(
 
     # Update the entry text
     db_code.code_text = code_text
+    db_code.language = language
     db.commit()
     db.refresh(db_code)
 
