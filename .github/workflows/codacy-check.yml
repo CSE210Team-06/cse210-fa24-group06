@@ -26,6 +26,7 @@ jobs:
         with:
           node-version: "18"
       - name: npm coverage
+        working-directory: ./frontend
         run: |
           set -e
           npm install
