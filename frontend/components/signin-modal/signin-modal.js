@@ -126,9 +126,11 @@ export class SigninModal extends HTMLElement {
             formError.innerHTML = `${errorData.detail}`;
           });
         }
+        // eslint-disable-next-line no-unused-vars
       } catch (error) {
         // console.error("Error:", error);
-        window.alert("Error signing in. Please try again.", error);
+        // window.alert("Error signing in. Please try again.", error);
+        window.alert("Error signing in.");
       }
     });
   }

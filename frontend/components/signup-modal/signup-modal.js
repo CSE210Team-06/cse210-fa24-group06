@@ -175,9 +175,11 @@ export class SignupModal extends HTMLElement {
             formError.innerHTML = `${errorData.detail}`;
           });
         }
+        // eslint-disable-next-line no-unused-vars
       } catch (error) {
         // console.error("Error:", error);
-        alert("An error occurred while signing up.", error);
+        // alert("An error occurred while signing up.", error);
+        alert("An error occurred while signing up.");
       }
     });
   }
