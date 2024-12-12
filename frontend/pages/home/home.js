@@ -142,11 +142,12 @@ document
         // Append the card to the results container
         resultsContainer.appendChild(card);
       });
+      // eslint-disable-next-line no-unused-vars
     } catch (error) {
       // Handle errors (e.g., network issues or invalid responses)
       // console.error("Failed to fetch search results:", error)
       // window.alert("Failed to fetch search results.", error);
-      resultsContainer.innerHTML = `Failed to fetch search results.\n${error}`;
+      resultsContainer.innerHTML = `<h4 id="no-search-results">No matching search results.</h4>`;
     }
   });
 

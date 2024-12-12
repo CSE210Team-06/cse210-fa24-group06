@@ -360,7 +360,7 @@ body {
 }
 
 .chat-message.bot {
-  background: #000000;
+  background: #1c1c1c;
   align-self: flex-start;
   border-top-left-radius: 0;
   border: 2px solid var(--theme-dark);
@@ -460,4 +460,9 @@ body {
   background-color: var(--clickbutton-dark);
   border: var(--clickbutton-dark);
   color: var(--bg-dark);
+}
+
+#no-search-results {
+  text-align: center;
+  color: var(--theme-dark);
 }

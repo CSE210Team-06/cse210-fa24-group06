@@ -1,4 +1,6 @@
 const { app, BrowserWindow } = require("electron");
+app.disableHardwareAcceleration();
+
 const path = require("path");
 
 // const host = "http://localhost";
