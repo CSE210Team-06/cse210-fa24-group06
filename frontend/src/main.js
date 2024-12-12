@@ -1,5 +1,5 @@
 const { app, BrowserWindow } = require("electron");
-app.disableHardwareAcceleration();
+// app.disableHardwareAcceleration();
 
 const path = require("path");
 
