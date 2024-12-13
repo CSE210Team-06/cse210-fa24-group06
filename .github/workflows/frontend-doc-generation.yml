@@ -1,4 +1,4 @@
-name: Documentation Generation
+name: Update Frontend API Docs
 
 on:
   push:

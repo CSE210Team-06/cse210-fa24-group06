@@ -1,4 +1,4 @@
-name: Update API Docs
+name: Update Backend API Docs
 
 on:
   push:
