@@ -3,11 +3,16 @@ name: Lint and Format for Backend
 on:
   push:
     branches:
+      - "main"
       - "backend/**" # Match branches starting with "backend/"
       - "dev/backend"
     paths:
       - "backend/**" # Trigger only for changes in backend folder
   pull_request:
+    branches:
+      - "main"
+      - "backend/**" # Match branches starting with "backend/"
+      - "dev/backend"
     paths:
       - "backend/**" # Trigger only for PRs modifying backend folder
 

@@ -3,11 +3,16 @@ name: Lint and Code Style Check
 on:
   push:
     branches:
+      - "main"
       - "frontend/**"
       - "dev/frontend"
     paths:
       - "frontend/**"
   pull_request:
+    branches:
+      - "main"
+      - "frontend/**"
+      - "dev/frontend"
     paths:
       - "frontend/**"
 jobs:
