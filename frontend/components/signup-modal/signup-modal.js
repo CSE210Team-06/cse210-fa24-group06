@@ -127,7 +127,6 @@ export class SignupModal extends HTMLElement {
     const formError = this.querySelector(".form_error");
     const signupForm = document.getElementById("Signup-form");
 
-    // Close modal on button click
     closeButton.addEventListener("click", () => {
       formError.innerHTML = "";
       formError.style.display = "hidden";
@@ -136,16 +135,14 @@ export class SignupModal extends HTMLElement {
       document.body.style.overflow = "";
     });
 
-    // Open modal programmatically
     this.addEventListener("open", () => {
       dialog.showModal();
-      document.body.style.overflow = "hidden"; // Disable scrolling
+      document.body.style.overflow = "hidden";
     });
 
     signupForm.addEventListener("submit", async function (event) {
-      event.preventDefault(); // Prevent the default form submission
+      event.preventDefault();
 
-      // Create the dictionary from form inputs
       const formData = {
         first_name: document.getElementById("signup-firstname").value,
         last_name: document.getElementById("signup-lastname").value,
@@ -153,7 +150,6 @@ export class SignupModal extends HTMLElement {
         password: document.getElementById("signup-password").value,
       };
 
-      // Send the data to the endpoint
       try {
         const response = await fetch(this.action, {
           method: this.method,
@@ -163,7 +159,6 @@ export class SignupModal extends HTMLElement {
           body: JSON.stringify(formData),
         });
 
-        // Handle the response
         if (response.ok) {
           alert(
             "Signup successful, please log in with your username and password",
@@ -177,8 +172,6 @@ export class SignupModal extends HTMLElement {
         }
         // eslint-disable-next-line no-unused-vars
       } catch (error) {
-        // console.error("Error:", error);
-        // alert("An error occurred while signing up.", error);
         alert("An error occurred while signing up.");
       }
     });

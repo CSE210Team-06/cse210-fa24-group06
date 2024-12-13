@@ -1,29 +1,46 @@
 /* global CryptoJS */
 let encryptionKey = "";
 
+/**
+ * Sets the encryption key and loads the secrets from local storage
+ * when the "Set Key" button is clicked
+ * @returns {void}
+ */
 function setEncryptionKey() {
   encryptionKey = document.getElementById("encryption-key").value;
   if (encryptionKey) {
-    // Hide the encryption key input after setting the key
-    // document.getElementById("encryption-key-container").style.display = "none";
-    loadSecretsFromLocalStorage(); // Load secrets after setting the key
+    loadSecretsFromLocalStorage();
   } else {
     alert("Please enter a valid password.");
   }
 }
 
-// Function to encrypt text using AES
+/**
+ * Encrypts the given text using AES encryption
+ * @param {string} text - The text to be encrypted
+ * @returns {string} - The encrypted text
+ */
 function encryptText(text) {
   return CryptoJS.AES.encrypt(text, encryptionKey).toString();
 }
 
-// Function to decrypt text using AES
+/**
+ * Decrypts the given encrypted text using AES decryption
+ * @param {string} encryptedText - The encrypted text to be decrypted
+ * @returns {string} - The decrypted text
+ */
 function decryptText(encryptedText) {
   const bytes = CryptoJS.AES.decrypt(encryptedText, encryptionKey);
   return bytes.toString(CryptoJS.enc.Utf8);
 }
 
-// Save secret to localStorage with encryption
+/**
+ * Saves a new secret to local storage
+ * @param {string} name - The name of the secret
+ * @param {string} description - The description of the secret
+ * @param {string} value - The value of the secret
+ * @returns {void}
+ */
 function saveSecretToLocalStorage(name, description, value) {
   const encryptedValue = encryptText(value);
   const secrets = JSON.parse(localStorage.getItem("secrets")) || [];
@@ -31,20 +48,28 @@ function saveSecretToLocalStorage(name, description, value) {
   localStorage.setItem("secrets", JSON.stringify(secrets));
 }
 
+/**
+ * Deletes a secret from local storage
+ * @param {number} index - The index of the secret to be deleted
+ * @returns {void}
+ */
 function deleteSecretFromLocalStorage(index) {
   const secrets = JSON.parse(localStorage.getItem("secrets")) || [];
-  secrets.splice(index, 1); // Remove the secret at the specified index
+  secrets.splice(index, 1);
   localStorage.setItem("secrets", JSON.stringify(secrets));
-  loadSecretsFromLocalStorage(); // Refresh the displayed list
+  loadSecretsFromLocalStorage();
 }
 
-// Load secrets from localStorage and decrypt values
+/**
+ * Loads secrets from local storage
+ * @returns {void}
+ */
 function loadSecretsFromLocalStorage() {
   const secrets = JSON.parse(localStorage.getItem("secrets")) || [];
   const secretsTableBody = document
     .getElementById("secrets-table")
     .getElementsByTagName("tbody")[0];
-  secretsTableBody.innerHTML = ""; // Clear the table
+  secretsTableBody.innerHTML = "";
 
   secrets.forEach((secret, index) => {
     const decryptedValue = decryptText(secret.value);
@@ -64,7 +89,6 @@ function loadSecretsFromLocalStorage() {
             </td>
         `;
 
-    // Add event listener to the toggle visibility button
     row
       .querySelector(".toggle-visibility-button")
       .addEventListener("click", function () {
@@ -80,13 +104,11 @@ function loadSecretsFromLocalStorage() {
         }
       });
 
-    // Add event listener to the delete button
     row.querySelector(".delete-button").addEventListener("click", function () {
-      deleteSecretFromLocalStorage(index); // Use index from forEach
+      deleteSecretFromLocalStorage(index);
     });
 
     row.querySelector(".copy-button").addEventListener("click", function () {
-      // Copy decrypted value to clipboard
       navigator.clipboard
         .writeText(decryptedValue)
         .then(() => alert("Copied to clipboard!"))
@@ -95,7 +117,6 @@ function loadSecretsFromLocalStorage() {
   });
 }
 
-// Add new secret from the form
 document
   .getElementById("add-secret-form")
   .addEventListener("submit", function (e) {
@@ -107,20 +128,17 @@ document
 
     saveSecretToLocalStorage(name, description, value);
 
-    // Reset the form
     document.getElementById("add-secret-form").reset();
 
-    // Reload the secrets list
     loadSecretsFromLocalStorage();
   });
 
 document
   .getElementById("back-to-home-btn")
   .addEventListener("click", function () {
-    window.location.href = "../home/home.html"; // Replace with your home page URL
+    window.location.href = "../home/home.html";
   });
 
-// Load secrets when the page is loaded
 window.onload = function () {
   loadSecretsFromLocalStorage();
 };

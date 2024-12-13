@@ -11,6 +11,12 @@ const easyMDE = new EasyMDE({
   element: document.getElementById("journal-text-area"),
 });
 
+/**
+ * fetches journal
+ *
+ * @param {int} journalId - journal id
+ * @returns {object} - journal
+ */
 async function fetchJournal(journalId) {
   let journal;
 
@@ -32,22 +38,15 @@ async function fetchJournal(journalId) {
     alert("Error fetching data", error);
   }
 
-  // try {
-  // 	const response = await fetch(
-  // 		`${API_BASE_URL}/read2/read_journal?${queryParams.toString()}`,
-  // 	);
-  // 	const data = await response.json();
-  // 	if (journalId) {
-  // 		journal = data;
-  // 		// return journal;
-  // 	}
-  // } catch (error) {
-  // 	alert("Error fetching data", error);
-  // }
-
   return journal;
 }
 
+/**
+ * fetches code
+ *
+ * @param {int} journalId - journal id
+ * @returns {object} - data with language and code
+ */
 async function fetchCode(journalId) {
   let queryParams = new URLSearchParams({
     auth_token: loadFromSessionStorage("accessToken"),
@@ -84,7 +83,6 @@ if (journalId) {
 
   async function loadCode(journalId) {
     const codeData = await fetchCode(journalId);
-    // console.log(codeData);
 
     if (codeData.language !== "" || !codeData.code_text !== "") {
       document.getElementById("code-language-dropdown").value =
@@ -97,6 +95,11 @@ if (journalId) {
   loadCode(journalId);
 }
 
+/**
+ * deletes journal
+ *
+ * @param {int} journalId - journal id
+ */
 async function deleteJournal(journalId) {
   let queryParams = new URLSearchParams({
     journal_id: journalId,
@@ -119,16 +122,6 @@ async function deleteJournal(journalId) {
     page_num: 0,
   });
 
-  // const deleteCodeResponse = await fetch(
-  // 	`${API_BASE_URL}/delete/delete_codes?${queryParams.toString()}`,
-  // 	{
-  // 		method: "DELETE",
-  // 		headers: {
-  // 			"Content-Type": "application/json",
-  // 		},
-  // 	}
-  // );
-
   if (!deleteJournalResponse.ok) {
     alert("Error deleting journal", await deleteJournalResponse.json());
   } else {
@@ -137,6 +130,14 @@ async function deleteJournal(journalId) {
   }
 }
 
+/**
+ * creates journal
+ *
+ * @param {string} journalTitle - journal title
+ * @param {string} journalEntry - journal entry
+ * @param {string} codeLanguage - code language
+ * @param {string} codeContent - code content
+ */
 async function createJournal(
   journalTitle,
   journalEntry,
@@ -160,12 +161,10 @@ async function createJournal(
 
   if (!createJournalResponse.ok) {
     const error = await createJournalResponse.json();
-    // console.error("Error:", error);
+
     alert("Error creating journal", error);
   } else {
-    // Parse and log the success response
     const data = await createJournalResponse.json();
-    // console.log(data);
 
     queryParams = new URLSearchParams({
       journal_id: data.journal_id,
@@ -186,7 +185,7 @@ async function createJournal(
 
     if (!createEntryResponse.ok) {
       const error = await createJournalResponse.json();
-      // console.error("Error:", error);
+
       alert("Error creating journal", error);
     }
 
@@ -218,6 +217,14 @@ async function createJournal(
   }
 }
 
+/**
+ * saves journal
+ *
+ * @param {string} journalTitle - journal title
+ * @param {string} journalEntry - journal entry
+ * @param {string} codeLanguage - code language
+ * @param {string} codeContent - code content
+ */
 async function saveJournal(
   journalTitle,
   journalEntry,
@@ -302,16 +309,7 @@ async function saveJournal(
       }
     }
 
-    // if (!updateJournalResponse.ok || !updateEntriesResponse.ok ) {
-    // 	// const error = await updateJournalResponse.json();
-    // 	alert(`Error: ${error}`);
-    // } else {
-    // 	alert(`Journal saved!`);
-    // 	window.location.href = "../home/home.html";
-    // }
-
     if (!updateJournalResponse.ok || !updateEntriesResponse.ok) {
-      // If either updateCodeResponse or createCodeResponse is okay, but other errors exist
       if (
         updateCodeResponse.ok ||
         (createCodeResponse && createCodeResponse.ok)
@@ -323,7 +321,6 @@ async function saveJournal(
         alert("Error: Failed to update the journal, entries, and code.");
       }
     } else {
-      // Everything was successful
       alert("Journal saved!");
       window.location.href = "../home/home.html";
     }
@@ -335,7 +332,7 @@ easyMDE.codemirror.on("change", async function () {
   const results = await searchGoogle(editor);
 
   const resultsContainer = document.getElementById("results-container");
-  resultsContainer.innerHTML = ""; // Clear any previous results
+  resultsContainer.innerHTML = "";
 
   results.forEach((result) => {
     const card = document.createElement("div");
@@ -350,7 +347,7 @@ easyMDE.codemirror.on("change", async function () {
     const link = document.createElement("a");
     link.href = result.url;
     link.innerText = "Read more";
-    link.target = "_blank"; // Open in new tab
+    link.target = "_blank";
 
     card.appendChild(title);
     card.appendChild(description);
@@ -358,8 +355,6 @@ easyMDE.codemirror.on("change", async function () {
 
     resultsContainer.appendChild(card);
   });
-
-  // console.log(results);
 });
 
 const saveJournalBtn = document.getElementById("save-journal-btn");
@@ -369,20 +364,16 @@ saveJournalBtn.addEventListener("click", () => {
   const codeLanguage = document.getElementById("code-language-dropdown").value;
   const codeContent = document.getElementById("code-text-area").value;
 
-  // Only save code if a language is selected and code is not empty
   const finalCodeLanguage = codeLanguage !== "" ? codeLanguage : null;
   const finalCodeContent = codeContent.trim() !== "" ? codeContent : null;
-  // console.log(finalCodeContent);
-  // console.log(finalCodeLanguage);
-  saveJournal(journalTitle, journalEntry, finalCodeLanguage, finalCodeContent);
 
-  // console.log("Journal saved:", journalTitle, journalEntry);
+  saveJournal(journalTitle, journalEntry, finalCodeLanguage, finalCodeContent);
 });
 
 document
   .getElementById("back-to-home-btn")
   .addEventListener("click", function () {
-    window.location.href = "../home/home.html"; // Replace with your home page URL
+    window.location.href = "../home/home.html";
   });
 
 document.getElementById("delete-journal-btn").addEventListener("click", () => {
@@ -392,9 +383,3 @@ document.getElementById("delete-journal-btn").addEventListener("click", () => {
     deleteJournal(journalId);
   }
 });
-
-// document.getElementById('search-toggle-btn').addEventListener('click', () => {
-//   const sidePanel = document.getElementById('side-panel');
-//   sidePanel.classList.toggle('hidden');
-//   sidePanel.classList.toggle('visible');
-// });

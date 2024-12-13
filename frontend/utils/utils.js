@@ -1,32 +1,45 @@
+/**
+ * saves to session storage
+ *
+ * @param {string} key - key to be stored
+ */
 export function saveToSessionStorage(key, value) {
   sessionStorage.setItem(key, value);
-  // console.log(`Saved to Session storage -> ${key}: ${value}`);
-  // window.alert(`Saved to Session storage -> ${key}: ${value}`);
 }
 
+/**
+ * loads from session storage
+ *
+ * @param {string} key - key to be retrieved
+ * @returns {string} - string of last sentence.
+ */
 export function loadFromSessionStorage(key) {
   const value = sessionStorage.getItem(key);
-  // console.log(`Loaded from Session storage -> ${key}: ${value}`);
-  // window.alert(`Loaded from Session storage -> ${key}: ${value}`);
   return value;
 }
 
+/**
+ * deletes from session storage
+ *
+ * @param {string} key - The easyMDE editor instance.
+ */
 export function deleteFromSessionStorage(key) {
   sessionStorage.removeItem(key);
-  // console.log(`Deleted from Session storage -> ${key}`);
-  // window.alert(`Deleted from Session storage -> ${key}`);
 }
 
+/**
+ * Searches google using the current sentence as the query.
+ *
+ * @param {editor} editor - The easyMDE editor instance.
+ * @returns {string} - string of last sentence.
+ */
 function getCurrentSentence(editor) {
-  const cursor = editor.getCursor(); // Get the cursor position
+  const cursor = editor.getCursor();
   const doc = editor.getDoc();
-  const text = doc.getValue(); // Get the full text in the editor
-  const textBeforeCursor = text.slice(0, doc.indexFromPos(cursor)); // Text up to the cursor
+  const text = doc.getValue();
+  const textBeforeCursor = text.slice(0, doc.indexFromPos(cursor));
 
-  // Find the last sentence ending before the cursor
   const lastSentenceEnd = textBeforeCursor.lastIndexOf(".");
-  // console.log("lastSentenceEnd:", lastSentenceEnd);
-  // if (lastSentenceEnd === -1) return ""; // No sentence end, return empty string
 
   return lastSentenceEnd === -1
     ? textBeforeCursor
@@ -42,12 +55,9 @@ function getCurrentSentence(editor) {
 export async function searchGoogle(editor) {
   const query = getCurrentSentence(editor);
 
-  // console.log("Query:", query);
-
   const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
 
   try {
-    // Fetching the Google search page (this will NOT work in browsers due to CORS)
     const response = await fetch(searchUrl, {
       method: "GET",
       headers: {
@@ -58,14 +68,10 @@ export async function searchGoogle(editor) {
 
     const htmlText = await response.text();
 
-    // Parse the HTML text using DOMParser
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlText, "text/html");
 
-    // Find the results (based on Google's HTML structure)
-    const searchResults = doc.querySelectorAll(".tF2Cxc"); // 'tF2Cxc' is a common class for search result entries
-    // console.log("Search results:", searchResults);
-    // return;
+    const searchResults = doc.querySelectorAll(".tF2Cxc");
 
     const results = [];
     searchResults.forEach((result, index) => {
@@ -91,7 +97,6 @@ export async function searchGoogle(editor) {
 
     return results;
   } catch (error) {
-    // console.error("Error fetching search results:", error);
     window.alert("Error fetching search results", error);
     return [];
   }
