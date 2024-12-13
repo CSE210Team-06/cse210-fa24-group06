@@ -3,10 +3,12 @@ name: Documentation Generation
 on:
   push:
     branches:
+      - "main"
       - "dev/frontend"
       - "frontend/feat/docs"
   pull_request:
     branches:
+      - "main"
       - "dev/frontend"
 jobs:
   build:

@@ -3,11 +3,13 @@ name: Update API Docs
 on:
   push:
     branches:
+      - "main"
       - "dev/backend"
     # paths:
     #   - "backend/**" # Trigger only for changes in backend folder
   pull_request:
     branches:
+      - "main"
       - "dev/backend"
     # paths:
     #   - "backend/**" # Trigger only for PRs modifying backend folder
