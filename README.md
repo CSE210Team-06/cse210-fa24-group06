@@ -50,7 +50,9 @@ CodeChronicle aims to create a simple journal for developers, a specialized tool
 
 1. Frontend Auto Documentation - [https://cse210team-06.github.io/cse210-fa24-group06-docs/](https://cse210team-06.github.io/cse210-fa24-group06-docs/)
 2. Backend Auto Documentation - [https://cse210team-06.github.io/cse210-fa24-group06-backend-docs/backend.html](https://cse210team-06.github.io/cse210-fa24-group06-backend-docs/backend.html)
-3. FastAPI Auto Documentation and Postman style api trials - [https://cse210-fa24-group06.onrender.com](https://cse210-fa24-group06.onrender.com)\*
+3. Backend FastAPI Auto Documentation and Postman style API trials - [https://cse210-fa24-group06.onrender.com](https://cse210-fa24-group06.onrender.com)\*
+4. Frontend Auto Documentation Repo - [https://github.com/CSE210Team-06/cse210-fa24-group06-docs](https://github.com/CSE210Team-06/cse210-fa24-group06-docs)
+5. Backend Auto Documentation - [https://github.com/CSE210Team-06/cse210-fa24-group06-backend-docs](https://github.com/CSE210Team-06/cse210-fa24-group06-backend-docs)
 
 \* FastAPI docs may not be immediately available, as render might have shut down due to inactivity. Check Step 3 of **How to Install and Run the Journal** (the section above) to get more details.
 
