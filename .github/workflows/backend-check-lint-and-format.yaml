@@ -6,15 +6,15 @@ on:
       - "main"
       - "backend/**" # Match branches starting with "backend/"
       - "dev/backend"
-    paths:
-      - "backend/**" # Trigger only for changes in backend folder
+    # paths:
+    #   - "backend/**" # Trigger only for changes in backend folder
   pull_request:
     branches:
       - "main"
       - "backend/**" # Match branches starting with "backend/"
       - "dev/backend"
-    paths:
-      - "backend/**" # Trigger only for PRs modifying backend folder
+    # paths:
+    #   - "backend/**" # Trigger only for PRs modifying backend folder
 
 jobs:
   lint-and-format:
