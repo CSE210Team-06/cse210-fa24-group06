@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeChronicle</title>
+    <link rel="stylesheet" href="./styles/index.css" />
+  </head>
+  <body>
+    <div class="mainbody">
+      <header class="header">
+        <h1 class="header__title">(code) => {chronicle;}</h1>
+      </header>
+      <div class="header__button__group">
+        <button class="header__button" id="openSigninModal">Login</button>
+        <button class="header__button" id="openSignupModal">
+          Create Account
+        </button>
+      </div>
+      <signin-modal id="signin-modal"></signin-modal>
+      <signup-modal id="signup-modal"></signup-modal>
+      <script src="./index.js"></script>
+      <script type="module" src="./renderer.js"></script>
+    </div>
+  </body>
+</html>

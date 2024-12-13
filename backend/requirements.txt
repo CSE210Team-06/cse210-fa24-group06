@@ -9,3 +9,11 @@ faiss-cpu
 pydantic[email]
 httpx
 pytest
+pre-commit
+flake8
+black
+faker
+qdrant_client
+google-generativeai
+torch
+transformers

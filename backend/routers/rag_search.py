@@ -1,12 +1,11 @@
-from fastapi import FastAPI, HTTPException, Depends, APIRouter
+from fastapi import HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
-from db import models
-from db.database import SessionLocal
-from auth import verify_token
+from backend.db import models
+from backend.db.database import SessionLocal
 from sentence_transformers import SentenceTransformer
 import faiss
 import numpy as np
-from auth import verify_token
+from backend.auth import verify_token
 
 
 router = APIRouter()
@@ -16,8 +15,6 @@ faiss_index = faiss.IndexFlatL2(384)  # Vector search index
 entry_metadata = []  # To store metadata for each entry
 MODEL_PATH = "sentence-transformers/all-MiniLM-L6-v2"  # Model directory path
 # To store metadata for each entry
-
-
 
 
 def check_model_downloaded():
@@ -32,6 +29,7 @@ def check_model_downloaded():
             print(e)
             return False
     return True
+
 
 # Dependency to get DB session
 def get_db():
@@ -50,13 +48,19 @@ def embed_and_index(auth_token: str, db: Session = Depends(get_db)):
     user_email = verify_token(auth_token)
 
     # Fetch user's journals and entries
-    db_journals = db.query(models.Journal).filter(models.Journal.user.has(email=user_email)).all()
+    db_journals = (
+        db.query(models.Journal).filter(models.Journal.user.has(email=user_email)).all()
+    )
     if not db_journals:
         raise HTTPException(status_code=404, detail="No journals found for the user")
 
     # Iterate over journals and entries to embed and index
     for journal in db_journals:
-        entries = db.query(models.Entry).filter(models.Entry.journal_id == journal.journal_id).all()
+        entries = (
+            db.query(models.Entry)
+            .filter(models.Entry.journal_id == journal.journal_id)
+            .all()
+        )
         for entry in entries:
             # Generate embedding for the entry text
             embedding = embedding_model.encode(entry.entry_text).astype(np.float32)
@@ -65,15 +69,20 @@ def embed_and_index(auth_token: str, db: Session = Depends(get_db)):
             faiss_index.add(np.array([embedding]))
 
             # Store metadata for this entry
-            entry_metadata.append({
-                "journal_id": journal.journal_id,
-                "journal_title": journal.journal_title,
-                "entry_id": entry.entry_id,
-                "page_number": entry.page_number,
-                "entry_text": entry.entry_text
-            })
+            entry_metadata.append(
+                {
+                    "journal_id": journal.journal_id,
+                    "journal_title": journal.journal_title,
+                    "entry_id": entry.entry_id,
+                    "page_number": entry.page_number,
+                    "entry_text": entry.entry_text,
+                }
+            )
 
-    return {"status": "success", "message": "User's entries have been embedded and indexed"}
+    return {
+        "status": "success",
+        "message": "User's entries have been embedded and indexed",
+    }
 
 
 @router.post("/vector_search")
@@ -84,13 +93,19 @@ def vector_search(auth_token: str, query: str, db: Session = Depends(get_db)):
     # Verify the token and get user email
 
     if not check_model_downloaded():
-        return {"status": "failed", "message": "Model weights not downloaded. Please download them to proceed."}
+        return {
+            "status": "failed",
+            "message": "Model weights not downloaded. Please download them to proceed.",
+        }
 
     embed_and_index(auth_token, db)  # Embed and index if not already done
 
     # Check if data has been indexed
     if not entry_metadata:
-        raise HTTPException(status_code=400, detail="No data indexed for vector search. Please index first.")
+        raise HTTPException(
+            status_code=400,
+            detail="No data indexed for vector search. Please index first.",
+        )
 
     # Generate embedding for the query
     query_embedding = embedding_model.encode(query).astype(np.float32)
@@ -104,17 +119,24 @@ def vector_search(auth_token: str, query: str, db: Session = Depends(get_db)):
     for idx, distance in zip(indices[0], distances[0]):
         if idx < len(entry_metadata):  # Ensure index is valid
             metadata = entry_metadata[idx]
-            results.append({
-                "journal_id": int(metadata["journal_id"]),  # Convert to Python int
-                "journal_title": metadata["journal_title"],
-                "entry_id": int(metadata["entry_id"]),  # Convert to Python int
-                "page_number": int(metadata["page_number"]),  # Convert to Python int
-                "entry_text_snippet": metadata["entry_text"][:100],  # Provide a text snippet
-                "relevance_score": float(round(1 / (1 + distance), 2))  # Convert to Python float
-            })
+            results.append(
+                {
+                    "journal_id": int(metadata["journal_id"]),  # Convert to Python int
+                    "journal_title": metadata["journal_title"],
+                    "entry_id": int(metadata["entry_id"]),  # Convert to Python int
+                    "page_number": int(
+                        metadata["page_number"]
+                    ),  # Convert to Python int
+                    "entry_text_snippet": metadata["entry_text"][
+                        :100
+                    ],  # Provide a text snippet
+                    "relevance_score": float(
+                        round(1 / (1 + distance), 2)
+                    ),  # Convert to Python float
+                }
+            )
 
     if not results:
         return {"status": "success", "message": "No relevant entries found"}
 
     return {"status": "success", "query": query, "matches": results}
-

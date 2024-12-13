@@ -1,12 +1,23 @@
-from re import search
+import sys
 
-from fastapi import FastAPI, Depends, HTTPException, status
+sys.path.append("../")
+from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-from db import models, crud, schemas
-from utils import hash_password, verify_password
-from auth import create_access_token, verify_token
-from db.database import SessionLocal
-from routers import update_apis, search, read, create_apis, delete_apis, get_user, read_apis
+from backend.db import models, schemas
+from backend.utils import hash_password, verify_password
+from backend.auth import create_access_token, verify_token
+from backend.db.database import SessionLocal
+from backend.routers import (
+    update_apis,
+    search,
+    read,
+    create_apis,
+    delete_apis,
+    get_user,
+    read_apis,
+    rag_search,
+    ai_prof,
+)
 
 app = FastAPI(
     title="FastAPI Boilerplate",
@@ -24,12 +35,11 @@ app.include_router(create_apis.router, prefix="/create", tags=["Create"])
 app.include_router(delete_apis.router, prefix="/delete", tags=["Delete"])
 
 
-
 app.include_router(get_user.router, prefix="/get_user", tags=["User"])
 
 app.include_router(rag_search.router, prefix="/rag_search", tags=["RAG Search"])
 
-
+app.include_router(ai_prof.router, prefix="/ai_prof", tags=["AI Prof Powell"])
 
 
 # Dependency to get the DB session
@@ -51,7 +61,9 @@ def health_check():
 @app.post("/signup")
 def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
     # Check if user already exists
-    existing_user = db.query(models.User).filter(models.User.email == user.email).first()
+    existing_user = (
+        db.query(models.User).filter(models.User.email == user.email).first()
+    )
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
 
