@@ -1,4 +1,4 @@
-name: Lint and Code Style Check
+name: Lint and Code Style Check Frontend
 
 on:
   push:
@@ -6,15 +6,15 @@ on:
       - "main"
       - "frontend/**"
       - "dev/frontend"
-    paths:
-      - "frontend/**"
+    # paths:
+    #   - "frontend/**"
   pull_request:
     branches:
       - "main"
       - "frontend/**"
       - "dev/frontend"
-    paths:
-      - "frontend/**"
+    # paths:
+    #   - "frontend/**"
 jobs:
   lint:
     runs-on: ubuntu-latest
